@@ -14,11 +14,11 @@ export async function GET(request) {
       const response = NextResponse.redirect(new URL(next, request.url));
       
       // Definitively bridge cookies to the redirect response
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        // This ensures the session is immediately available to the next request
-        // by placing it in the Set-Cookie headers of the redirect itself.
-      }
+      // This is the CRITICAL fix to ensure the session persists after OAuth
+      const cookieStore = await cookies();
+      cookieStore.getAll().forEach((cookie) => {
+        response.cookies.set(cookie.name, cookie.value, cookie.options);
+      });
       
       return response;
     }
