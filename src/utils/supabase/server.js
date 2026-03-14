@@ -1,8 +1,13 @@
 import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 export async function createClient() {
   const cookieStore = await cookies();
+  const headerStore = await headers();
+  const host = headerStore.get('host') || '';
+  const isLocal = process.env.NODE_ENV === 'development' || 
+                 host.includes('localhost') || 
+                 host.includes('127.0.0.1');
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jvlgpecoduxrzwctumff.supabase.co',
@@ -14,11 +19,6 @@ export async function createClient() {
         },
         setAll(cookiesToSet) {
           try {
-            const host = cookieStore.get('host')?.value || '';
-            const isLocal = process.env.NODE_ENV === 'development' || 
-                           host.includes('localhost') ||
-                           host.includes('127.0.0.1');
-            
             cookiesToSet.forEach(({ name, value, options }) => {
               const cookieOptions = {
                 ...options,
@@ -29,7 +29,7 @@ export async function createClient() {
               cookieStore.set(name, value, cookieOptions);
             });
           } catch (error) {
-            // The `setAll` method was called from a Server Component.
+            // Read-only context (Server Components)
           }
         },
       },
