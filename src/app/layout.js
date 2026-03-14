@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Sidebar from '@/components/Sidebar';
 import Onboarding from '@/components/ui/Onboarding';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -17,13 +18,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable}`}>
       <body className="font-sans antialiased text-[var(--foreground)] bg-[var(--background)]">
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="flex-1 lg:pl-[240px] pb-24 lg:pb-0 min-h-screen">
-            {children}
-          </main>
-        </div>
-        <Onboarding />
+        <ThemeProvider>
+          <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="flex-1 lg:pl-[240px] pb-24 lg:pb-0 min-h-screen">
+              {children}
+            </main>
+          </div>
+          <Onboarding />
+        </ThemeProvider>
       </body>
     </html>
   );

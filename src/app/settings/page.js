@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { 
-  Trash2, Download, Upload, ShieldCheck, Database, RefreshCcw, Bell, DollarSign, Percent, Globe, Save
+  Trash2, Download, Upload, ShieldCheck, Database, RefreshCcw, Bell, DollarSign, Percent, Globe, Save, Monitor, Moon, Sun
 } from 'lucide-react';
+import { useTheme } from '@/components/ThemeProvider';
 import { getSettings, saveSettings, getTrades, getStrategies } from '@/lib/storage';
 
 export default function Settings() {
@@ -15,6 +16,7 @@ export default function Settings() {
     riskPercentage: 1,
     currency: 'USD'
   });
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     const loadSettings = async () => {
@@ -210,6 +212,42 @@ export default function Settings() {
           </div>
           <div className="p-8 text-center">
             <p className="text-xs text-[var(--text-muted)]">Trading session alerts and journaling reminders.</p>
+          </div>
+        </div>
+
+        {/* Theme Preference Section */}
+        <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] overflow-hidden shadow-sm">
+          <div className="p-6 border-b border-[var(--border)] bg-[var(--background)]/30">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-[var(--accent)]/10 rounded-lg">
+                <Sun className="text-[var(--accent)]" size={20} />
+              </div>
+              <h2 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-wider">Visual Preference</h2>
+            </div>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { id: 'auto', label: 'System Auto', icon: Monitor },
+                { id: 'light', label: 'Light Mode', icon: Sun },
+                { id: 'dark', label: 'Dark Mode', icon: Moon }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setTheme(item.id)}
+                  className={`flex flex-col items-center justify-center p-6 rounded-2xl border transition-all gap-4 ${
+                    theme === item.id 
+                      ? 'bg-[var(--accent)]/10 border-[var(--accent)]' 
+                      : 'bg-[var(--card)] border-[var(--border)] hover:border-[var(--text-muted)]'
+                  }`}
+                >
+                  <item.icon size={24} className={theme === item.id ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'} />
+                  <span className={`text-xs font-bold uppercase tracking-wider ${theme === item.id ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
+                    {item.label}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

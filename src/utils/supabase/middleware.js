@@ -29,7 +29,26 @@ export async function updateSession(request) {
 
   // refreshing the auth token
   try {
-    await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Auth Guard: Redirect unauthenticated users to login
+    const isAuthPage = request.nextUrl.pathname.startsWith('/login') || 
+                      request.nextUrl.pathname.startsWith('/signup') ||
+                      request.nextUrl.pathname.startsWith('/auth');
+
+    if (!user && !isAuthPage) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      return NextResponse.redirect(url);
+    }
+
+    // Redirect authenticated users away from login/signup to dashboard
+    if (user && (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup')) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
+
   } catch (e) {
     // If auth fails or env vars missing, we still want the request to proceed
     // The client-side logic will handle the unauthenticated state
