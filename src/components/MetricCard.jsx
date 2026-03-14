@@ -25,7 +25,7 @@ export default function MetricCard({
           {Icon && <Icon size={20} />}
         </div>
         {trend && (
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 border border-white/5 ${trendColor}`}>
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--tag-bg)] border border-[var(--tag-bg)] ${trendColor}`}>
             {trend}
           </span>
         )}

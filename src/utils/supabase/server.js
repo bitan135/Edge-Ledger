@@ -14,9 +14,18 @@ export async function createClient() {
         },
         setAll(cookiesToSet) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            );
+            const isLocal = process.env.NODE_ENV === 'development' || 
+                           process.env.NEXT_PUBLIC_SITE_URL?.includes('localhost') ||
+                           global?.location?.hostname === 'localhost';
+            
+            cookiesToSet.forEach(({ name, value, options }) => {
+              const cookieOptions = {
+                ...options,
+                secure: isLocal ? false : options.secure,
+                sameSite: isLocal ? 'lax' : options.sameSite,
+              };
+              cookieStore.set(name, value, cookieOptions);
+            });
           } catch {
             // The `setAll` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing

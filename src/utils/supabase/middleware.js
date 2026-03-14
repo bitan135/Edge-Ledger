@@ -15,13 +15,29 @@ export async function updateSession(request) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value));
+          const isLocal = process.env.NODE_ENV === 'development' || 
+                         request.nextUrl.hostname === 'localhost' || 
+                         request.nextUrl.hostname === '127.0.0.1';
+          
+          cookiesToSet.forEach(({ name, value, options }) => {
+            const cookieOptions = {
+              ...options,
+              secure: isLocal ? false : options.secure,
+              sameSite: isLocal ? 'lax' : options.sameSite,
+            };
+            request.cookies.set(name, value);
+          });
           supabaseResponse = NextResponse.next({
             request,
           });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
+          cookiesToSet.forEach(({ name, value, options }) => {
+            const cookieOptions = {
+              ...options,
+              secure: isLocal ? false : options.secure,
+              sameSite: isLocal ? 'lax' : options.sameSite,
+            };
+            supabaseResponse.cookies.set(name, value, cookieOptions);
+          });
         },
       },
     }

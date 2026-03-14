@@ -13,6 +13,9 @@ export async function GET(request) {
     if (!error) {
       return NextResponse.redirect(new URL(next, request.url));
     }
+    console.error('OAuth Code Exchange Error:', error);
+  } else {
+    console.warn('No code provided in OAuth callback');
   }
 
   // return the user to an error page with instructions

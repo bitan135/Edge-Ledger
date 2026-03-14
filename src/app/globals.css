@@ -3,7 +3,7 @@
 
 :root {
   --background: #0F1117;
-  --foreground: #E4E4E4;
+  --foreground: #F3F4F6;
   --card: #1A1E28;
   --card-hover: #212632;
   --border: #262A36;
@@ -22,8 +22,8 @@
   --input-border: #262A36;
   --sidebar-bg: #0B0D14;
   --sidebar-active: rgba(99, 102, 241, 0.1);
-  
   --font-inter: 'Inter', sans-serif;
+  --tag-bg: rgba(255, 255, 255, 0.05);
 }
 
 [data-theme='light'] {
@@ -47,6 +47,7 @@
   --input-border: #CBD5E1;
   --sidebar-bg: #FFFFFF;
   --sidebar-active: rgba(79, 70, 229, 0.08);
+  --tag-bg: rgba(0, 0, 0, 0.05);
 }
 
 @theme inline {
@@ -169,6 +170,6 @@ input[type="number"] {
   border: 1px solid var(--border) !important;
   border-radius: 12px !important;
   padding: 12px 16px !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
   backdrop-filter: blur(8px);
 }

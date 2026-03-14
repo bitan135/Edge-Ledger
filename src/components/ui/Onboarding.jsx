@@ -31,6 +31,13 @@ export default function Onboarding() {
 
   useEffect(() => {
     const checkOnboarding = async () => {
+      // Check local storage first for instant feedback during auth transitions
+      const localOnboarded = localStorage.getItem('edge_onboarded');
+      if (localOnboarded === 'true') {
+        setShow(false);
+        return;
+      }
+
       const onboarded = await hasOnboarded();
       if (!onboarded) {
         setShow(true);
@@ -48,6 +55,7 @@ export default function Onboarding() {
   };
 
   const handleComplete = async () => {
+    localStorage.setItem('edge_onboarded', 'true');
     await setOnboarded();
     setShow(false);
   };
