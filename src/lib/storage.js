@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
   STRATEGIES: 'edgeledger_strategies',
   SETTINGS: 'edgeledger_settings',
   SEEDED: 'edgeledger_seeded',
+  ONBOARDING: 'edgeledger_onboarding',
 };
 
 // -------------- Default Data --------------------
@@ -265,7 +266,7 @@ export function addStrategy(name) {
   return strategies;
 }
 
-export function removeStrategy(name) {
+export function deleteStrategy(name) {
   const strategies = getStrategies().filter(s => s !== name);
   saveStrategies(strategies);
   return strategies;
@@ -297,7 +298,17 @@ export function importAllData(data) {
 }
 
 export function clearAllData() {
+  if (typeof window === 'undefined') return;
   Object.values(STORAGE_KEYS).forEach(key => localStorage.removeItem(key));
+}
+
+// Onboarding
+export function hasOnboarded() {
+  return getFromStorage(STORAGE_KEYS.ONBOARDING) === true;
+}
+
+export function setOnboarded() {
+  saveToStorage(STORAGE_KEYS.ONBOARDING, true);
 }
 
 // -------------- Seed Data --------------------

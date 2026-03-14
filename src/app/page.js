@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar,
 } from 'recharts';
 import {
-  TrendingUp, Target, BarChart3, Clock,
+  TrendingUp, Target, BarChart3, Clock, Calendar, ArrowUpRight, ArrowDownRight,
 } from 'lucide-react';
 import MetricCard from '@/components/MetricCard';
 import ChartCard from '@/components/ChartCard';
+import { MetricSkeleton } from '@/components/ui/SkeletonLoader';
+import EmptyState from '@/components/ui/EmptyState';
 import {
   getTrades, seedDemoData, getWinRate, getProfitFactor, getAverageRR,
   getEquityCurve, getWinRateByGroup, getStrategyInsights,
@@ -18,31 +20,37 @@ function CustomTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   return (
     <div className="custom-tooltip">
-      <p className="text-xs text-[var(--text-muted)]">{label}</p>
-      <p className="text-sm font-semibold text-[var(--text-primary)]">
-        {payload[0].value > 0 ? '+' : ''}{payload[0].value}R
-      </p>
+      <p className="text-[10px] text-[var(--text-muted)] font-bold uppercase tracking-wider mb-1">{label}</p>
+      <div className="flex items-center gap-2">
+        <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+        <p className="text-sm font-bold text-[var(--text-primary)]">
+          {payload[0].value > 0 ? '+' : ''}{payload[0].value}R
+        </p>
+      </div>
     </div>
   );
 }
 
 export default function Dashboard() {
   const [trades, setTrades] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [greeting, setGreeting] = useState('');
 
   useEffect(() => {
-    seedDemoData();
-    setTrades(getTrades());
-    setIsLoaded(true);
-  }, []);
+    const hours = new Date().getHours();
+    if (hours < 12) setGreeting('Good Morning');
+    else if (hours < 18) setGreeting('Good Afternoon');
+    else setGreeting('Good Evening');
 
-  if (!isLoaded) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-8 h-8 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
+    const loadData = async () => {
+      // Simulate slight load for better UX feeling
+      await new Promise(r => setTimeout(r, 600));
+      seedDemoData();
+      setTrades(getTrades());
+      setIsLoading(false);
+    };
+    loadData();
+  }, []);
 
   const totalTrades = trades.length;
   const winRate = getWinRate(trades);
@@ -52,130 +60,207 @@ export default function Dashboard() {
   const sessionPerf = getWinRateByGroup(trades, 'session');
   const strategyPerf = getStrategyInsights(trades);
 
+  if (isLoading) {
+    return (
+      <div className="px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
+        <div className="h-10 w-48 bg-[var(--card)] rounded-lg mb-8 animate-shimmer" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <MetricSkeleton />
+          <MetricSkeleton />
+          <MetricSkeleton />
+          <MetricSkeleton />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="h-[400px] bg-[var(--card)] border border-[var(--border)] rounded-2xl animate-shimmer" />
+          <div className="h-[400px] bg-[var(--card)] border border-[var(--border)] rounded-2xl animate-shimmer" />
+        </div>
+      </div>
+    );
+  }
+
+  if (totalTrades === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[80vh]">
+        <EmptyState
+          icon={Target}
+          title="No trades recorded yet"
+          description="Log your first trade to start tracking your performance and finding your edge."
+          actionLabel="Add First Trade"
+          onAction={() => window.location.href = '/add-trade'}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1400px] mx-auto">
+    <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-[1400px] mx-auto animate-fade-in">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
-          Dashboard
-        </h1>
-        <p className="text-sm text-[var(--text-muted)] mt-1">
-          Your trading performance at a glance
-        </p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div>
+          <div className="flex items-center gap-2 text-[var(--accent)] font-bold text-xs uppercase tracking-[0.2em] mb-2">
+            <Calendar size={14} />
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+          </div>
+          <h1 className="text-3xl font-extrabold text-[var(--text-primary)] tracking-tight">
+            {greeting}, Trader
+          </h1>
+        </div>
+        <button 
+          onClick={() => window.location.href = '/add-trade'}
+          className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[var(--accent)] text-white font-bold text-sm shadow-xl shadow-[var(--accent)]/30 hover:bg-[var(--accent-hover)] transition-all hover:scale-105 active:scale-95"
+        >
+          <ArrowUpRight size={18} />
+          Log New Trade
+        </button>
       </div>
 
-      {/* Metrics Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 stagger-children">
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <MetricCard
           label="Win Rate"
           value={`${winRate}%`}
-          subValue={`${totalTrades} trades`}
+          subValue="Total Performance"
+          trend="+2.4%" // Mocked trend
           color={winRate >= 50 ? 'profit' : 'loss'}
           icon={Target}
         />
         <MetricCard
           label="Profit Factor"
           value={profitFactor}
-          subValue="reward / risk"
+          subValue="Reward/Risk Efficiency"
+          trend="+0.12" // Mocked trend
           color={profitFactor >= 1 ? 'profit' : 'loss'}
           icon={TrendingUp}
         />
         <MetricCard
-          label="Avg RR"
+          label="Average RR"
           value={`${avgRR}R`}
-          subValue="on winning trades"
+          subValue="Winning Trade Median"
           color="accent"
           icon={BarChart3}
         />
         <MetricCard
           label="Total Trades"
           value={totalTrades}
-          subValue={`${trades.filter(t => t.result === 'Win').length}W / ${trades.filter(t => t.result === 'Loss').length}L`}
+          subValue="Sample Size"
           icon={Clock}
         />
       </div>
 
-      {/* Equity Curve */}
-      <ChartCard title="Equity Curve" subtitle="Cumulative R performance over time" className="mb-6">
-        <ResponsiveContainer width="100%" height={280}>
-          <LineChart data={equityCurve} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-            <XAxis
-              dataKey="date"
-              tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
-              axisLine={{ stroke: 'var(--border)' }}
-              tickLine={false}
-            />
-            <YAxis
-              tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
-              axisLine={{ stroke: 'var(--border)' }}
-              tickLine={false}
-              tickFormatter={(v) => `${v}R`}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Line
-              type="monotone"
-              dataKey="balance"
-              stroke="var(--accent)"
-              strokeWidth={2.5}
-              dot={false}
-              activeDot={{ r: 5, fill: 'var(--accent)', strokeWidth: 0 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </ChartCard>
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <ChartCard title="Equity Curve" subtitle="Cumulative R performance" className="lg:col-span-2">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={equityCurve} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.2}/>
+                  <stop offset="95%" stopColor="var(--accent)" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+              <XAxis
+                dataKey="date"
+                tick={{ fill: 'var(--text-muted)', fontSize: 10, fontWeight: 600 }}
+                axisLine={false}
+                tickLine={false}
+                dy={10}
+              />
+              <YAxis
+                tick={{ fill: 'var(--text-muted)', fontSize: 10, fontWeight: 600 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v) => `${v}R`}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Area
+                type="monotone"
+                dataKey="balance"
+                stroke="var(--accent)"
+                strokeWidth={3}
+                fillOpacity={1}
+                fill="url(#colorBalance)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </ChartCard>
 
-      {/* Session & Strategy Performance */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-        {/* Session Performance */}
-        <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5">
-          <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4">
-            Session Performance
-          </h3>
-          <div className="space-y-3">
-            {sessionPerf.map((session) => (
-              <div key={session.name} className="group">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-sm text-[var(--text-secondary)]">{session.name}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-[var(--text-muted)]">{session.trades} trades</span>
-                    <span className={`text-sm font-semibold ${session.winRate >= 50 ? 'text-[var(--profit)]' : 'text-[var(--loss)]'}`}>
-                      {session.winRate}%
-                    </span>
+        <ChartCard title="Session Win Rates" subtitle="Best trading window">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={sessionPerf} layout="vertical" margin={{ top: 5, right: 30, left: -10, bottom: 5 }}>
+              <XAxis type="number" hide domain={[0, 100]} />
+              <YAxis dataKey="name" type="category" tick={{ fill: 'var(--text-secondary)', fontSize: 11, fontWeight: 700 }} axisLine={false} tickLine={false} width={80} />
+              <Tooltip cursor={{fill: 'transparent'}} content={({active, payload}) => {
+                if (!active || !payload?.length) return null;
+                return (
+                  <div className="custom-tooltip">
+                    <p className="text-sm font-bold">{payload[0].value}% Win Rate</p>
                   </div>
-                </div>
-                <div className="h-2 bg-[var(--background)] rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all duration-700 ease-out ${session.winRate >= 50 ? 'bg-[var(--profit)]' : 'bg-[var(--loss)]'}`}
-                    style={{ width: `${session.winRate}%` }}
-                  />
-                </div>
+                );
+              }} />
+              <Bar 
+                dataKey="winRate" 
+                radius={[0, 4, 4, 0]} 
+                barSize={20}
+                fill="var(--accent)"
+              >
+                {sessionPerf.map((entry, index) => (
+                  <Area key={`cell-${index}`} fill={entry.winRate >= 50 ? 'var(--profit)' : 'var(--loss)'} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+          <div className="mt-4 flex justify-between px-2">
+            {sessionPerf.map(s => (
+              <div key={s.name} className="text-center">
+                <p className="text-[10px] text-[var(--text-muted)] font-bold uppercase">{s.name}</p>
+                <p className={`text-xs font-bold ${s.winRate >= 50 ? 'text-[var(--profit)]' : 'text-[var(--loss)]'}`}>{s.winRate}%</p>
               </div>
             ))}
+          </div>
+        </ChartCard>
+      </div>
+
+      {/* Strategy Table */}
+      <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 overflow-hidden">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-widest">Strategy performance</h3>
+            <p className="text-xs text-[var(--text-muted)] mt-1">Deep dive into your most consistent setups</p>
           </div>
         </div>
-
-        {/* Strategy Performance */}
-        <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5">
-          <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-4">
-            Strategy Performance
-          </h3>
-          <div className="space-y-3">
-            {strategyPerf.slice(0, 5).map((strat) => (
-              <div key={strat.name} className="flex items-center justify-between py-1.5 border-b border-[var(--border)] last:border-0">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-[var(--text-secondary)] truncate">{strat.name}</p>
-                  <p className="text-xs text-[var(--text-muted)]">{strat.trades} trades</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className={`text-sm font-semibold ${strat.winRate >= 50 ? 'text-[var(--profit)]' : 'text-[var(--loss)]'}`}>
-                    {strat.winRate}%
-                  </span>
-                  <span className="text-xs text-[var(--text-muted)] w-12 text-right">{strat.avgRR}R</span>
-                </div>
-              </div>
-            ))}
-          </div>
+        
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-[var(--border)]">
+                <th className="pb-4 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Strategy</th>
+                <th className="pb-4 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider text-center">Trades</th>
+                <th className="pb-4 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider text-center">Win Rate</th>
+                <th className="pb-4 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider text-center">Avg RR</th>
+                <th className="pb-4 text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider text-right">Trend</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[var(--border)]">
+              {strategyPerf.slice(0, 5).map((strat) => (
+                <tr key={strat.name} className="group hover:bg-[var(--card-hover)]/30 transition-colors">
+                  <td className="py-4 font-semibold text-sm text-[var(--text-secondary)]">{strat.name}</td>
+                  <td className="py-4 text-center text-sm font-medium text-[var(--text-muted)]">{strat.trades}</td>
+                  <td className="py-4 text-center">
+                    <span className={`text-sm font-bold ${strat.winRate >= 55 ? 'text-[var(--profit)]' : strat.winRate < 45 ? 'text-[var(--loss)]' : 'text-[var(--accent)]'}`}>
+                      {strat.winRate}%
+                    </span>
+                  </td>
+                  <td className="py-4 text-center text-sm font-bold text-[var(--text-primary)]">{strat.avgRR}R</td>
+                  <td className="py-4 text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      {strat.winRate >= 50 ? <ArrowUpRight size={14} className="text-[var(--profit)]" /> : <ArrowDownRight size={14} className="text-[var(--loss)]" />}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

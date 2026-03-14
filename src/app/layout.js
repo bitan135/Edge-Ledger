@@ -1,33 +1,29 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Sidebar from "@/components/Sidebar";
+import { Inter } from 'next/font/google';
+import './globals.css';
+import Sidebar from '@/components/Sidebar';
+import Onboarding from '@/components/ui/Onboarding';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
 });
 
 export const metadata = {
-  title: "EdgeLedger — Smart Money Trading Journal",
-  description: "The modern trading journal designed specifically for Smart Money traders. Log trades fast, discover your edge, master your strategy.",
-  keywords: "trading journal, SMC, ICT, smart money, forex, trading analytics",
+  title: 'EdgeLedger — Smart Trading Journal',
+  description: 'The modern trading journal designed for Smart Money traders to find their edge.',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Sidebar />
-        <main className="lg:ml-[240px] min-h-screen pb-20 lg:pb-0">
-          {children}
-        </main>
+    <html lang="en" className={`${inter.variable}`}>
+      <body className="font-sans antialiased text-[var(--foreground)] bg-[var(--background)]">
+        <div className="flex min-h-screen">
+          <Sidebar />
+          <main className="flex-1 lg:pl-[240px] pb-24 lg:pb-0 min-h-screen">
+            {children}
+          </main>
+        </div>
+        <Onboarding />
       </body>
     </html>
   );

@@ -1,32 +1,25 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import {
-  ArrowUpRight, ArrowDownRight, Camera, X, Check,
+import { useState, useEffect } from 'react';
+import { 
+  Plus, Camera, Check, AlertCircle, TrendingUp, Target, Clock, Zap
 } from 'lucide-react';
-import {
-  saveTrade, getStrategies, addStrategy, calculateRR, calculatePips,
-  INSTRUMENTS, SESSIONS, SMC_TAGS, getSettings,
+import { 
+  saveTrade, getStrategies, INSTRUMENTS, SESSIONS, SMC_TAGS, 
+  calculateRR, calculatePips 
 } from '@/lib/storage';
+import TagBadge from '@/components/ui/TagBadge';
 
 export default function AddTrade() {
-  const router = useRouter();
-  const [strategies, setStrategies] = useState([]);
-  const [settings, setSettings] = useState({});
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [newStrategy, setNewStrategy] = useState('');
-  const [showNewStrategy, setShowNewStrategy] = useState(false);
-
-  const [form, setForm] = useState({
-    instrument: '',
+  const [formData, setFormData] = useState({
+    instrument: 'EURUSD',
     direction: 'Buy',
     entryPrice: '',
     stopLoss: '',
     takeProfit: '',
-    lotSize: '',
-    result: '',
-    session: '',
+    lotSize: '0.01',
+    result: 'Win',
+    session: 'London',
     strategy: '',
     smcTags: [],
     notes: '',
@@ -34,369 +27,333 @@ export default function AddTrade() {
     screenshotAfter: null,
   });
 
+  const [strategies, setStrategies] = useState([]);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [autoCalc, setAutoCalc] = useState({ rr: 0, pips: 0 });
+
   useEffect(() => {
     setStrategies(getStrategies());
-    setSettings(getSettings());
+    if (getStrategies().length > 0) {
+      setFormData(prev => ({ ...prev, strategy: getStrategies()[0] }));
+    }
   }, []);
 
-  const rr = calculateRR(form.entryPrice, form.stopLoss, form.takeProfit, form.direction);
-  const pips = calculatePips(form.entryPrice, form.stopLoss, form.instrument);
+  useEffect(() => {
+    if (formData.entryPrice && formData.stopLoss && formData.takeProfit) {
+      const rr = calculateRR(formData.entryPrice, formData.stopLoss, formData.takeProfit, formData.direction);
+      const pips = calculatePips(formData.entryPrice, formData.stopLoss, formData.instrument);
+      setAutoCalc({ rr, pips });
+    }
+  }, [formData.entryPrice, formData.stopLoss, formData.takeProfit, formData.direction, formData.instrument]);
 
-  const updateField = useCallback((field, value) => {
-    setForm(prev => ({ ...prev, [field]: value }));
-  }, []);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
 
-  const toggleSMCTag = useCallback((tag) => {
-    setForm(prev => ({
-      ...prev,
-      smcTags: prev.smcTags.includes(tag)
+  const handleTagToggle = (tag) => {
+    setFormData(prev => {
+      const newTags = prev.smcTags.includes(tag)
         ? prev.smcTags.filter(t => t !== tag)
-        : [...prev.smcTags, tag],
-    }));
-  }, []);
+        : [...prev.smcTags, tag];
+      return { ...prev, smcTags: newTags };
+    });
+  };
 
-  const handleScreenshot = useCallback((field, e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Image must be under 2MB');
-      return;
+  const handleFileChange = (e, field) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({ ...prev, [field]: reader.result }));
+      };
+      reader.readAsDataURL(file);
     }
-    const reader = new FileReader();
-    reader.onload = () => updateField(field, reader.result);
-    reader.readAsDataURL(file);
-  }, [updateField]);
+  };
 
-  const handleAddStrategy = useCallback(() => {
-    if (newStrategy.trim()) {
-      const updated = addStrategy(newStrategy.trim());
-      setStrategies(updated);
-      updateField('strategy', newStrategy.trim());
-      setNewStrategy('');
-      setShowNewStrategy(false);
-    }
-  }, [newStrategy, updateField]);
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.entryPrice) newErrors.entryPrice = 'Required';
+    if (!formData.stopLoss) newErrors.stopLoss = 'Required';
+    if (!formData.takeProfit) newErrors.takeProfit = 'Required';
+    if (!formData.strategy) newErrors.strategy = 'Required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.instrument || !form.result) {
-      alert('Please fill in at least Instrument and Result');
-      return;
-    }
+    if (!validate()) return;
 
     saveTrade({
-      ...form,
-      rr,
-      pips,
+      ...formData,
+      rr: autoCalc.rr,
+      pips: autoCalc.pips,
     });
 
-    setShowSuccess(true);
+    setIsSuccess(true);
     setTimeout(() => {
-      setShowSuccess(false);
-      setForm({
-        instrument: '',
-        direction: 'Buy',
-        entryPrice: '',
-        stopLoss: '',
-        takeProfit: '',
-        lotSize: '',
-        result: '',
-        session: '',
-        strategy: '',
-        smcTags: [],
-        notes: '',
-        screenshotBefore: null,
-        screenshotAfter: null,
-      });
-    }, 1500);
-  }, [form, rr, pips]);
+      setIsSuccess(false);
+      window.location.href = '/';
+    }, 2000);
+  };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1000px] mx-auto">
-      {/* Success Overlay */}
-      {showSuccess && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-[var(--card)] rounded-2xl p-8 flex flex-col items-center gap-4 animate-scale-in border border-[var(--border)]">
-            <div className="w-16 h-16 rounded-full bg-[var(--profit)]/20 flex items-center justify-center">
-              <Check size={32} className="text-[var(--profit)]" />
-            </div>
-            <p className="text-lg font-semibold text-[var(--text-primary)]">Trade Saved!</p>
-            <p className="text-sm text-[var(--text-muted)]">Keep building your edge.</p>
-          </div>
+    <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-[1000px] mx-auto animate-fade-in pb-20">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-12 h-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center border border-[var(--accent)]/20 shadow-lg">
+          <Zap className="text-[var(--accent)]" size={24} />
         </div>
-      )}
-
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
-          Add Trade
-        </h1>
-        <p className="text-sm text-[var(--text-muted)] mt-1">
-          Log your trade in under 15 seconds
-        </p>
+        <div>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">Log New Trade</h1>
+          <p className="text-sm text-[var(--text-muted)]">Record your setup and find your edge</p>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left Column — Trade Details */}
-          <div className="space-y-5">
-            <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)]">Trade Details</h3>
-
-              {/* Instrument */}
-              <div>
-                <label className="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Instrument</label>
-                <select
-                  value={form.instrument}
-                  onChange={(e) => updateField('instrument', e.target.value)}
-                  className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                >
-                  <option value="">Select instrument</option>
-                  {INSTRUMENTS.map(inst => (
-                    <option key={inst} value={inst}>{inst}</option>
-                  ))}
-                </select>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Form Area */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Section 1: Trade Details */}
+            <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--accent)] uppercase tracking-wider mb-2">
+                <Target size={14} />
+                Trade Details
               </div>
-
-              {/* Direction */}
-              <div>
-                <label className="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Direction</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {['Buy', 'Sell'].map(dir => (
-                    <button
-                      key={dir}
-                      type="button"
-                      onClick={() => updateField('direction', dir)}
-                      className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                        form.direction === dir
-                          ? dir === 'Buy'
-                            ? 'bg-[var(--profit)]/20 text-[var(--profit)] border border-[var(--profit)]/40'
-                            : 'bg-[var(--loss)]/20 text-[var(--loss)] border border-[var(--loss)]/40'
-                          : 'bg-[var(--input-bg)] text-[var(--text-muted)] border border-[var(--input-border)] hover:border-[var(--text-muted)]'
-                      }`}
-                    >
-                      {dir === 'Buy' ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
-                      {dir}
-                    </button>
-                  ))}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-[var(--text-secondary)]">Instrument</label>
+                  <select
+                    name="instrument"
+                    value={formData.instrument}
+                    onChange={handleChange}
+                    className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[var(--accent)] transition-all"
+                  >
+                    {INSTRUMENTS.map(i => <option key={i} value={i}>{i}</option>)}
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-[var(--text-secondary)]">Direction</label>
+                  <div className="flex p-1 bg-[var(--input-bg)] rounded-xl border border-[var(--input-border)]">
+                    {['Buy', 'Sell'].map(d => (
+                      <button
+                        key={d}
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, direction: d }))}
+                        className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                          formData.direction === d 
+                            ? d === 'Buy' ? 'bg-[var(--profit)] text-white' : 'bg-[var(--loss)] text-white'
+                            : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+                        }`}
+                      >
+                        {d}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
+            </div>
 
-              {/* Price Fields */}
-              <div className="grid grid-cols-3 gap-3">
+            {/* Section 2: Execution */}
+            <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--accent)] uppercase tracking-wider mb-2">
+                <TrendingUp size={14} />
+                Execution Prices
+              </div>
+              <div className="grid grid-cols-3 gap-4">
                 {[
-                  { field: 'entryPrice', label: 'Entry Price' },
-                  { field: 'stopLoss', label: 'Stop Loss' },
-                  { field: 'takeProfit', label: 'Take Profit' },
-                ].map(({ field, label }) => (
-                  <div key={field}>
-                    <label className="block text-xs font-medium text-[var(--text-muted)] mb-1.5">{label}</label>
+                  { label: 'Entry Price', name: 'entryPrice', placeholder: '1.0850' },
+                  { label: 'Stop Loss', name: 'stopLoss', placeholder: '1.0830' },
+                  { label: 'Take Profit', name: 'takeProfit', placeholder: '1.0892' },
+                ].map(field => (
+                  <div key={field.name} className="space-y-1.5">
+                    <label className="text-xs font-semibold text-[var(--text-secondary)]">{field.label}</label>
                     <input
                       type="number"
                       step="any"
-                      value={form[field]}
-                      onChange={(e) => updateField(field, e.target.value)}
-                      placeholder="0.00"
-                      className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] transition-colors placeholder:text-[var(--text-muted)]/40"
+                      name={field.name}
+                      value={formData[field.name]}
+                      onChange={handleChange}
+                      placeholder={field.placeholder}
+                      className={`w-full bg-[var(--input-bg)] border ${errors[field.name] ? 'border-[var(--loss)]' : 'border-[var(--input-border)]'} rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[var(--accent)] transition-all`}
                     />
                   </div>
                 ))}
               </div>
+              
+              {/* Auto Calcs */}
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                <div className="bg-[var(--background)]/50 rounded-xl p-3 border border-[var(--border)]">
+                  <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">Risk Reward</p>
+                  <p className={`text-lg font-bold ${autoCalc.rr >= 2 ? 'text-[var(--profit)]' : 'text-[var(--text-primary)]'}`}>
+                    {autoCalc.rr}R
+                  </p>
+                </div>
+                <div className="bg-[var(--background)]/50 rounded-xl p-3 border border-[var(--border)]">
+                  <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">Total Pips</p>
+                  <p className="text-lg font-bold text-[var(--text-primary)]">
+                    {autoCalc.pips}
+                  </p>
+                </div>
+              </div>
+            </div>
 
-              {/* Lot Size */}
-              <div>
-                <label className="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Lot Size</label>
-                <input
-                  type="number"
-                  step="any"
-                  value={form.lotSize}
-                  onChange={(e) => updateField('lotSize', e.target.value)}
-                  placeholder={settings.defaultLotSize?.toString() || '0.01'}
-                  className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] transition-colors placeholder:text-[var(--text-muted)]/40"
+            {/* Section 3: Notes & Screenshots */}
+            <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--accent)] uppercase tracking-wider mb-2">
+                <Camera size={14} />
+                Context & Journal
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-[var(--text-secondary)]">Notes</label>
+                <textarea
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleChange}
+                  placeholder="Describe your reasoning, psychological state, and feelings..."
+                  className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-3 text-sm outline-none focus:border-[var(--accent)] transition-all min-h-[120px] resize-none"
                 />
               </div>
-
-              {/* Auto Calculated */}
-              {(form.entryPrice && form.stopLoss) && (
-                <div className="grid grid-cols-2 gap-3 pt-2 border-t border-[var(--border)]">
-                  <div className="bg-[var(--input-bg)] rounded-lg p-3">
-                    <p className="text-xs text-[var(--text-muted)]">Risk:Reward</p>
-                    <p className="text-lg font-bold text-[var(--accent)]">{rr}R</p>
+              <div className="grid grid-cols-2 gap-4">
+                {['screenshotBefore', 'screenshotAfter'].map(field => (
+                  <div key={field} className="space-y-1.5">
+                    <label className="text-xs font-semibold text-[var(--text-secondary)]">
+                      {field === 'screenshotBefore' ? 'Before Trade' : 'Result (After)'}
+                    </label>
+                    <label className="relative flex flex-col items-center justify-center h-32 border-2 border-dashed border-[var(--border)] rounded-2xl bg-[var(--input-bg)] cursor-pointer hover:border-[var(--accent)] transition-all overflow-hidden group">
+                      {formData[field] ? (
+                        <img src={formData[field]} alt="preview" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                      ) : (
+                        <>
+                          <Camera className="text-[var(--text-muted)] mb-2" size={24} />
+                          <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase">Upload Screenshot</span>
+                        </>
+                      )}
+                      <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, field)} className="hidden" />
+                    </label>
                   </div>
-                  <div className="bg-[var(--input-bg)] rounded-lg p-3">
-                    <p className="text-xs text-[var(--text-muted)]">Pips Risk</p>
-                    <p className="text-lg font-bold text-[var(--text-primary)]">{pips}</p>
-                  </div>
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Right Column — Tags & Meta */}
-          <div className="space-y-5">
-            {/* Result */}
-            <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Trade Result</h3>
-              <div className="grid grid-cols-3 gap-2">
-                {['Win', 'Loss', 'Break Even'].map(result => (
-                  <button
-                    key={result}
-                    type="button"
-                    onClick={() => updateField('result', result)}
-                    className={`py-3 rounded-lg text-sm font-semibold transition-all ${
-                      form.result === result
-                        ? result === 'Win'
-                          ? 'bg-[var(--profit)]/20 text-[var(--profit)] border border-[var(--profit)]/40'
-                          : result === 'Loss'
-                            ? 'bg-[var(--loss)]/20 text-[var(--loss)] border border-[var(--loss)]/40'
-                            : 'bg-[var(--neutral)]/20 text-[var(--neutral)] border border-[var(--neutral)]/40'
-                        : 'bg-[var(--input-bg)] text-[var(--text-muted)] border border-[var(--input-border)] hover:border-[var(--text-muted)]'
-                    }`}
+          {/* Sidebar Area */}
+          <div className="space-y-6">
+            <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-5">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--accent)] uppercase tracking-wider">
+                <Clock size={14} />
+                Meta Data
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-[var(--text-secondary)]">Result</label>
+                  <select
+                    name="result"
+                    value={formData.result}
+                    onChange={handleChange}
+                    className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[var(--accent)] transition-all"
                   >
-                    {result}
-                  </button>
-                ))}
+                    <option value="Win">Win</option>
+                    <option value="Loss">Loss</option>
+                    <option value="Break Even">Break Even</option>
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-[var(--text-secondary)]">Strategy</label>
+                  <select
+                    name="strategy"
+                    value={formData.strategy}
+                    onChange={handleChange}
+                    className={`w-full bg-[var(--input-bg)] border ${errors.strategy ? 'border-[var(--loss)]' : 'border-[var(--input-border)]'} rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[var(--accent)] transition-all`}
+                  >
+                    {strategies.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-[var(--text-secondary)]">Session</label>
+                  <select
+                    name="session"
+                    value={formData.session}
+                    onChange={handleChange}
+                    className="w-full bg-[var(--input-bg)] border border-[var(--border)] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[var(--accent)] transition-all"
+                  >
+                    {SESSIONS.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-[var(--text-secondary)]">Lot Size</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    name="lotSize"
+                    value={formData.lotSize}
+                    onChange={handleChange}
+                    className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-2.5 text-sm outline-none focus:border-[var(--accent)] transition-all"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Session & Strategy */}
-            <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)]">Session & Strategy</h3>
-
-              <div>
-                <label className="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Session</label>
-                <select
-                  value={form.session}
-                  onChange={(e) => updateField('session', e.target.value)}
-                  className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                >
-                  <option value="">Select session</option>
-                  {SESSIONS.map(s => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
+            <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-6 space-y-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--accent)] uppercase tracking-wider mb-2">
+                <Zap size={14} />
+                SMC Trace
               </div>
-
-              <div>
-                <label className="block text-xs font-medium text-[var(--text-muted)] mb-1.5">Strategy</label>
-                {!showNewStrategy ? (
-                  <div className="flex gap-2">
-                    <select
-                      value={form.strategy}
-                      onChange={(e) => updateField('strategy', e.target.value)}
-                      className="flex-1 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] transition-colors"
-                    >
-                      <option value="">Select strategy</option>
-                      {strategies.map(s => (
-                        <option key={s} value={s}>{s}</option>
-                      ))}
-                    </select>
-                    <button
-                      type="button"
-                      onClick={() => setShowNewStrategy(true)}
-                      className="px-3 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg text-[var(--text-muted)] hover:text-[var(--accent)] hover:border-[var(--accent)] transition-colors text-lg"
-                    >
-                      +
-                    </button>
-                  </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={newStrategy}
-                      onChange={(e) => setNewStrategy(e.target.value)}
-                      placeholder="New strategy name"
-                      className="flex-1 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] transition-colors placeholder:text-[var(--text-muted)]/40"
-                      autoFocus
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddStrategy())}
-                    />
-                    <button type="button" onClick={handleAddStrategy} className="px-3 bg-[var(--accent)] rounded-lg text-white text-sm font-medium">Add</button>
-                    <button type="button" onClick={() => setShowNewStrategy(false)} className="px-2 text-[var(--text-muted)]"><X size={16} /></button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* SMC Tags */}
-            <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">SMC Setup Tags</h3>
               <div className="flex flex-wrap gap-2">
                 {SMC_TAGS.map(tag => (
                   <button
                     key={tag}
                     type="button"
-                    onClick={() => toggleSMCTag(tag)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                      form.smcTags.includes(tag)
-                        ? 'bg-[var(--accent)]/20 text-[var(--accent)] border border-[var(--accent)]/40'
-                        : 'bg-[var(--input-bg)] text-[var(--text-muted)] border border-[var(--input-border)] hover:border-[var(--text-muted)]'
-                    }`}
+                    onClick={() => handleTagToggle(tag)}
+                    className={`transition-all ${formData.smcTags.includes(tag) ? 'opacity-100 scale-105' : 'opacity-60 scale-95'}`}
                   >
-                    {tag}
+                    <TagBadge tag={tag} />
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Screenshots */}
-            <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Screenshots</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {['screenshotBefore', 'screenshotAfter'].map(field => (
-                  <div key={field}>
-                    <label className="block text-xs font-medium text-[var(--text-muted)] mb-1.5">
-                      {field === 'screenshotBefore' ? 'Before Trade' : 'After Trade'}
-                    </label>
-                    {form[field] ? (
-                      <div className="relative group">
-                        <img src={form[field]} alt="" className="w-full h-24 object-cover rounded-lg" />
-                        <button
-                          type="button"
-                          onClick={() => updateField(field, null)}
-                          className="absolute top-1 right-1 w-6 h-6 bg-black/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <X size={12} className="text-white" />
-                        </button>
-                      </div>
-                    ) : (
-                      <label className="flex flex-col items-center justify-center h-24 border-2 border-dashed border-[var(--input-border)] rounded-lg cursor-pointer hover:border-[var(--accent)] transition-colors">
-                        <Camera size={20} className="text-[var(--text-muted)] mb-1" />
-                        <span className="text-xs text-[var(--text-muted)]">Upload</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) => handleScreenshot(field, e)}
-                        />
-                      </label>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Notes */}
-            <div className="bg-[var(--card)] rounded-xl border border-[var(--border)] p-5">
-              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-3">Notes</h3>
-              <textarea
-                value={form.notes}
-                onChange={(e) => updateField('notes', e.target.value)}
-                placeholder="e.g. Entered after liquidity sweep + FVG..."
-                rows={3}
-                className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-lg px-3 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)] transition-colors placeholder:text-[var(--text-muted)]/40 resize-none"
-              />
-            </div>
+            <button
+              type="submit"
+              disabled={isSuccess}
+              className={`w-full py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-xl shadow-[var(--accent)]/30 ${
+                isSuccess 
+                  ? 'bg-[var(--profit)] text-white' 
+                  : 'bg-[var(--accent)] text-white hover:bg-[var(--accent-hover)] hover:scale-[1.02] active:scale-95'
+              }`}
+            >
+              {isSuccess ? (
+                <>
+                  <Check size={20} />
+                  Trade Logged!
+                </>
+              ) : (
+                <>
+                  <Plus size={20} />
+                  Save Trade Setup
+                </>
+              )}
+            </button>
           </div>
         </div>
-
-        {/* Submit */}
-        <button
-          type="submit"
-          className="w-full py-3.5 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-[var(--accent)]/20 hover:shadow-[var(--accent)]/30 active:scale-[0.99]"
-        >
-          Save Trade
-        </button>
       </form>
+
+      {/* Inline Validation Alert */}
+      {Object.keys(errors).length > 0 && (
+        <div className="fixed bottom-24 right-8 bg-[var(--loss)] text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-slide-up z-[60]">
+          <AlertCircle size={20} />
+          <p className="text-xs font-bold uppercase tracking-wider">Please fill all required fields</p>
+        </div>
+      )}
     </div>
   );
 }

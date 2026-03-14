@@ -29,17 +29,17 @@ export default function Sidebar() {
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[240px] bg-[var(--sidebar-bg)] border-r border-[var(--border)] z-40">
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 h-16 border-b border-[var(--border)]">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent)] to-purple-500 flex items-center justify-center">
+        <div className="flex items-center gap-3 px-6 h-16 mb-4">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent)] to-purple-500 flex items-center justify-center shadow-lg shadow-[var(--accent)]/20">
             <TrendingUp size={18} className="text-white" />
           </div>
-          <span className="text-lg font-semibold text-[var(--text-primary)] tracking-tight">
+          <span className="text-lg font-bold text-[var(--text-primary)] tracking-tight">
             EdgeLedger
           </span>
         </div>
 
         {/* Nav Items */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
+        <nav className="flex-1 px-3 space-y-1">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -47,21 +47,24 @@ export default function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
+                className={`relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group ${
                   isActive
-                    ? 'bg-[var(--sidebar-active)] text-[var(--accent)] shadow-sm'
+                    ? 'bg-[var(--sidebar-active)] text-[var(--accent)]'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--card)]'
                 }`}
               >
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[var(--accent)] rounded-r-full shadow-[0_0_10px_var(--accent)]" />
+                )}
                 <Icon
-                  size={20}
-                  className={`transition-colors ${
+                  size={19}
+                  className={`transition-colors duration-300 ${
                     isActive ? 'text-[var(--accent)]' : 'text-[var(--text-muted)] group-hover:text-[var(--text-secondary)]'
                   }`}
                 />
                 {item.label}
-                {item.href === '/add-trade' && (
-                  <span className="ml-auto w-5 h-5 rounded-md bg-[var(--accent)] text-white flex items-center justify-center text-xs">
+                {item.href === '/add-trade' && !isActive && (
+                  <span className="ml-auto w-5 h-5 rounded-lg bg-[var(--accent)]/20 text-[var(--accent)] flex items-center justify-center text-[10px] font-bold">
                     +
                   </span>
                 )}

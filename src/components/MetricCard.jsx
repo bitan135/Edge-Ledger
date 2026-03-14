@@ -1,36 +1,51 @@
-export default function MetricCard({ label, value, subValue, trend, color = 'default', icon: Icon }) {
-  const colorClasses = {
-    default: 'text-[var(--text-primary)]',
-    profit: 'text-[var(--profit)]',
-    loss: 'text-[var(--loss)]',
-    accent: 'text-[var(--accent)]',
+'use client';
+
+export default function MetricCard({ 
+  label, 
+  value, 
+  subValue, 
+  color = 'accent', 
+  icon: Icon,
+  trend 
+}) {
+  const colorStyles = {
+    profit: 'text-[var(--profit)] bg-[var(--profit-bg)]',
+    loss: 'text-[var(--loss)] bg-[var(--loss-bg)]',
+    accent: 'text-[var(--accent)] bg-[var(--sidebar-active)]',
+    neutral: 'text-[var(--text-secondary)] bg-[var(--card-hover)]',
   };
 
+  const isPositive = trend?.startsWith('+');
+  const trendColor = isPositive ? 'text-[var(--profit)]' : 'text-[var(--loss)]';
+
   return (
-    <div className="bg-[var(--card)] rounded-xl p-5 border border-[var(--border)] hover:border-[var(--accent)]/30 transition-all duration-300 hover:shadow-lg hover:shadow-[var(--accent)]/5 group">
-      <div className="flex items-center justify-between mb-3">
-        <p className="text-sm text-[var(--text-muted)] font-medium">{label}</p>
-        {Icon && (
-          <div className="w-8 h-8 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center group-hover:bg-[var(--accent)]/20 transition-colors">
-            <Icon size={16} className="text-[var(--accent)]" />
-          </div>
+    <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] p-5 transition-all duration-300 hover:border-[var(--accent)]/50 group shadow-sm hover:shadow-xl hover:shadow-[var(--accent)]/5 animate-fade-in">
+      <div className="flex items-start justify-between mb-4">
+        <div className={`p-2.5 rounded-xl transition-colors duration-300 ${colorStyles[color] || colorStyles.accent}`}>
+          {Icon && <Icon size={20} />}
+        </div>
+        {trend && (
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 border border-white/5 ${trendColor}`}>
+            {trend}
+          </span>
         )}
       </div>
-      <p className={`text-2xl font-bold ${colorClasses[color]} tracking-tight`}>
-        {value}
-      </p>
-      {(subValue || trend) && (
-        <div className="flex items-center gap-2 mt-1.5">
-          {trend && (
-            <span className={`text-xs font-medium ${trend > 0 ? 'text-[var(--profit)]' : 'text-[var(--loss)]'}`}>
-              {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}%
-            </span>
-          )}
+      
+      <div>
+        <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-1">
+          {label}
+        </p>
+        <div className="flex items-baseline gap-2">
+          <h3 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
+            {value}
+          </h3>
           {subValue && (
-            <span className="text-xs text-[var(--text-muted)]">{subValue}</span>
+            <p className="text-[10px] text-[var(--text-muted)] font-medium">
+              {subValue}
+            </p>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
