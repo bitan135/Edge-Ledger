@@ -63,6 +63,8 @@ export async function POST(req) {
       price_currency: 'usd',
       payment_status: payment.payment_status,
       pay_address: payment.pay_address,
+      pay_amount: payment.pay_amount,
+      pay_currency: payment.pay_currency,
       plan_id: planId
     });
 

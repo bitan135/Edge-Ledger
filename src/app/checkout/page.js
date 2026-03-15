@@ -17,7 +17,7 @@ function CheckoutContent() {
 
     async function fetchPayment() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || ''}/api/payments/${paymentId}`);
+        const res = await fetch(`/api/payments/${paymentId}`);
         // For simplicity in this demo, we'll poll the payment/create route or a new info route
         // but here we'll just mock it or assume a specific status 
         // In a real app, create /api/payments/[id]/route.js
@@ -78,12 +78,12 @@ function CheckoutContent() {
                 <div className="bg-white p-4 rounded-3xl mb-4 shadow-xl">
                   {/* In a real app use a QR lib */}
                   <img 
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${payment.pay_address}`} 
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${payment?.pay_address || ''}`} 
                     alt="Payment QR" 
                     className="w-48 h-48"
                   />
                 </div>
-                <p className="text-sm font-bold text-[var(--text-primary)] mb-1">Send {payment.pay_amount} {payment.pay_currency.toUpperCase()}</p>
+                <p className="text-sm font-bold text-[var(--text-primary)] mb-1">Send {payment?.pay_amount} {payment?.pay_currency?.toUpperCase()}</p>
                 <p className="text-xs text-[var(--accent)] font-medium bg-[var(--accent)]/10 px-3 py-1 rounded-full">~ ${payment.price_amount} USD</p>
               </div>
 
