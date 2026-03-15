@@ -3,12 +3,18 @@ import { NextResponse } from 'next/server';
 import { nowPaymentsService } from '@/lib/payments/nowpayments';
 import { headers } from 'next/headers';
 
-// Initialize admin client with service role for critical updates
-// These variables must be set in Vercel/Environment
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
+export const dynamic = 'force-dynamic';
+
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  
+  if (!url || !key) {
+    throw new Error('Supabase admin credentials missing');
+  }
+  
+  return createClient(url, key);
+}
 
 export async function POST(req) {
   const headerStore = await headers();
@@ -35,6 +41,7 @@ export async function POST(req) {
 
   try {
     // 2. Update payment record status
+    const supabaseAdmin = getSupabaseAdmin();
     await supabaseAdmin
       .from('crypto_payments')
       .update({ 

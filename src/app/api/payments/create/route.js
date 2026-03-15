@@ -23,14 +23,26 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
     }
 
+    // Construct callback URL with fallback
+    let baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    
+    // If missing or on localhost, try to get from headers
+    if (!baseUrl || baseUrl.includes('localhost')) {
+      const host = req.headers.get('host');
+      const protocol = req.headers.get('x-forwarded-proto') || 'https';
+      baseUrl = `${protocol}://${host}`;
+    }
+
+    // Ensure no trailing slash
+    baseUrl = baseUrl.replace(/\/$/, '');
+
     const payload = {
       price_amount: prices[planId],
       price_currency: 'usd',
       pay_currency: 'btc', // You can make this dynamic later
-      ipn_callback_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/webhooks/nowpayments`,
+      ipn_callback_url: `${baseUrl}/api/webhooks/nowpayments`,
       order_id: `${user.id}_${Date.now()}`,
-      order_description: `EdgeLedger ${planId.replace('_', ' ').toUpperCase()} Plan`,
-      case: planId // Custom field to track plan in payload
+      order_description: `EdgeLedger ${planId.replace('_', ' ').toUpperCase()} Plan`
     };
 
     const payment = await nowPaymentsService.createPayment(payload);
