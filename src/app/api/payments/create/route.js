@@ -45,10 +45,13 @@ export async function POST(req) {
       order_description: `EdgeLedger ${planId.replace('_', ' ').toUpperCase()} Plan`
     };
 
+    console.log('Sending NOWPayments payload:', JSON.stringify(payload, null, 2));
     const payment = await nowPaymentsService.createPayment(payload);
+    console.log('NOWPayments Response:', JSON.stringify(payment, null, 2));
 
-    if (payment.error || !payment.payment_id) {
-       throw new Error(payment.message || 'NOWPayments API Error');
+    if (payment.status === false || payment.error || !payment.payment_id) {
+       const msg = payment.message || payment.error || 'NOWPayments API Error';
+       return NextResponse.json({ error: msg }, { status: 400 });
     }
 
     // Save payment record in DB
