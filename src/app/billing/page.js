@@ -61,11 +61,7 @@ export default function BillingPage() {
       });
       
       const payment = await res.json();
-      if (payment.invoice_url) {
-        // Option 1: Redirect to external invoice
-        // window.location.href = payment.invoice_url;
-        
-        // Option 2: Go to our custom checkout page
+      if (payment.payment_id) {
         router.push(`/checkout?id=${payment.payment_id}`);
       } else {
         throw new Error(payment.error || 'Failed to create payment');
