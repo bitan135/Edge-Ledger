@@ -124,7 +124,7 @@ export default function Analytics() {
                           <Sparkles size={12} /> Institutional Intelligence
                       </span>
                   </div>
-                  <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-none text-gradient mb-4">
+                  <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-tight text-gradient mb-4">
                       Execution Analytics
                   </h1>
                   <p className="text-[var(--text-secondary)] font-medium max-w-lg">Quantifying technical superiority and execution variance.</p>

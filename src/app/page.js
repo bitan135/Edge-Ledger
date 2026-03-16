@@ -68,7 +68,7 @@ export default function Dashboard() {
   if (isLoading) {
     return (
       <div className="px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
-        <div className="h-10 w-48 bg-white/5 rounded-2xl mb-8 animate-shimmer" />
+        <div className="h-10 w-48 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl mb-8 animate-shimmer" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricSkeleton />
           <MetricSkeleton />
@@ -76,8 +76,8 @@ export default function Dashboard() {
           <MetricSkeleton />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="h-[400px] glass-card border-white/5 rounded-[32px] animate-shimmer" />
-          <div className="h-[400px] glass-card border-white/5 rounded-[32px] animate-shimmer" />
+          <div className="h-[400px] glass-card border-[var(--glass-border)] rounded-[32px] animate-shimmer" />
+          <div className="h-[400px] glass-card border-[var(--glass-border)] rounded-[32px] animate-shimmer" />
         </div>
       </div>
     );
@@ -116,7 +116,7 @@ export default function Dashboard() {
                         <Sparkles size={12} /> Live Engine
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-6xl font-black text-[var(--foreground)] tracking-tighter leading-none mb-4 text-gradient">
+                <h1 className="text-4xl md:text-6xl font-black text-[var(--foreground)] tracking-tighter leading-tight mb-4 text-gradient">
                     {greeting}, Trader
                 </h1>
                 <p className="text-[var(--text-secondary)] font-medium max-w-lg">
@@ -180,7 +180,7 @@ export default function Dashboard() {
                                 <stop offset="95%" stopColor="var(--accent)" stopOpacity={0}/>
                             </linearGradient>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="white" strokeOpacity={0.05} vertical={false} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--glass-border)" strokeOpacity={1} vertical={false} />
                         <XAxis
                             dataKey="date"
                             tick={{ fill: 'var(--text-muted)', fontSize: 10, fontWeight: 800 }}
@@ -220,7 +220,7 @@ export default function Dashboard() {
                             tickLine={false} 
                             width={80} 
                         />
-                        <Tooltip cursor={{fill: 'white', fillOpacity: 0.03}} content={({active, payload}) => {
+                        <Tooltip cursor={{fill: 'var(--accent)', fillOpacity: 0.05}} content={({active, payload}) => {
                             if (!active || !payload?.length) return null;
                             return (
                                 <div className="glass-card p-3 rounded-xl border-[var(--glass-border)] shadow-premium">
@@ -235,7 +235,7 @@ export default function Dashboard() {
                             animationDuration={1500}
                         >
                             {sessionPerf.map((entry, index) => (
-                                <Area key={`cell-${index}`} fill={entry.winRate >= 50 ? 'var(--profit)' : 'var(--loss)'} />
+                                <Cell key={`cell-${index}`} fill={entry.winRate >= 50 ? 'var(--profit)' : 'var(--loss)'} />
                             ))}
                         </Bar>
                     </BarChart>
@@ -276,9 +276,9 @@ export default function Dashboard() {
                             <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-right leading-relaxed">Momentum</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white-[0.02]">
+                    <tbody className="divide-y divide-[var(--glass-border)]">
                         {strategyPerf.slice(0, 5).map((strat) => (
-                            <tr key={strat.name} className="group hover:bg-white/[0.02] transition-all duration-300">
+                            <tr key={strat.name} className="group hover:bg-[var(--glass-bg)] transition-all duration-300">
                                 <td className="py-6 pr-4">
                                     <div className="flex items-center gap-3">
                                         <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] opacity-40 group-hover:opacity-100 group-hover:scale-150 transition-all" />

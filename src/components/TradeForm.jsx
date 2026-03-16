@@ -131,7 +131,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
             </div>
             <div className="space-y-3">
               <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">Order Flow</label>
-              <div className="flex p-1.5 bg-white/5 rounded-2xl border border-white/10 h-[58px]">
+              <div className="flex p-1.5 bg-[var(--glass-bg)] rounded-2xl border border-[var(--glass-border)] h-[58px]">
                 {['Buy', 'Sell'].map(d => (
                   <button
                     key={d}
@@ -198,7 +198,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
         </div>
 
         {/* Section 3: Visual & Journal */}
-        <div className="glass-card rounded-[40px] border-white/5 p-8 shadow-premium">
+        <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-8 shadow-premium">
           <h3 className="text-[10px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-8 flex items-center gap-2">
             <Camera size={14} /> Intelligence Archive
           </h3>
@@ -219,12 +219,12 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                   <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">
                     {field === 'screenshotBefore' ? 'Setup Configuration' : 'Settlement View'}
                   </label>
-                  <label className="relative flex flex-col items-center justify-center h-48 border-2 border-dashed border-white/10 rounded-[40px] bg-white/5 cursor-pointer hover:border-[var(--accent)] hover:bg-white/[0.08] transition-all overflow-hidden group">
+                  <label className="relative flex flex-col items-center justify-center h-48 border-2 border-dashed border-[var(--glass-border)] rounded-[40px] bg-[var(--glass-bg)] cursor-pointer hover:border-[var(--accent)] hover:bg-[var(--card-hover)] transition-all overflow-hidden group">
                     {formData[field] ? (
                       <img src={formData[field]} alt="preview" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     ) : (
                       <div className="flex flex-col items-center gap-3">
-                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:rotate-6 transition-all">
+                        <div className="w-12 h-12 rounded-2xl bg-[var(--glass-bg)] flex items-center justify-center border border-[var(--glass-border)] group-hover:scale-110 group-hover:rotate-6 transition-all">
                           <Camera className="text-[var(--text-muted)]" size={20} />
                         </div>
                         <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Add Frame</span>
@@ -241,7 +241,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
 
       {/* Right Column: Meta & Meta-logic */}
       <div className="space-y-8">
-        <div className="glass-card rounded-[40px] border-white/5 p-8 shadow-premium sticky top-10">
+        <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-8 shadow-premium sticky top-10">
           <h3 className="text-[10px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-8 flex items-center gap-2">
             <Binary size={14} /> Sequence Data
           </h3>

@@ -12,7 +12,7 @@ export default function MetricCard({
     profit: 'text-[var(--profit)] bg-[var(--profit-bg)] border-[var(--profit)]/20',
     loss: 'text-[var(--loss)] bg-[var(--loss-bg)] border-[var(--loss)]/20',
     accent: 'text-[var(--accent)] bg-[var(--accent)]/5 border-[var(--accent)]/20',
-    neutral: 'text-[var(--text-secondary)] bg-white/5 border-white/10',
+    neutral: 'text-[var(--text-secondary)] bg-[var(--glass-bg)] border-[var(--glass-border)]',
   };
 
   const isPositive = trend?.startsWith('+');
@@ -35,7 +35,7 @@ export default function MetricCard({
           </div>
           {trend && (
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-inner`}>
-              <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isPositive ? 'bg-emerald-400' : 'bg-rose-400'}`} />
+              <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isPositive ? 'bg-emerald-500' : 'bg-rose-500'}`} />
               <span className={`text-[11px] font-black tracking-[0.2em] ${trendColor}`}>
                 {trend}
               </span>
@@ -48,7 +48,7 @@ export default function MetricCard({
             {label}
           </p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-4xl font-black text-[var(--foreground)] tracking-tighter leading-none">
+            <h3 className="text-4xl font-black text-[var(--foreground)] tracking-tighter leading-tight">
               {value}
             </h3>
             {subValue && (

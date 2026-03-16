@@ -128,10 +128,10 @@ export default function TradeLibrary() {
     return (
       <div className="px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
         <div className="flex items-center justify-between mb-12">
-          <div className="h-10 w-64 bg-white/5 rounded-2xl animate-shimmer" />
-          <div className="h-12 w-48 bg-white/5 rounded-2xl animate-shimmer" />
+          <div className="h-10 w-64 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl animate-shimmer" />
+          <div className="h-12 w-48 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl animate-shimmer" />
         </div>
-        <div className="glass-card rounded-[40px] border-white/5 overflow-hidden">
+        <div className="glass-card rounded-[40px] border-[var(--glass-border)] overflow-hidden">
           {[1,2,3,4,5].map(i => <TableRowSkeleton key={i} />)}
         </div>
       </div>
@@ -151,7 +151,7 @@ export default function TradeLibrary() {
                         <Library size={12} /> Execution Archives
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-none text-gradient">
+                <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-tight text-gradient">
                     The Vault
                 </h1>
                 <p className="text-[var(--text-secondary)] font-medium mt-3">Comprehensive records of your technical evolution on the charts.</p>
@@ -202,8 +202,8 @@ export default function TradeLibrary() {
         </div>
 
         {filteredTrades.length === 0 ? (
-            <div className="glass-card py-24 rounded-[48px] flex flex-col items-center justify-center text-center px-6">
-                <div className="w-20 h-20 bg-white/5 rounded-[32px] flex items-center justify-center mb-8 border border-white/10">
+            <div className="glass-card py-24 rounded-[48px] flex flex-col items-center justify-center text-center px-6 bg-[var(--glass-bg)]">
+                <div className="w-20 h-20 bg-[var(--glass-bg)] rounded-[32px] flex items-center justify-center mb-8 border border-[var(--glass-border)]">
                     <SearchX size={40} className="text-[var(--text-muted)]" />
                 </div>
                 <h3 className="text-xl font-black text-[var(--foreground)] mb-2 uppercase tracking-tighter">Zero Correlation</h3>
@@ -228,7 +228,7 @@ export default function TradeLibrary() {
                     <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-right leading-relaxed">Settlement</th>
                 </tr>
                 </thead>
-                <tbody className="divide-y divide-white-[0.02]">
+                <tbody className="divide-y divide-[var(--glass-border)]">
                 {filteredTrades.map((trade) => (
                     <tr 
                     key={trade.id} 
@@ -270,12 +270,12 @@ export default function TradeLibrary() {
             </table>
 
             {/* Mobile Cards */}
-            <div className="lg:hidden divide-y divide-white-[0.02]">
+            <div className="lg:hidden divide-y divide-[var(--glass-border)]">
                 {filteredTrades.map((trade) => (
                 <div 
                     key={trade.id} 
                     onClick={() => openTradeDetails(trade)}
-                    className="p-6 active:bg-white/5 transition-colors"
+                    className="p-6 active:bg-[var(--glass-bg)] transition-colors"
                 >
                     <div className="flex justify-between items-start mb-4">
                         <div className="flex items-center gap-4">
@@ -287,7 +287,7 @@ export default function TradeLibrary() {
                         </div>
                         <ResultBadge result={trade.result} />
                     </div>
-                    <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                    <div className="flex items-center justify-between pt-4 border-t border-[var(--glass-border)]">
                         <div className="flex items-center gap-4">
                             <SessionBadge session={trade.session} />
                             <span className="text-sm font-black text-[var(--foreground)]">{trade.rr}R</span>

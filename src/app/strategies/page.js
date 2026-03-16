@@ -82,14 +82,14 @@ export default function Strategies() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 px-2">
             <div>
                 <div className="flex items-center gap-2 mb-3">
-                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em]">
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
                         <Target size={12} /> Strategic Ops
                     </span>
-                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse leading-relaxed">
                         <Zap size={12} /> Multi-Edge Sync
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none text-gradient mb-4">
+                <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-tight text-gradient mb-4">
                     Execution Vault
                 </h1>
                 <p className="text-[var(--text-secondary)] font-medium">Archiving institutional-grade technical setups.</p>
@@ -115,7 +115,7 @@ export default function Strategies() {
         </div>
 
         {strategies.length === 0 ? (
-          <div className="glass-card py-20 rounded-[var(--card-radius)] border-white/5 text-center shadow-premium">
+          <div className="glass-card py-20 rounded-[var(--card-radius)] border-[var(--glass-border)] text-center shadow-premium bg-[var(--glass-bg)]">
             <EmptyState
               icon={Target}
               title="Zero Strategy Definitions"
@@ -146,22 +146,22 @@ export default function Strategies() {
                             </button>
                         </div>
 
-                        <h3 className="text-xl font-black text-white mb-2 truncate tracking-tight">{name}</h3>
+                        <h3 className="text-xl font-black text-[var(--foreground)] mb-2 truncate tracking-tight">{name}</h3>
                         <div className="flex items-center gap-2 mb-8">
                             <div className="w-1 h-1 rounded-full bg-[var(--accent)] animate-pulse" />
-                            <p className="text-[10px] text-[var(--text-secondary)] font-black uppercase tracking-[0.2em]">{insight.trades} Total Executions</p>
+                            <p className="text-[10px] text-[var(--text-secondary)] font-black uppercase tracking-[0.2em] leading-relaxed">{insight.trades} Total Executions</p>
                         </div>
 
                         <div className="space-y-6">
                             {/* Win Rate Module */}
-                            <div className="bg-white/5 rounded-3xl p-5 border border-white/5">
+                            <div className="bg-[var(--glass-bg)] rounded-3xl p-5 border border-[var(--glass-border)]">
                                 <div className="flex justify-between items-end mb-3 px-1">
                                     <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Execution Accuracy</span>
-                                    <span className={`text-sm font-black ${isWinning ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                    <span className={`text-sm font-black ${isWinning ? 'text-emerald-500' : 'text-rose-500'}`}>
                                         {insight.winRate}%
                                     </span>
                                 </div>
-                                <div className="h-2 bg-black/40 rounded-full overflow-hidden p-0.5">
+                                <div className="h-2 bg-[var(--background)] rounded-full overflow-hidden p-0.5 border border-[var(--glass-border)]">
                                     <div 
                                         className={`h-full rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(0,0,0,0.5)] ${isWinning ? 'bg-emerald-500 shadow-emerald-500/20' : 'bg-rose-500 shadow-rose-500/20'}`}
                                         style={{ width: `${insight.winRate}%` }}
@@ -177,14 +177,14 @@ export default function Strategies() {
                                 </div>
                                 <div className="bg-[var(--glass-bg)] rounded-3xl p-4 border border-[var(--glass-border)] group-hover:border-[var(--accent)]/20 transition-all">
                                     <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-1">Expected Yield</p>
-                                    <p className={`text-lg font-black font-mono ${(insight.trades * insight.avgRR * (insight.winRate / 100)) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                    <p className={`text-lg font-black font-mono ${(insight.trades * insight.avgRR * (insight.winRate / 100)) >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>
                                         +{(insight.trades * insight.avgRR * (insight.winRate / 100)).toFixed(1)}R
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-8 pt-8 border-t border-white-[0.03] flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                        <div className="mt-8 pt-8 border-t border-[var(--glass-border)] flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                              <div className="flex items-center gap-2">
                                 <ShieldCheck size={14} className="text-[var(--accent)]" />
                                 <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em]">Institutional Verified</span>
