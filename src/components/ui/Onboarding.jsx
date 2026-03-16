@@ -7,7 +7,7 @@ import { hasOnboarded, setOnboarded } from '@/lib/storage';
 
 const steps = [
   {
-    title: 'Welcome to EdgeLedger',
+    title: 'Welcome to SMC Journal',
     description: 'The modern trading journal designed for Smart Money traders. Let\'s get you started with 3 simple steps.',
     icon: TrendingUp,
     color: 'text-[#6366F1]',

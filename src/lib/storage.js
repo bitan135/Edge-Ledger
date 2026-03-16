@@ -3,7 +3,7 @@
 import { supabase, tradeService, strategyService } from './supabase';
 
 // ============================================================
-// EdgeLedger — Unified Data Layer (Supabase + Helpers)
+// SMC Journal — Unified Data Layer (Supabase + Helpers)
 // ============================================================
 
 // -------------- Constants --------------------
@@ -340,7 +340,7 @@ export async function migrateLocalToCloud() {
   
   return { 
     success: true, 
-    message: `Migration complete. Successfully moved ${migratedCount} trades and ${localStrategies.length} strategies to your cloud account.` 
+    message: `Migration complete. Successfully moved ${migratedCount} trades and ${localStrategies.length} strategies to your SMC Journal cloud account.` 
   };
 }
 

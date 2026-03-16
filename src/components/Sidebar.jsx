@@ -110,7 +110,7 @@ export default function Sidebar() {
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-black text-white tracking-tighter text-gradient leading-none">
-              EdgeLedger
+              SMC Journal
             </span>
             <span className="text-[8px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mt-1 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500">
               Collapse

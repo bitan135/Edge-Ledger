@@ -8,7 +8,7 @@ export default function ResultBadge({ result }) {
   };
 
   return (
-    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${styles[result] || styles['Break Even']}`}>
+    <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-sm ${styles[result] || styles['Break Even']}`}>
       {result}
     </span>
   );

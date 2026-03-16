@@ -42,7 +42,7 @@ export async function POST(req) {
       pay_currency: 'usdtarb', // USDT on Arbitrum (High speed, Low fee)
       ipn_callback_url: `${baseUrl}/api/webhooks/nowpayments`,
       order_id: `${user.id}_${Date.now()}`,
-      order_description: `EdgeLedger ${planId.replace('_', ' ').toUpperCase()} Plan`
+      order_description: `SMC Journal ${planId.replace('_', ' ').toUpperCase()} Plan`
     };
 
     console.log('--- Payment Request Started ---');

@@ -98,15 +98,15 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-10 max-w-[1400px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-[var(--accent)]/5 blur-[120px] rounded-full animate-float"></div>
       <div className="absolute bottom-[5%] left-[-10%] w-[35%] h-[35%] bg-indigo-500/5 blur-[100px] rounded-full delay-700 animate-float"></div>
       
-      <div className="relative z-10">
+      <div className="relative z-10 w-full">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-12">
-            <div>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
+            <div className="flex-1">
                 <div className="flex items-center gap-2 mb-3">
                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em]">
                         <Calendar size={12} className="text-[var(--accent)]" />

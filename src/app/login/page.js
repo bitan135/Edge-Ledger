@@ -69,7 +69,7 @@ export default function Login() {
           <div className="w-16 h-16 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center mb-6 border border-[var(--accent)]/20 shadow-xl">
             <TrendingUp className="text-[var(--accent)]" size={32} />
           </div>
-          <h1 className="text-3xl font-bold text-[var(--text-primary)] tracking-tight">Login to EdgeLedger</h1>
+          <h1 className="text-3xl font-bold text-[var(--text-primary)] tracking-tight">Login to SMC Journal</h1>
           <p className="text-[var(--text-muted)] mt-2">Welcome back to your trading cockpit</p>
         </div>
 
@@ -90,7 +90,7 @@ export default function Login() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="trader@edge.com"
+                placeholder="trader@smcjournal.com"
                 className="w-full pl-12 pr-4 py-3.5 bg-[var(--background)] border border-[var(--border)] rounded-2xl text-sm outline-none focus:border-[var(--accent)] transition-all"
               />
             </div>

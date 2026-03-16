@@ -8,7 +8,7 @@ export default function SessionBadge({ session }) {
   };
 
   return (
-    <span className={`px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${styles[session] || 'bg-[var(--card)] text-[var(--text-muted)] border-[var(--border)]'}`}>
+    <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border shadow-sm ${styles[session] || 'bg-[var(--card)] text-[var(--text-muted)] border-[var(--border)]'}`}>
       {session}
     </span>
   );

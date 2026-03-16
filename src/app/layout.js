@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: 'EdgeLedger — Smart Trading Journal',
+  title: 'SMC Journal — Smart Trading Journal',
   description: 'The modern trading journal designed for Smart Money traders to find their edge.',
 };
 

@@ -111,26 +111,23 @@ export default function Analytics() {
     );
 
     return (
-      <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-10 max-w-[1400px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
+      <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
         {/* Background Ambience */}
         <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] bg-[var(--accent)]/5 blur-[150px] rounded-full animate-float pointer-events-none"></div>
         <div className="absolute bottom-[10%] left-[-5%] w-[40%] h-[40%] bg-purple-500/5 blur-[120px] rounded-full delay-1000 animate-float pointer-events-none"></div>
   
-        <div className="relative z-10">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
-              <div>
-                  <div className="flex items-center gap-2 mb-3">
-                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em]">
-                          <Activity size={12} /> Performance Intelligence
-                      </span>
-                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
-                          <BarChart3 size={12} /> Institutional Grade
+        <div className="relative z-10 w-full">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 px-2">
+              <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-4">
+                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
+                          <Sparkles size={12} /> Institutional Intelligence
                       </span>
                   </div>
                   <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none text-gradient mb-4">
-                      Edge Analytics
+                      Execution Analytics
                   </h1>
-                  <p className="text-[var(--text-secondary)] font-medium">Quantifying technical superiority and execution variance.</p>
+                  <p className="text-[var(--text-secondary)] font-medium max-w-lg">Quantifying technical superiority and execution variance.</p>
               </div>
           </div>
   

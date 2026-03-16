@@ -139,12 +139,12 @@ export default function TradeLibrary() {
   }
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-8 py-10 max-w-[1400px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute top-[30%] left-[-10%] w-[50%] h-[50%] bg-[var(--accent)]/5 blur-[150px] rounded-full animate-float pointer-events-none"></div>
 
-      <div className="relative z-10">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
+      <div className="relative z-10 w-full">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
             <div>
                 <div className="flex items-center gap-2 mb-3">
                     <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em]">
