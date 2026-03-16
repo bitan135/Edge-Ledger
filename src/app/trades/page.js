@@ -314,7 +314,7 @@ export default function TradeLibrary() {
               <div className="animate-fade-in pt-4">
                 <button 
                   onClick={() => setIsEditMode(false)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-8 hover:text-white hover:border-white/20 transition-all group"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-8 hover:text-[var(--foreground)] hover:border-[var(--accent)] transition-all group"
                 >
                   <X size={14} /> Discard Changes
                 </button>
@@ -335,11 +335,11 @@ export default function TradeLibrary() {
                         { label: 'Window', value: <SessionBadge session={selectedTrade.session} />, icon: Clock },
                         { label: 'Volume', value: `${selectedTrade.pips} Pips`, icon: BarChart3 },
                     ].map((item, idx) => (
-                        <div key={idx} className="glass-card rounded-[32px] p-6 border-white/5 shadow-inner">
+                        <div key={idx} className="glass-card rounded-[32px] p-6 border-[var(--glass-border)] shadow-inner">
                             <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                                <item.icon size={12} className="text-[var(--accent)]" /> {item.label}
                             </p>
-                            <div className="text-xl font-black text-white">{item.value}</div>
+                            <div className="text-xl font-black text-[var(--foreground)]">{item.value}</div>
                         </div>
                     ))}
                 </div>
@@ -395,11 +395,11 @@ export default function TradeLibrary() {
                             <div key={i} className="space-y-4 group">
                                 <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] ml-2">{shot.label}</p>
                                 {shot.img ? (
-                                    <div className="rounded-[40px] overflow-hidden border border-white/10 shadow-premium transition-transform duration-700 group-hover:scale-[1.02]">
+                                    <div className="rounded-[40px] overflow-hidden border border-[var(--glass-border)] shadow-premium transition-transform duration-700 group-hover:scale-[1.02]">
                                         <img src={shot.img} className="w-full object-cover" alt={shot.label} />
                                     </div>
                                 ) : (
-                                    <div className="aspect-video glass-card border-white/5 rounded-[40px] flex items-center justify-center italic text-xs text-[var(--text-muted)] font-black uppercase tracking-widest opacity-20">NO CAPTURE</div>
+                                    <div className="aspect-video glass-card border-[var(--glass-border)] rounded-[40px] flex items-center justify-center italic text-xs text-[var(--text-muted)] font-black uppercase tracking-widest opacity-20">NO CAPTURE</div>
                                 )}
                             </div>
                         ))}
@@ -410,7 +410,7 @@ export default function TradeLibrary() {
                     <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-6">
                         <TrendingUp size={16} /> Journal Log
                     </h4>
-                    <p className="text-lg font-medium text-white/70 leading-relaxed italic whitespace-pre-wrap">
+                    <p className="text-lg font-medium text-[var(--text-secondary)] leading-relaxed italic whitespace-pre-wrap">
                         "{selectedTrade.notes || 'Institutional logic not logged.'}"
                     </p>
                 </div>

@@ -15,6 +15,7 @@ export const metadata = {
   description: 'The modern trading journal designed for Smart Money traders to find their edge.',
   icons: {
     icon: '/favicon.png',
+    apple: '/favicon.png',
   },
 };
 

@@ -38,7 +38,7 @@
   --foreground: #0F172A;
   --card: rgba(255, 255, 255, 0.9);
   --card-hover: rgba(255, 255, 255, 1);
-  --border: rgba(0, 0, 0, 0.05);
+  --border: rgba(0, 0, 0, 0.08);
   --border-glow: rgba(79, 70, 229, 0.1);
   --accent: #4F46E5;
   --accent-glow: rgba(79, 70, 229, 0.2);
@@ -46,8 +46,8 @@
   --text-primary: #0F172A;
   --text-secondary: #475569;
   --text-muted: #64748B;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.85); /* Slightly more opaque for better readability */
+  --glass-border: rgba(0, 0, 0, 0.12); /* More visible border */
   --sidebar-bg: #FFFFFF;
 }
 

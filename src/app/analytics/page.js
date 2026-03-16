@@ -93,7 +93,7 @@ export default function Analytics() {
     const isLocked = subscription?.plan_id === 'free';
 
     const LockOverlay = () => (
-        <div className="absolute inset-x-8 inset-y-12 z-50 flex flex-col items-center justify-center text-center p-8 glass-effect rounded-[32px] border border-white/10 backdrop-blur-md animate-fade-in group-hover:backdrop-blur-sm transition-all duration-700">
+        <div className="absolute inset-x-8 inset-y-12 z-50 flex flex-col items-center justify-center text-center p-8 glass-effect rounded-[32px] border border-[var(--glass-border)] backdrop-blur-md animate-fade-in group-hover:backdrop-blur-sm transition-all duration-700">
             <div className="w-16 h-16 rounded-full bg-[var(--accent)]/10 flex items-center justify-center mb-6 animate-pulse">
                 <ShieldCheck className="text-[var(--accent)]" size={32} />
             </div>
@@ -120,7 +120,7 @@ export default function Analytics() {
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 px-2">
               <div className="flex-1">
                   <div className="flex items-center gap-2 mb-4">
-                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
+                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
                           <Sparkles size={12} /> Institutional Intelligence
                       </span>
                   </div>
@@ -137,7 +137,7 @@ export default function Analytics() {
                   <ChartCard 
                       title="Equity Trajectory" 
                       subtitle="Cumulative R-multiple performance curve"
-                      className="lg:col-span-2 glass-card shadow-premium rounded-[40px] border-white/5 relative group"
+                      className="lg:col-span-2 glass-card shadow-premium rounded-[40px] border-[var(--glass-border)] relative group"
                   >
                       {isLocked && <LockOverlay />}
                       <div className={isLocked ? 'blur-md opacity-20 pointer-events-none h-full w-full' : 'h-full w-full'}>
@@ -162,7 +162,7 @@ export default function Analytics() {
                   <ChartCard 
                       title="Yield Distribution" 
                       subtitle="Frequencies of winning RR clusters"
-                      className="glass-card shadow-premium rounded-[40px] border-white/5 relative group"
+                      className="glass-card shadow-premium rounded-[40px] border-[var(--glass-border)] relative group"
                   >
                         {isLocked && <LockOverlay />}
                         <div className={isLocked ? 'blur-md opacity-20 pointer-events-none h-full w-full' : 'h-full w-full'}>
@@ -184,7 +184,7 @@ export default function Analytics() {
                   <ChartCard 
                       title="Session Performance" 
                       subtitle="Precision variance by market window"
-                      className="glass-card shadow-premium rounded-[40px] border-white/5 relative group"
+                      className="glass-card shadow-premium rounded-[40px] border-[var(--glass-border)] relative group"
                   >
                       {isLocked && <LockOverlay />}
                       <div className={isLocked ? 'blur-md opacity-20 pointer-events-none h-full w-full' : 'h-full w-full'}>
@@ -206,7 +206,7 @@ export default function Analytics() {
                   <ChartCard 
                       title="Setup Authority" 
                       subtitle="Win rates across defined strategies"
-                      className="glass-card shadow-premium rounded-[40px] border-white/5 relative group"
+                      className="glass-card shadow-premium rounded-[40px] border-[var(--glass-border)] relative group"
                   >
                       {isLocked && <LockOverlay />}
                       <div className={isLocked ? 'blur-md opacity-20 pointer-events-none h-full w-full' : 'h-full w-full'}>

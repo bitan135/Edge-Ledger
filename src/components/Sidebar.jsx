@@ -30,6 +30,7 @@ const navItems = [
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/strategies', label: 'Strategies', icon: Target },
   { href: '/billing', label: 'Billing', icon: Crown },
+  { href: '/donation', label: 'Donation', icon: Heart },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -167,31 +168,7 @@ export default function Sidebar() {
           })}
         </nav>
 
-        {/* Donation Section */}
-        <div className="px-4 mb-4">
-            <div className="p-4 rounded-[28px] glass-effect border-[var(--glass-border)] group relative overflow-hidden transition-all duration-500 hover:border-[var(--accent)]/30">
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <h4 className="text-[10px] font-black text-[var(--foreground)] uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
-                    <Heart size={12} className="text-[var(--accent)]" /> Donation
-                </h4>
-                <p className="text-[11px] font-medium text-[var(--text-secondary)] leading-tight mb-4">
-                    If you find this tool helpful, support the project.
-                </p>
-                <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-[9px] font-mono text-[var(--text-muted)] truncate">
-                        {donationAddr}
-                    </div>
-                    <button 
-                        onClick={copyDonation}
-                        className={`p-2 rounded-xl transition-all duration-300 ${
-                            copiedDonation ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[var(--accent)]/10 text-[var(--accent)] hover:bg-[var(--accent)]/20'
-                        }`}
-                    >
-                        {copiedDonation ? <Check size={14} /> : <Copy size={14} />}
-                    </button>
-                </div>
-            </div>
-        </div>
+
 
         {/* User Card */}
         <div className="p-4 mx-4 mb-4 rounded-[32px] glass-card border-[var(--glass-border)] relative overflow-hidden group">

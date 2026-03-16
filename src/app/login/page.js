@@ -128,14 +128,14 @@ export default function Login() {
         </form>
 
         <div className="mt-10 flex items-center gap-4">
-          <div className="flex-1 h-px bg-white/5" />
+          <div className="flex-1 h-px bg-[var(--border)]" />
           <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em]">or continue with</span>
-          <div className="flex-1 h-px bg-white/5" />
+          <div className="flex-1 h-px bg-[var(--border)]" />
         </div>
 
         <button
           onClick={handleGoogleLogin}
-          className="w-full mt-8 py-5 rounded-[24px] glass-effect border-white/5 text-white font-black text-sm hover:bg-white/5 transition-all flex items-center justify-center gap-3 tracking-[0.2em] uppercase"
+          className="w-full mt-8 py-5 rounded-[24px] glass-effect border-[var(--glass-border)] text-[var(--foreground)] font-black text-sm hover:bg-[var(--card-hover)] transition-all flex items-center justify-center gap-3 tracking-[0.2em] uppercase"
         >
           <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-5 h-5" alt="Google" />
           Google Sync
