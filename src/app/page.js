@@ -20,7 +20,7 @@ import {
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="glass-card shadow-premium p-4 rounded-2xl border-white/5 backdrop-blur-xl">
+    <div className="glass-card shadow-premium p-4 rounded-2xl border-[var(--glass-border)] backdrop-blur-xl">
       <p className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-[0.2em] mb-2">{label}</p>
       <div className="flex items-center gap-3">
         <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)] animate-pulse" />
@@ -108,11 +108,11 @@ export default function Dashboard() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
             <div className="flex-1">
                 <div className="flex items-center gap-2 mb-3">
-                     <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em]">
+                     <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em]">
                         <Calendar size={12} className="text-[var(--accent)]" />
                         {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                     </span>
-                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
                         <Sparkles size={12} /> Live Engine
                     </span>
                 </div>
@@ -252,7 +252,7 @@ export default function Dashboard() {
         </div>
 
         {/* Strategy Table */}
-        <div className="glass-card rounded-[40px] border-white/5 p-10 overflow-hidden shadow-premium mb-12 stagger-children">
+        <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-10 overflow-hidden shadow-premium mb-12 stagger-children">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                 <div>
                     <h3 className="text-lg font-black text-[var(--foreground)] uppercase tracking-[0.2em] mb-2 flex items-center gap-3">
@@ -260,7 +260,7 @@ export default function Dashboard() {
                     </h3>
                     <p className="text-sm text-[var(--text-muted)] font-medium">Quantifying your most consistent technical bread-and-butter setups.</p>
                 </div>
-                <div className="px-4 py-2 rounded-2xl glass-effect border-white/5 text-[10px] font-black text-[var(--accent)] uppercase tracking-widest">
+                <div className="px-4 py-2 rounded-2xl glass-effect border-[var(--glass-border)] text-[10px] font-black text-[var(--accent)] uppercase tracking-widest">
                     Top 5 Strategies
                 </div>
             </div>
@@ -268,7 +268,7 @@ export default function Dashboard() {
             <div className="overflow-x-auto">
                 <table className="w-full text-left">
                     <thead>
-                        <tr className="border-b border-white-[0.05]">
+                        <tr className="border-b border-[var(--glass-border)]">
                             <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em]">Strategy Configuration</th>
                             <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Volume</th>
                             <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Precision</th>
@@ -297,7 +297,7 @@ export default function Dashboard() {
                                 </td>
                                 <td className="py-6 text-center text-[15px] font-black text-[var(--foreground)]">{strat.avgRR}R</td>
                                 <td className="py-6 text-right">
-                                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-2xl glass-effect border-white/5 transition-transform group-hover:rotate-12">
+                                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-2xl glass-effect border-[var(--glass-border)] transition-transform group-hover:rotate-12">
                                         {strat.winRate >= 50 ? <ArrowUpRight size={18} className="text-[var(--profit)]" /> : <ArrowDownRight size={18} className="text-[var(--loss)]" />}
                                     </div>
                                 </td>

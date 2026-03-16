@@ -102,7 +102,7 @@ export default function Strategies() {
                         placeholder="New configuration (e.g. SMT Reversal)"
                         value={newStrategy}
                         onChange={(e) => setNewStrategy(e.target.value)}
-                        className="w-full lg:w-[320px] bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-white placeholder:text-white/20 outline-none focus:border-[var(--accent)] transition-all shadow-inner"
+                        className="w-full lg:w-[320px] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-bold text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] transition-all shadow-inner"
                     />
                 </div>
                 <button
@@ -133,9 +133,9 @@ export default function Strategies() {
                     {/* Hover Glow */}
                     <div className="absolute -inset-0.5 bg-gradient-to-r from-[var(--accent)] to-indigo-600 rounded-[40px] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700"></div>
                     
-                    <div className="relative glass-card rounded-[40px] border-white/5 p-8 transition-all duration-500 group-hover:-translate-y-2 shadow-premium bg-white-[0.01]">
+                    <div className="relative glass-card rounded-[40px] border-[var(--glass-border)] p-8 transition-all duration-500 group-hover:-translate-y-2 shadow-premium bg-[var(--glass-bg)]">
                         <div className="flex justify-between items-start mb-8">
-                            <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:scale-110 group-hover:rotate-6 transition-transform shadow-inner">
+                            <div className="w-14 h-14 rounded-2xl bg-[var(--glass-bg)] flex items-center justify-center border border-[var(--glass-border)] group-hover:scale-110 group-hover:rotate-6 transition-transform shadow-inner">
                                 <Zap className="text-[var(--accent)]" size={24} />
                             </div>
                             <button
@@ -171,11 +171,11 @@ export default function Strategies() {
 
                             {/* Secondary Data Hub */}
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-white/[0.03] rounded-3xl p-4 border border-white/5 group-hover:border-[var(--accent)]/20 transition-all">
+                                <div className="bg-[var(--glass-bg)] rounded-3xl p-4 border border-[var(--glass-border)] group-hover:border-[var(--accent)]/20 transition-all">
                                     <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-1">Median RR</p>
-                                    <p className="text-lg font-black text-white font-mono">{insight.avgRR}R</p>
+                                    <p className="text-lg font-black text-[var(--foreground)] font-mono">{insight.avgRR}R</p>
                                 </div>
-                                <div className="bg-white/[0.03] rounded-3xl p-4 border border-white/5 group-hover:border-[var(--accent)]/20 transition-all">
+                                <div className="bg-[var(--glass-bg)] rounded-3xl p-4 border border-[var(--glass-border)] group-hover:border-[var(--accent)]/20 transition-all">
                                     <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-1">Expected Yield</p>
                                     <p className={`text-lg font-black font-mono ${(insight.trades * insight.avgRR * (insight.winRate / 100)) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                                         +{(insight.trades * insight.avgRR * (insight.winRate / 100)).toFixed(1)}R
