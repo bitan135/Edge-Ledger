@@ -44,7 +44,7 @@ export default function MetricCard({
         </div>
         
         <div className="space-y-1">
-          <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] mb-4 leading-none group-hover:text-[var(--accent)] transition-colors">
+          <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] mb-4 leading-relaxed group-hover:text-[var(--accent)] transition-colors">
             {label}
           </p>
           <div className="flex items-baseline gap-2">

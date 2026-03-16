@@ -98,7 +98,7 @@ export default function Analytics() {
                 <ShieldCheck className="text-[var(--accent)]" size={32} />
             </div>
             <h3 className="text-xl font-black text-[var(--foreground)] mb-3 tracking-tighter">Pro Analytics Locked</h3>
-            <p className="text-[var(--text-secondary)] text-sm font-medium max-w-[240px] mb-8 leading-relaxed">
+            <p className="text-[var(--text-secondary)] text-sm font-medium max-w-[240px] mb-8 leading-[1.8]">
                 Upgrade to Pro to unlock advanced analytics and discover your trading edge.
             </p>
             <button 
@@ -120,7 +120,7 @@ export default function Analytics() {
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 px-2">
               <div className="flex-1">
                   <div className="flex items-center gap-2 mb-4">
-                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
+                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse leading-relaxed">
                           <Sparkles size={12} /> Institutional Intelligence
                       </span>
                   </div>

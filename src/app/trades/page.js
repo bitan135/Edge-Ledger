@@ -147,7 +147,7 @@ export default function TradeLibrary() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
             <div>
                 <div className="flex items-center gap-2 mb-3">
-                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em]">
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
                         <Library size={12} /> Execution Archives
                     </span>
                 </div>
@@ -220,12 +220,12 @@ export default function TradeLibrary() {
             <table className="w-full text-left hidden lg:table">
                 <thead>
                 <tr className="bg-[var(--glass-bg)] border-b border-[var(--glass-border)]">
-                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em]">Institutional Configuration</th>
-                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em]">Setup</th>
-                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Market Window</th>
-                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Yield</th>
-                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Outcome</th>
-                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-right">Settlement</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] leading-relaxed">Institutional Configuration</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] leading-relaxed">Setup</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center leading-relaxed">Market Window</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center leading-relaxed">Yield</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center leading-relaxed">Outcome</th>
+                    <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-right leading-relaxed">Settlement</th>
                 </tr>
                 </thead>
                 <tbody className="divide-y divide-white-[0.02]">

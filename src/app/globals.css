@@ -130,12 +130,14 @@
 
 .text-gradient {
   background: linear-gradient(135deg, var(--foreground) 0%, var(--text-muted) 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 [data-theme='dark'] .text-gradient {
   background: linear-gradient(135deg, #FFF 0%, rgba(255, 255, 255, 0.6) 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -147,8 +149,11 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
-  selection-background-color: var(--accent);
-  selection-color: white;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: white;
 }
 
 body {
@@ -156,6 +161,7 @@ body {
   color: var(--foreground);
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 

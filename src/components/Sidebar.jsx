@@ -122,10 +122,10 @@ export default function Sidebar() {
             <TrendingUp size={22} className="text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-black text-[var(--foreground)] tracking-tighter text-gradient leading-none">
+            <span className="text-xl font-black text-[var(--foreground)] tracking-tighter text-gradient leading-tight">
               SMC Journal
             </span>
-            <span className="text-[8px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mt-1 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500">
+            <span className="text-[8px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mt-1 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500 leading-relaxed">
               Collapse
             </span>
           </div>
@@ -198,7 +198,7 @@ export default function Sidebar() {
                             </p>
                             <div className="flex items-center gap-1.5 mt-0.5">
                                 <Sparkles size={10} className={`${subscription?.plan_id === 'free' ? 'text-[var(--text-muted)]' : 'text-[var(--accent)] animate-pulse'}`} />
-                                <span className={`text-[10px] font-black uppercase tracking-widest ${subscription?.plan_id === 'free' ? 'text-[var(--text-muted)]' : 'text-[var(--accent)]'}`}>
+                                <span className={`text-[10px] font-black uppercase tracking-widest leading-relaxed ${subscription?.plan_id === 'free' ? 'text-[var(--text-muted)]' : 'text-[var(--accent)]'}`}>
                                     {getPlanBadge()}
                                 </span>
                             </div>

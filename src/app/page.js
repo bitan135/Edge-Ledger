@@ -108,11 +108,11 @@ export default function Dashboard() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
             <div className="flex-1">
                 <div className="flex items-center gap-2 mb-3">
-                     <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em]">
+                      <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
                         <Calendar size={12} className="text-[var(--accent)]" />
                         {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                     </span>
-                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse leading-relaxed">
                         <Sparkles size={12} /> Live Engine
                     </span>
                 </div>
@@ -260,7 +260,7 @@ export default function Dashboard() {
                     </h3>
                     <p className="text-sm text-[var(--text-muted)] font-medium">Quantifying your most consistent technical bread-and-butter setups.</p>
                 </div>
-                <div className="px-4 py-2 rounded-2xl glass-effect border-[var(--glass-border)] text-[10px] font-black text-[var(--accent)] uppercase tracking-widest">
+                <div className="px-4 py-2 rounded-2xl glass-effect border-[var(--glass-border)] text-[10px] font-black text-[var(--accent)] uppercase tracking-widest leading-relaxed">
                     Top 5 Strategies
                 </div>
             </div>
@@ -269,11 +269,11 @@ export default function Dashboard() {
                 <table className="w-full text-left">
                     <thead>
                         <tr className="border-b border-[var(--glass-border)]">
-                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em]">Strategy Configuration</th>
-                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Volume</th>
-                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Precision</th>
-                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Yield</th>
-                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-right">Momentum</th>
+                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] leading-relaxed">Strategy Configuration</th>
+                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center leading-relaxed">Volume</th>
+                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center leading-relaxed">Precision</th>
+                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center leading-relaxed">Yield</th>
+                            <th className="pb-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-right leading-relaxed">Momentum</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white-[0.02]">

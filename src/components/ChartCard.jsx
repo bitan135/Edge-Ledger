@@ -8,9 +8,9 @@ export default function ChartCard({ title, subtitle, children, className = '', h
   return (
     <div className={`glass-card shadow-premium animate-fade-in ${className}`}>
       {(title || subtitle) && (
-        <div className="mb-8">
-          {title && <h3 className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-[0.2em] mb-3">{title}</h3>}
-          {subtitle && <p className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-[0.2em]">{subtitle}</p>}
+        <div className="mb-8 select-none">
+          {title && <h3 className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-[0.2em] mb-3 leading-relaxed">{title}</h3>}
+          {subtitle && <p className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-[0.2em] leading-relaxed">{subtitle}</p>}
         </div>
       )}
       <div className={height}>
