@@ -109,7 +109,7 @@ export default function Sidebar() {
             <TrendingUp size={22} className="text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-black text-white tracking-tighter text-gradient leading-none">
+            <span className="text-xl font-black text-[var(--foreground)] tracking-tighter text-gradient leading-none">
               SMC Journal
             </span>
             <span className="text-[8px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mt-1 opacity-0 group-hover/logo:opacity-100 transition-opacity duration-500">
@@ -131,8 +131,8 @@ export default function Sidebar() {
                 href={item.href}
                 className={`relative flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[13px] font-bold transition-all duration-500 group overflow-hidden ${
                   isActive
-                    ? 'bg-white/5 text-white shadow-premium border border-white/5'
-                    : 'text-[var(--text-secondary)] hover:text-white hover:bg-white-[0.02]'
+                    ? 'bg-[var(--glass-bg)] text-[var(--foreground)] shadow-premium border border-[var(--glass-border)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--glass-bg)]'
                 }`}
               >
                 {isActive && (
@@ -178,7 +178,7 @@ export default function Sidebar() {
                             )}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-[13px] font-black text-white truncate leading-tight">
+                            <p className="text-[13px] font-black text-[var(--foreground)] truncate leading-tight">
                                 {profile?.full_name || user.email.split('@')[0]}
                             </p>
                             <div className="flex items-center gap-1.5 mt-0.5">

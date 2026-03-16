@@ -113,7 +113,7 @@ export default function Settings() {
                         <Sparkles size={12} /> Console Configuration
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none text-gradient mb-4">
+                <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-none text-gradient mb-4">
                     Settings Console
                 </h1>
                 <p className="text-[var(--text-secondary)] font-medium max-w-lg">Fine-tune your institutional workspace and data protocols.</p>
@@ -122,9 +122,9 @@ export default function Settings() {
 
         <div className="grid grid-cols-1 gap-10">
           {/* Section 1: Execution Profile */}
-          <div className="glass-card rounded-[48px] border-white/5 overflow-hidden shadow-premium">
+          <div className="glass-card rounded-[48px] border-[var(--glass-border)] overflow-hidden shadow-premium">
             <div className="p-8 border-b border-white-[0.03] bg-white/[0.01]">
-                <h2 className="text-[11px] font-black text-white uppercase tracking-[0.4em] flex items-center gap-3">
+                <h2 className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-[0.4em] flex items-center gap-3">
                     <ShieldCheck className="text-[var(--accent)]" size={16} /> Technical Profile
                 </h2>
             </div>
@@ -139,7 +139,7 @@ export default function Settings() {
                     type="number"
                     value={settings.accountBalance}
                     onChange={(e) => setSettings({...settings, accountBalance: parseFloat(e.target.value)})}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-[var(--accent)] transition-all shadow-inner"
+                    className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-bold text-[var(--foreground)] outline-none focus:border-[var(--accent)] transition-all shadow-inner"
                   />
                 </div>
                 <div className="space-y-3">
@@ -151,7 +151,7 @@ export default function Settings() {
                     step="0.1"
                     value={settings.riskPercentage}
                     onChange={(e) => setSettings({...settings, riskPercentage: parseFloat(e.target.value)})}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-white outline-none focus:border-[var(--accent)] transition-all shadow-inner"
+                    className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-bold text-[var(--foreground)] outline-none focus:border-[var(--accent)] transition-all shadow-inner"
                   />
                 </div>
                 <div className="space-y-3">
@@ -161,7 +161,7 @@ export default function Settings() {
                   <select
                     value={settings.currency}
                     onChange={(e) => setSettings({...settings, currency: e.target.value})}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-black text-white outline-none focus:border-[var(--accent)] transition-all appearance-none cursor-pointer"
+                    className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] transition-all appearance-none cursor-pointer"
                   >
                     <option value="USD" className="bg-[#0A0A0B]">USD - UNITED STATES</option>
                     <option value="EUR" className="bg-[#0A0A0B]">EUR - EUROPEAN UNION</option>

@@ -22,7 +22,7 @@ function CustomTooltip({ active, payload, label, suffix = '' }) {
         <p className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-[0.2em] mb-2">{label}</p>
         <div className="flex items-center gap-3">
           <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)] animate-pulse" />
-          <p className="text-lg font-black text-white tracking-tighter">
+          <p className="text-lg font-black text-[var(--foreground)] tracking-tighter">
             {payload[0].value}{suffix}
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function Analytics() {
             <div className="w-16 h-16 rounded-full bg-[var(--accent)]/10 flex items-center justify-center mb-6 animate-pulse">
                 <ShieldCheck className="text-[var(--accent)]" size={32} />
             </div>
-            <h3 className="text-xl font-black text-white mb-3 tracking-tighter">Pro Analytics Locked</h3>
+            <h3 className="text-xl font-black text-[var(--foreground)] mb-3 tracking-tighter">Pro Analytics Locked</h3>
             <p className="text-[var(--text-secondary)] text-sm font-medium max-w-[240px] mb-8 leading-relaxed">
                 Upgrade to Pro to unlock advanced analytics and discover your trading edge.
             </p>
@@ -124,7 +124,7 @@ export default function Analytics() {
                           <Sparkles size={12} /> Institutional Intelligence
                       </span>
                   </div>
-                  <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none text-gradient mb-4">
+                  <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-none text-gradient mb-4">
                       Execution Analytics
                   </h1>
                   <p className="text-[var(--text-secondary)] font-medium max-w-lg">Quantifying technical superiority and execution variance.</p>

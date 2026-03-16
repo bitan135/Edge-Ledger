@@ -24,7 +24,7 @@ function CustomTooltip({ active, payload, label }) {
       <p className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-[0.2em] mb-2">{label}</p>
       <div className="flex items-center gap-3">
         <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)] animate-pulse" />
-        <p className="text-lg font-black text-white tracking-tighter">
+        <p className="text-lg font-black text-[var(--foreground)] tracking-tighter">
           {payload[0].value > 0 ? '+' : ''}{payload[0].value}R
         </p>
       </div>
@@ -116,7 +116,7 @@ export default function Dashboard() {
                         <Sparkles size={12} /> Live Engine
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-none mb-4 text-gradient">
+                <h1 className="text-4xl md:text-6xl font-black text-[var(--foreground)] tracking-tighter leading-none mb-4 text-gradient">
                     {greeting}, Trader
                 </h1>
                 <p className="text-[var(--text-secondary)] font-medium max-w-lg">
@@ -223,8 +223,8 @@ export default function Dashboard() {
                         <Tooltip cursor={{fill: 'white', fillOpacity: 0.03}} content={({active, payload}) => {
                             if (!active || !payload?.length) return null;
                             return (
-                                <div className="glass-card p-3 rounded-xl border-white/10 shadow-premium">
-                                    <p className="text-sm font-black text-white">{payload[0].value}% Precision</p>
+                                <div className="glass-card p-3 rounded-xl border-[var(--glass-border)] shadow-premium">
+                                    <p className="text-sm font-black text-[var(--foreground)]">{payload[0].value}% Precision</p>
                                 </div>
                             );
                         }} />
@@ -255,7 +255,7 @@ export default function Dashboard() {
         <div className="glass-card rounded-[40px] border-white/5 p-10 overflow-hidden shadow-premium mb-12 stagger-children">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                 <div>
-                    <h3 className="text-lg font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center gap-3">
+                    <h3 className="text-lg font-black text-[var(--foreground)] uppercase tracking-[0.2em] mb-2 flex items-center gap-3">
                         <Target className="text-[var(--accent)]" size={20} /> SMC Performance Ledger
                     </h3>
                     <p className="text-sm text-[var(--text-muted)] font-medium">Quantifying your most consistent technical bread-and-butter setups.</p>
@@ -282,7 +282,7 @@ export default function Dashboard() {
                                 <td className="py-6 pr-4">
                                     <div className="flex items-center gap-3">
                                         <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] opacity-40 group-hover:opacity-100 group-hover:scale-150 transition-all" />
-                                        <span className="font-black text-[15px] text-white/90 group-hover:text-white transition-colors">{strat.name}</span>
+                                        <span className="font-black text-[15px] text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors">{strat.name}</span>
                                     </div>
                                 </td>
                                 <td className="py-6 text-center text-sm font-extrabold text-[var(--text-muted)]">{strat.trades} Trades</td>
@@ -295,7 +295,7 @@ export default function Dashboard() {
                                         {strat.winRate}% WR
                                     </span>
                                 </td>
-                                <td className="py-6 text-center text-[15px] font-black text-white">{strat.avgRR}R</td>
+                                <td className="py-6 text-center text-[15px] font-black text-[var(--foreground)]">{strat.avgRR}R</td>
                                 <td className="py-6 text-right">
                                     <div className="inline-flex items-center justify-center w-10 h-10 rounded-2xl glass-effect border-white/5 transition-transform group-hover:rotate-12">
                                         {strat.winRate >= 50 ? <ArrowUpRight size={18} className="text-[var(--profit)]" /> : <ArrowDownRight size={18} className="text-[var(--loss)]" />}

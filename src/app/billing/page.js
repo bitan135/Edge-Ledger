@@ -121,9 +121,9 @@ export default function BillingPage() {
                   <div className={`w-16 h-16 rounded-[24px] bg-gradient-to-br ${plan.gradient} flex items-center justify-center mb-8 border border-white/5 transition-transform group-hover:rotate-6`}>
                     <Icon size={32} style={{ color: plan.color }} />
                   </div>
-                  <h3 className="text-2xl font-black text-white mb-2">{plan.name}</h3>
+                  <h3 className="text-2xl font-black text-[var(--foreground)] mb-2">{plan.name}</h3>
                   <div className="flex items-baseline gap-1 mb-4">
-                    <span className="text-5xl font-black text-white">{plan.price}</span>
+                    <span className="text-5xl font-black text-[var(--foreground)]">{plan.price}</span>
                     <span className="text-[var(--text-muted)] text-sm font-bold tracking-tight">
                         {plan.id === 'lifetime' ? 'FOREVER' : 'PER MONTH'}
                     </span>
@@ -134,10 +134,10 @@ export default function BillingPage() {
                 <div className="space-y-4 mb-12">
                   {plan.features.map((feature) => (
                     <div key={feature} className="flex items-center gap-4">
-                      <div className="w-6 h-6 rounded-full glass-effect flex items-center justify-center border-white/10">
-                        <Check size={14} className="text-white" />
+                      <div className="w-6 h-6 rounded-full glass-effect flex items-center justify-center border-[var(--glass-border)]">
+                        <Check size={14} className="text-[var(--accent)]" />
                       </div>
-                      <span className="text-sm font-medium text-[var(--text-secondary)] group-hover:text-white transition-colors">{feature}</span>
+                      <span className="text-sm font-medium text-[var(--text-secondary)] group-hover:text-[var(--foreground)] transition-colors">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -175,7 +175,7 @@ export default function BillingPage() {
                 <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-6">
                     <ShieldCheck size={24} className="text-[var(--accent)]" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">Institutional Security</h3>
+                <h3 className="text-2xl font-bold text-[var(--foreground)] mb-3">Institutional Security</h3>
                 <p className="text-[var(--text-secondary)] mb-10 max-w-xl font-medium">
                     Payments are handled exclusively through the **Arbitrum Network** for sub-cent fees and instant finality. 100% Secure & On-Chain.
                 </p>

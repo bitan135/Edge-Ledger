@@ -30,7 +30,7 @@ export default function MetricCard({
             {Icon && <Icon size={26} />}
           </div>
           {trend && (
-            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/5 bg-white/5 backdrop-blur-md shadow-inner`}>
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur-md shadow-inner`}>
               <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${isPositive ? 'bg-emerald-400' : 'bg-rose-400'}`} />
               <span className={`text-[11px] font-black tracking-[0.2em] ${trendColor}`}>
                 {trend}
@@ -44,7 +44,7 @@ export default function MetricCard({
             {label}
           </p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-4xl font-black text-white tracking-tighter leading-none">
+            <h3 className="text-4xl font-black text-[var(--foreground)] tracking-tighter leading-none">
               {value}
             </h3>
             {subValue && (

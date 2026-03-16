@@ -120,14 +120,14 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
               <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">Asset Pair</label>
-              <select
-                name="instrument"
-                value={formData.instrument}
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-black text-white outline-none focus:border-[var(--accent)] focus:bg-white/[0.08] transition-all appearance-none cursor-pointer"
-              >
-                {INSTRUMENTS.map(i => <option key={i} value={i} className="bg-[#0A0A0B]">{i}</option>)}
-              </select>
+                <select
+                  name="instrument"
+                  value={formData.instrument}
+                  onChange={handleChange}
+                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
+                >
+                  {INSTRUMENTS.map(i => <option key={i} value={i} className="bg-[var(--background)]">{i}</option>)}
+                </select>
             </div>
             <div className="space-y-3">
               <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">Order Flow</label>
@@ -172,7 +172,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                   value={formData[field.name]}
                   onChange={handleChange}
                   placeholder={field.placeholder}
-                  className={`w-full bg-white/5 border ${errors[field.name] ? 'border-rose-500/50' : 'border-white/10'} rounded-2xl px-6 py-4 text-sm font-bold text-white placeholder:text-white/10 outline-none focus:border-[var(--accent)] focus:bg-white/[0.08] transition-all`}
+                  className={`w-full bg-[var(--glass-bg)] border ${errors[field.name] ? 'border-rose-500/50' : 'border-[var(--glass-border)]'} rounded-2xl px-6 py-4 text-sm font-bold text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all`}
                 />
               </div>
             ))}
@@ -210,7 +210,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 value={formData.notes}
                 onChange={handleChange}
                 placeholder="Log your technical confluences and psychological state..."
-                className="w-full bg-white/5 border border-white/10 rounded-[24px] px-8 py-6 text-sm font-medium text-white placeholder:text-white/10 outline-none focus:border-[var(--accent)] focus:bg-white/[0.08] transition-all min-h-[160px] resize-none leading-relaxed"
+                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] px-8 py-6 text-sm font-medium text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all min-h-[160px] resize-none leading-relaxed"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

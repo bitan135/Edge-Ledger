@@ -151,7 +151,7 @@ export default function TradeLibrary() {
                         <Library size={12} /> Execution Archives
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none text-gradient">
+                <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-none text-gradient">
                     The Vault
                 </h1>
                 <p className="text-[var(--text-secondary)] font-medium mt-3">Comprehensive records of your technical evolution on the charts.</p>
@@ -165,7 +165,7 @@ export default function TradeLibrary() {
                         placeholder="Search configurations..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-14 pr-6 py-4 bg-white/5 border border-white/10 rounded-[24px] text-sm text-white placeholder:text-white/20 outline-none focus:border-[var(--accent)] focus:bg-white/[0.08] transition-all w-full lg:w-[320px] shadow-inner font-bold"
+                        className="pl-14 pr-6 py-4 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] text-sm text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all w-full lg:w-[320px] shadow-inner font-bold"
                     />
                 </div>
             </div>
@@ -183,10 +183,10 @@ export default function TradeLibrary() {
                     <select
                         value={f.value}
                         onChange={(e) => setFilters({...filters, [f.key]: e.target.value})}
-                        className="w-full bg-white/5 border border-white/5 rounded-2xl px-5 py-3 text-[11px] font-black text-[var(--text-secondary)] uppercase tracking-wider outline-none focus:border-[var(--accent)] hover:bg-white/[0.08] cursor-pointer transition-all appearance-none"
+                        className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-5 py-3 text-[11px] font-black text-[var(--text-secondary)] uppercase tracking-wider outline-none focus:border-[var(--accent)] hover:bg-[var(--card-hover)] cursor-pointer transition-all appearance-none"
                     >
-                        <option value="All">All {f.label}s</option>
-                        {f.options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                        <option value="All" className="bg-[var(--background)]">All {f.label}s</option>
+                        {f.options.map(opt => <option key={opt} value={opt} className="bg-[var(--background)]">{opt}</option>)}
                     </select>
                     <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity">
                         <ChevronRight size={14} className="rotate-90" />
@@ -210,7 +210,7 @@ export default function TradeLibrary() {
                 <p className="text-[var(--text-secondary)] font-medium max-w-xs mx-auto mb-10">No records match your current filter parameters.</p>
                 <button 
                     onClick={() => { setSearchTerm(''); setFilters({ instrument: 'All', strategy: 'All', session: 'All', result: 'All' }); }}
-                    className="px-8 py-3 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white hover:bg-white/10 transition-all"
+                    className="px-8 py-3 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl text-[10px] font-black uppercase tracking-widest text-[var(--foreground)] hover:bg-[var(--card-hover)] transition-all"
                 >
                     Reset Visual
                 </button>
@@ -239,7 +239,7 @@ export default function TradeLibrary() {
                         <div className="flex items-center gap-5">
                             <div className={`w-1.5 h-10 rounded-full shadow-lg ${trade.direction === 'Buy' ? 'bg-[var(--profit)] shadow-emerald-500/20' : 'bg-[var(--loss)] shadow-rose-500/20'}`} />
                             <div>
-                                <p className="text-lg font-black text-white tracking-tighter leading-none mb-1.5">{trade.instrument}</p>
+                                <p className="text-lg font-black text-[var(--foreground)] tracking-tighter leading-none mb-1.5">{trade.instrument}</p>
                                 <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${trade.direction === 'Buy' ? 'bg-[var(--profit-bg)] text-[var(--profit)]' : 'bg-[var(--loss-bg)] text-[var(--loss)]'}`}>
                                     <TrendingUp size={10} className={trade.direction === 'Sell' ? 'rotate-180' : ''} /> {trade.direction}
                                 </div>
@@ -253,7 +253,7 @@ export default function TradeLibrary() {
                         <SessionBadge session={trade.session} />
                     </td>
                     <td className="px-10 py-6 text-center">
-                        <div className="inline-flex items-center justify-center p-3 rounded-2xl glass-effect border-white/5 text-sm font-black text-white shadow-inner">
+                        <div className="inline-flex items-center justify-center p-3 rounded-2xl glass-effect border-[var(--glass-border)] text-sm font-black text-[var(--foreground)] shadow-inner">
                             {trade.rr}R
                         </div>
                     </td>
@@ -281,7 +281,7 @@ export default function TradeLibrary() {
                         <div className="flex items-center gap-4">
                             <div className={`w-1.5 h-12 rounded-full ${trade.direction === 'Buy' ? 'bg-[var(--profit)]' : 'bg-[var(--loss)]'}`} />
                             <div>
-                                <p className="text-lg font-black text-white tracking-tighter leading-none mb-1">{trade.instrument}</p>
+                                <p className="text-lg font-black text-[var(--foreground)] tracking-tighter leading-none mb-1">{trade.instrument}</p>
                                 <p className="text-[11px] font-black text-[var(--text-muted)] uppercase tracking-wider">{trade.strategy}</p>
                             </div>
                         </div>
@@ -290,7 +290,7 @@ export default function TradeLibrary() {
                     <div className="flex items-center justify-between pt-4 border-t border-white/5">
                         <div className="flex items-center gap-4">
                             <SessionBadge session={trade.session} />
-                            <span className="text-sm font-black text-white">{trade.rr}R</span>
+                            <span className="text-sm font-black text-[var(--foreground)]">{trade.rr}R</span>
                         </div>
                         <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">{new Date(trade.created_at || trade.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                     </div>
@@ -355,9 +355,9 @@ export default function TradeLibrary() {
                                 { label: 'Safety Buffer (SL)', val: selectedTrade.stop_loss || selectedTrade.stopLoss },
                                 { label: 'Liquidity Target (TP)', val: selectedTrade.take_profit || selectedTrade.takeProfit }
                             ].map((price, i) => (
-                                <div key={i} className="flex items-center justify-between p-5 rounded-3xl glasseffect glass-card border-white/5">
+                                <div key={i} className="flex items-center justify-between p-5 rounded-3xl glasseffect glass-card border-[var(--glass-border)]">
                                     <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-wider">{price.label}</span>
-                                    <span className="text-lg font-black text-white font-mono">{price.val}</span>
+                                    <span className="text-lg font-black text-[var(--foreground)] font-mono">{price.val}</span>
                                 </div>
                             ))}
                         </div>

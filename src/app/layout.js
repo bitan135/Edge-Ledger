@@ -13,6 +13,9 @@ const inter = Inter({
 export const metadata = {
   title: 'SMC Journal — Smart Trading Journal',
   description: 'The modern trading journal designed for Smart Money traders to find their edge.',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({ children }) {

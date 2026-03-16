@@ -11,7 +11,7 @@ export default function LayoutWrapper({ children }) {
       {/* Restore Sidebar Trigger (Only visible when collapsed) */}
       <button
         onClick={() => setSidebarCollapsed(false)}
-        className={`fixed left-6 top-6 z-50 p-3 rounded-2xl glass-card border-white/10 text-[var(--accent)] shadow-2xl transition-all duration-700 hover:scale-110 active:scale-95 ${
+        className={`fixed left-6 top-6 z-50 p-3 rounded-2xl glass-card border-[var(--glass-border)] text-[var(--accent)] shadow-2xl transition-all duration-700 hover:scale-110 active:scale-95 ${
           isSidebarCollapsed ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0 pointer-events-none'
         }`}
         title="Restore Sidebar"
