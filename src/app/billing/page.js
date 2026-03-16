@@ -88,7 +88,7 @@ export default function BillingPage() {
 
       <div className="max-w-6xl mx-auto relative z-10 w-full">
         <div className="text-center mb-24 animate-fade-in px-2">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-effect border-white/5 text-[var(--accent)] text-xs font-black uppercase tracking-[0.2em] mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-xs font-black uppercase tracking-[0.2em] mb-8">
             <Sparkles size={14} className="animate-pulse" /> Precision Pricing
           </div>
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-8 text-gradient">
@@ -108,7 +108,7 @@ export default function BillingPage() {
               <div 
                 key={plan.id}
                 className={`relative group rounded-[var(--card-radius)] p-10 transition-all duration-500 hover:scale-[1.02] shadow-premium glass-card ${
-                  plan.popular ? 'border-[var(--accent)]/30 scale-[1.05] z-20' : 'border-white/5 md:scale-95 hover:scale-100'
+                  plan.popular ? 'border-[var(--accent)]/30 scale-[1.05] z-20' : 'border-[var(--glass-border)] md:scale-95 hover:scale-100'
                 }`}
               >
                 {plan.popular && (
@@ -169,7 +169,7 @@ export default function BillingPage() {
           })}
         </div>
 
-        <div className="mt-24 p-12 rounded-[var(--card-radius)] glass-card border-white/5 text-center relative overflow-hidden group">
+        <div className="mt-24 p-12 rounded-[var(--card-radius)] glass-card border-[var(--glass-border)] text-center relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
             <div className="relative z-10 flex flex-col items-center">
                 <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-6">

@@ -163,7 +163,13 @@ function CheckoutContent() {
                   </div>
 
                   {/* Address Card */}
-                  <div className="glass-effect rounded-[24px] p-6 border-white/5 group hover:border-[var(--accent)]/30 transition-all">
+                  <div className="glass-effect rounded-[24px] p-6 border-[var(--glass-border)] group hover:border-[var(--accent)]/30 transition-all">
+                    <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 animate-pulse">
+                        <AlertCircle className="text-red-500 shrink-0" size={18} />
+                        <p className="text-[11px] font-black text-red-500 leading-tight">
+                            Send USDT via Arbitrum Network only. Sending funds on any other network may result in permanent loss.
+                        </p>
+                    </div>
                     <p className="text-[10px] font-black text-[var(--text-muted)] uppercase mb-3 tracking-[0.2em]">Execution Address</p>
                     <div className="flex items-center justify-between gap-4">
                       <p className="text-sm font-mono text-white/80 break-all leading-relaxed max-w-[70%]">{payment.pay_address}</p>

@@ -18,7 +18,7 @@ const COLORS = ['#6366F1', '#22C55E', '#EF4444', '#F59E0B', '#8B5CF6', '#EC4899'
 function CustomTooltip({ active, payload, label, suffix = '' }) {
     if (!active || !payload?.length) return null;
     return (
-      <div className="glass-card shadow-premium p-4 rounded-2xl border-white/5 backdrop-blur-xl">
+      <div className="glass-card shadow-premium p-4 rounded-2xl border-[var(--glass-border)] backdrop-blur-xl">
         <p className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-[0.2em] mb-2">{label}</p>
         <div className="flex items-center gap-3">
           <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)] animate-pulse" />
@@ -227,7 +227,7 @@ export default function Analytics() {
                   title="Instrument Dominance" 
                   subtitle="High-fidelity success rate per institutional asset"
                   height="h-[450px]"
-                  className="glass-card shadow-premium rounded-[40px] border-white/5 relative group"
+                  className="glass-card shadow-premium rounded-[40px] border-[var(--glass-border)] relative group"
               >
                   {isLocked && <LockOverlay />}
                   <div className={isLocked ? 'blur-md opacity-20 pointer-events-none h-full w-full' : 'h-full w-full'}>

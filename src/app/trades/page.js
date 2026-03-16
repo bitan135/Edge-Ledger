@@ -147,7 +147,7 @@ export default function TradeLibrary() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
             <div>
                 <div className="flex items-center gap-2 mb-3">
-                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em]">
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em]">
                         <Library size={12} /> Execution Archives
                     </span>
                 </div>
@@ -172,7 +172,7 @@ export default function TradeLibrary() {
         </div>
 
         {/* Filters Bar */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-12 glass-card p-4 rounded-[32px] border-white/5 shadow-premium">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-12 glass-card p-4 rounded-[32px] border-[var(--glass-border)] shadow-premium">
             {[
                 { value: filters.instrument, options: INSTRUMENTS, label: 'Pair', key: 'instrument' },
                 { value: filters.strategy, options: DEFAULT_STRATEGIES, label: 'Setup', key: 'strategy' },
@@ -195,7 +195,7 @@ export default function TradeLibrary() {
             ))}
             <button 
                 onClick={() => setFilters({ instrument: 'All', strategy: 'All', session: 'All', result: 'All' })}
-                className="flex items-center justify-center border border-dashed border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] hover:text-white hover:border-white/30 transition-all active:scale-95"
+                className="flex items-center justify-center border border-dashed border-[var(--border)] rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)] hover:text-[var(--foreground)] hover:border-[var(--glass-border)] transition-all active:scale-95"
             >
                 Clear Filters
             </button>
@@ -216,10 +216,10 @@ export default function TradeLibrary() {
                 </button>
             </div>
         ) : (
-            <div className="glass-card rounded-[48px] border-white/5 overflow-hidden shadow-premium stagger-children">
+            <div className="glass-card rounded-[48px] border-[var(--glass-border)] overflow-hidden shadow-premium stagger-children">
             <table className="w-full text-left hidden lg:table">
                 <thead>
-                <tr className="bg-white-[0.02] border-b border-white-[0.05]">
+                <tr className="bg-[var(--glass-bg)] border-b border-[var(--glass-border)]">
                     <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em]">Institutional Configuration</th>
                     <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em]">Setup</th>
                     <th className="px-10 py-6 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] text-center">Market Window</th>
@@ -233,7 +233,7 @@ export default function TradeLibrary() {
                     <tr 
                     key={trade.id} 
                     onClick={() => openTradeDetails(trade)}
-                    className="group hover:bg-white/[0.03] transition-all cursor-pointer"
+                    className="group hover:bg-[var(--glass-bg)] transition-all cursor-pointer"
                     >
                     <td className="px-10 py-6">
                         <div className="flex items-center gap-5">
@@ -261,7 +261,7 @@ export default function TradeLibrary() {
                         <ResultBadge result={trade.result} />
                     </td>
                     <td className="px-10 py-6 text-right">
-                        <p className="text-xs font-black text-white/80">{new Date(trade.created_at || trade.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                        <p className="text-xs font-black text-[var(--foreground)] opacity-80">{new Date(trade.created_at || trade.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
                         <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mt-1">{new Date(trade.created_at || trade.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p>
                     </td>
                     </tr>
@@ -367,7 +367,7 @@ export default function TradeLibrary() {
                         <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em]">
                             <SlidersHorizontal size={16} /> SMC Confluences
                         </h4>
-                        <div className="glass-card rounded-[40px] border-white/5 p-8 h-full min-h-[200px]">
+                        <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-8 h-full min-h-[200px]">
                             <div className="flex flex-wrap gap-3">
                                 {(selectedTrade.smc_tags || selectedTrade.smcTags)?.length > 0 ? (
                                 (selectedTrade.smc_tags || selectedTrade.smcTags).map(tag => (
@@ -406,7 +406,7 @@ export default function TradeLibrary() {
                     </div>
                 </div>
 
-                <div className="glass-card rounded-[40px] border-white/5 p-10">
+                <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-10">
                     <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-6">
                         <TrendingUp size={16} /> Journal Log
                     </h4>

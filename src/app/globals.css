@@ -34,10 +34,10 @@
 }
 
 [data-theme='light'] {
-  --background: #FDFDFF;
+  --background: #F8F9FA; /* Softer, neutral white */
   --foreground: #0F172A;
-  --card: rgba(255, 255, 255, 0.8);
-  --card-hover: rgba(255, 255, 255, 0.95);
+  --card: rgba(255, 255, 255, 0.9);
+  --card-hover: rgba(255, 255, 255, 1);
   --border: rgba(0, 0, 0, 0.05);
   --border-glow: rgba(79, 70, 229, 0.1);
   --accent: #4F46E5;
@@ -45,9 +45,10 @@
   --accent-hover: #4338CA;
   --text-primary: #0F172A;
   --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --glass-bg: rgba(0, 0, 0, 0.02);
-  --glass-border: rgba(0, 0, 0, 0.05);
+  --text-muted: #64748B;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --sidebar-bg: #FFFFFF;
 }
 
 @theme inline {
@@ -128,6 +129,12 @@
 }
 
 .text-gradient {
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme='dark'] .text-gradient {
   background: linear-gradient(135deg, #FFF 0%, rgba(255, 255, 255, 0.6) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

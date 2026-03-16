@@ -17,7 +17,10 @@ import {
   User as UserIcon,
   Crown,
   Loader2,
-  Sparkles
+  Sparkles,
+  Heart,
+  Copy,
+  Check
 } from 'lucide-react';
 
 const navItems = [
@@ -83,6 +86,15 @@ export default function Sidebar() {
     router.refresh();
   };
 
+  const [copiedDonation, setCopiedDonation] = useState(false);
+  const donationAddr = "0xA7608672cc489538F3b96c32f2f0eee74fe91205";
+
+  const copyDonation = () => {
+    navigator.clipboard.writeText(donationAddr);
+    setCopiedDonation(true);
+    setTimeout(() => setCopiedDonation(false), 2000);
+  };
+
   if (pathname === '/login' || pathname === '/signup' || pathname === '/auth/callback') return null;
 
   const getPlanBadge = () => {
@@ -94,7 +106,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className={`hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[260px] bg-[var(--sidebar-bg)] border-r border-white/5 z-40 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+      <aside className={`hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[260px] bg-[var(--sidebar-bg)] border-r border-[var(--border)] z-40 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
         isSidebarCollapsed ? '-translate-x-full opacity-0' : 'translate-x-0 opacity-100'
       }`}>
         {/* Decorative Ambience */}
@@ -141,7 +153,7 @@ export default function Sidebar() {
                 <Icon
                   size={20}
                   className={`transition-all duration-500 ${
-                    isActive ? 'scale-110 text-[var(--accent)]' : 'text-[var(--text-muted)] group-hover:text-white group-hover:scale-110'
+                    isActive ? 'scale-110 text-[var(--accent)]' : 'text-[var(--text-muted)] group-hover:text-[var(--foreground)] group-hover:scale-110'
                   }`}
                 />
                 <span className="relative z-10 tracking-tight">{item.label}</span>
@@ -155,8 +167,34 @@ export default function Sidebar() {
           })}
         </nav>
 
+        {/* Donation Section */}
+        <div className="px-4 mb-4">
+            <div className="p-4 rounded-[28px] glass-effect border-[var(--glass-border)] group relative overflow-hidden transition-all duration-500 hover:border-[var(--accent)]/30">
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <h4 className="text-[10px] font-black text-[var(--foreground)] uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
+                    <Heart size={12} className="text-[var(--accent)]" /> Donation
+                </h4>
+                <p className="text-[11px] font-medium text-[var(--text-secondary)] leading-tight mb-4">
+                    If you find this tool helpful, support the project.
+                </p>
+                <div className="flex items-center gap-2">
+                    <div className="flex-1 bg-[var(--background)] border border-[var(--border)] rounded-xl px-3 py-2 text-[9px] font-mono text-[var(--text-muted)] truncate">
+                        {donationAddr}
+                    </div>
+                    <button 
+                        onClick={copyDonation}
+                        className={`p-2 rounded-xl transition-all duration-300 ${
+                            copiedDonation ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[var(--accent)]/10 text-[var(--accent)] hover:bg-[var(--accent)]/20'
+                        }`}
+                    >
+                        {copiedDonation ? <Check size={14} /> : <Copy size={14} />}
+                    </button>
+                </div>
+            </div>
+        </div>
+
         {/* User Card */}
-        <div className="p-4 mx-4 mb-4 rounded-[32px] glass-card border-white/5 relative overflow-hidden group">
+        <div className="p-4 mx-4 mb-4 rounded-[32px] glass-card border-[var(--glass-border)] relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             
             {isLoading ? (
@@ -170,7 +208,7 @@ export default function Sidebar() {
             ) : user ? (
                 <div className="relative z-10 flex flex-col gap-4">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center border border-white/10 p-0.5 shadow-inner">
+                        <div className="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center border border-[var(--glass-border)] p-0.5 shadow-inner">
                             {profile?.avatar_url ? (
                                 <img src={profile.avatar_url} alt="avatar" className="w-full h-full rounded-full object-cover" />
                             ) : (
@@ -191,7 +229,7 @@ export default function Sidebar() {
                     </div>
                     <button 
                         onClick={handleLogout}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white/5 text-[var(--text-muted)] hover:text-[var(--loss)] hover:bg-[var(--loss)]/10 border border-transparent hover:border-[var(--loss)]/20 transition-all font-bold text-[10px] uppercase tracking-widest"
+                        className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[var(--glass-bg)] text-[var(--text-muted)] hover:text-[var(--loss)] hover:bg-[var(--loss)]/10 border border-[var(--glass-border)] hover:border-[var(--loss)]/20 transition-all font-bold text-[10px] uppercase tracking-widest"
                     >
                         <LogOut size={14} /> Log Out
                     </button>
