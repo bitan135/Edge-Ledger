@@ -14,8 +14,13 @@ export const metadata = {
   title: 'SMC Journal — Smart Trading Journal',
   description: 'The modern trading journal designed for Smart Money traders to find their edge.',
   icons: {
-    icon: '/favicon.png',
-    apple: '/favicon.png',
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/favicon.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/favicon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
 };
 

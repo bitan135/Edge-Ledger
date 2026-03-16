@@ -112,7 +112,7 @@ export default function BillingPage() {
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[var(--accent)] text-white text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2 rounded-full shadow-lg shadow-indigo-500/40 border border-white/20">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-[var(--accent)] text-white text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2 rounded-full shadow-lg shadow-indigo-500/40 border border-[var(--accent)]/50">
                     Elite Choice
                   </div>
                 )}
@@ -147,10 +147,10 @@ export default function BillingPage() {
                   onClick={() => handleUpgrade(plan.id)}
                   className={`w-full py-5 rounded-[24px] font-black text-sm tracking-[0.2em] uppercase transition-all flex items-center justify-center gap-3 active:scale-95 ${
                     isCurrent 
-                      ? 'bg-white/5 text-[var(--text-muted)] border border-white/5 cursor-default'
+                      ? 'bg-[var(--glass-bg)] text-[var(--text-muted)] border border-[var(--glass-border)] cursor-default'
                       : plan.popular
                         ? 'bg-[var(--accent)] text-white hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] border border-white/20'
-                        : 'bg-white text-black hover:bg-white/90 hover:shadow-xl'
+                        : 'bg-[var(--foreground)] text-[var(--background)] hover:opacity-90 hover:shadow-xl'
                   }`}
                 >
                   {loading === plan.id ? (
@@ -182,10 +182,10 @@ export default function BillingPage() {
                 <div className="flex items-center gap-6 saturate-50 hover:saturate-100 transition-all">
                     <img 
                         src="https://nowpayments.io/images/nowpayments-logo-white.svg" 
-                        className="h-7 grey-invert opacity-60"
+                        className="h-7 grey-invert opacity-60 dark:invert-0"
                         alt="NOWPayments" 
                     />
-                    <div className="w-px h-6 bg-white/10"></div>
+                    <div className="w-px h-6 bg-[var(--glass-border)]"></div>
                     <img 
                         src="https://cryptologos.cc/logos/arbitrum-arb-logo.svg?v=032" 
                         className="h-8 shadow-sm"

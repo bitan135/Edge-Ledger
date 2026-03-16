@@ -206,7 +206,7 @@ export default function TradeLibrary() {
                 <div className="w-20 h-20 bg-white/5 rounded-[32px] flex items-center justify-center mb-8 border border-white/10">
                     <SearchX size={40} className="text-[var(--text-muted)]" />
                 </div>
-                <h3 className="text-xl font-black text-white mb-2 uppercase tracking-tighter">Zero Correlation</h3>
+                <h3 className="text-xl font-black text-[var(--foreground)] mb-2 uppercase tracking-tighter">Zero Correlation</h3>
                 <p className="text-[var(--text-secondary)] font-medium max-w-xs mx-auto mb-10">No records match your current filter parameters.</p>
                 <button 
                     onClick={() => { setSearchTerm(''); setFilters({ instrument: 'All', strategy: 'All', session: 'All', result: 'All' }); }}
@@ -247,7 +247,7 @@ export default function TradeLibrary() {
                         </div>
                     </td>
                     <td className="px-10 py-6">
-                        <span className="text-sm font-black text-white/50 group-hover:text-[var(--accent)] transition-colors tracking-tight">{trade.strategy}</span>
+                        <span className="text-sm font-black text-[var(--text-muted)] group-hover:text-[var(--accent)] transition-colors tracking-tight">{trade.strategy}</span>
                     </td>
                     <td className="px-10 py-6 text-center">
                         <SessionBadge session={trade.session} />

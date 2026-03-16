@@ -2,10 +2,11 @@
 
 import { useTheme } from './ThemeProvider';
 import { PanelLeftOpen } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export default function LayoutWrapper({ children }) {
   const { isSidebarCollapsed, setSidebarCollapsed } = useTheme();
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  const pathname = usePathname();
   const isAuthPage = pathname === '/login' || pathname === '/signup' || pathname === '/auth/callback';
 
   return (

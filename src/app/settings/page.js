@@ -104,12 +104,12 @@ export default function Settings() {
             <div className="flex-1">
                 <button 
                   onClick={() => router.back()}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-effect border-white/5 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-8 hover:text-white hover:border-white/20 transition-all group w-fit"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-8 hover:text-[var(--foreground)] hover:border-[var(--accent)]/30 transition-all group w-fit"
                 >
                   <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Dashboard
                 </button>
                 <div className="flex items-center gap-2 mb-4">
-                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
                         <Sparkles size={12} /> Console Configuration
                     </span>
                 </div>
@@ -123,7 +123,7 @@ export default function Settings() {
         <div className="grid grid-cols-1 gap-10">
           {/* Section 1: Execution Profile */}
           <div className="glass-card rounded-[48px] border-[var(--glass-border)] overflow-hidden shadow-premium">
-            <div className="p-8 border-b border-white-[0.03] bg-white/[0.01]">
+            <div className="p-8 border-b border-[var(--glass-border)] bg-[var(--glass-bg)]">
                 <h2 className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-[0.4em] flex items-center gap-3">
                     <ShieldCheck className="text-[var(--accent)]" size={16} /> Technical Profile
                 </h2>
@@ -163,10 +163,10 @@ export default function Settings() {
                     onChange={(e) => setSettings({...settings, currency: e.target.value})}
                     className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] transition-all appearance-none cursor-pointer"
                   >
-                    <option value="USD" className="bg-[#0A0A0B]">USD - UNITED STATES</option>
-                    <option value="EUR" className="bg-[#0A0A0B]">EUR - EUROPEAN UNION</option>
-                    <option value="GBP" className="bg-[#0A0A0B]">GBP - BRITISH POUND</option>
-                    <option value="JPY" className="bg-[#0A0A0B]">JPY - JAPANESE YEN</option>
+                    <option value="USD" className="bg-[var(--background)]">USD - UNITED STATES</option>
+                    <option value="EUR" className="bg-[var(--background)]">EUR - EUROPEAN UNION</option>
+                    <option value="GBP" className="bg-[var(--background)]">GBP - BRITISH POUND</option>
+                    <option value="JPY" className="bg-[var(--background)]">JPY - JAPANESE YEN</option>
                   </select>
                 </div>
               </div>
@@ -210,13 +210,13 @@ export default function Settings() {
 
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div className="max-w-xl">
-                  <h3 className="text-lg font-black text-white mb-2 tracking-tight">Legacy Ingestion</h3>
+                  <h3 className="text-lg font-black text-[var(--foreground)] mb-2 tracking-tight">Legacy Ingestion</h3>
                   <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-medium">Bridge legacy local storage records into your encrypted cloud session. Ideal for migrating from Alpha versions.</p>
                 </div>
                 <button
                   onClick={handleMigrate}
                   disabled={isMigrating}
-                  className="px-8 py-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-[10px] font-black text-emerald-400 uppercase tracking-widest hover:bg-emerald-500/20 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
+                  className="px-8 py-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-[10px] font-black text-emerald-500 dark:text-emerald-400 uppercase tracking-widest hover:bg-emerald-500/20 transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
                 >
                   {isMigrating ? <RefreshCcw size={18} className="animate-spin" /> : <Upload size={18} />}
                   Migrate Sequences
@@ -226,9 +226,9 @@ export default function Settings() {
           </div>
 
           {/* Section 3: Interface Synthesis */}
-          <div className="glass-card rounded-[48px] border-white/5 overflow-hidden shadow-premium">
-            <div className="p-8 border-b border-white-[0.03] bg-white/[0.01]">
-                <h2 className="text-[11px] font-black text-white uppercase tracking-[0.4em] flex items-center gap-3">
+          <div className="glass-card rounded-[48px] border-[var(--glass-border)] overflow-hidden shadow-premium">
+            <div className="p-8 border-b border-[var(--glass-border)] bg-[var(--glass-bg)]">
+                <h2 className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-[0.4em] flex items-center gap-3">
                     <Monitor className="text-[var(--accent)]" size={16} /> Atmosphere Sync
                 </h2>
             </div>
@@ -245,14 +245,14 @@ export default function Settings() {
                     className={`flex flex-col items-center justify-center p-8 rounded-[32px] border transition-all gap-5 group relative overflow-hidden ${
                       theme === item.id 
                         ? 'bg-[var(--accent)]/10 border-[var(--accent)]/50 shadow-lg shadow-[var(--accent)]/10' 
-                        : 'bg-white/[0.02] border-white/5 hover:border-white/20'
+                        : 'bg-[var(--glass-bg)] border-[var(--glass-border)] hover:border-[var(--accent)]/30'
                     }`}
                   >
                     {theme === item.id && (
                         <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-transparent animate-pulse" />
                     )}
                     <item.icon size={28} className={`relative z-10 transition-transform duration-500 group-hover:scale-110 ${theme === item.id ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'}`} />
-                    <span className={`relative z-10 text-[10px] font-black uppercase tracking-[0.2em] ${theme === item.id ? 'text-white' : 'text-[var(--text-muted)]'}`}>
+                    <span className={`relative z-10 text-[10px] font-black uppercase tracking-[0.2em] ${theme === item.id ? 'text-[var(--foreground)]' : 'text-[var(--text-muted)]'}`}>
                       {item.label}
                     </span>
                   </button>

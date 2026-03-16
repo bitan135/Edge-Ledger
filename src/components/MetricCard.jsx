@@ -17,7 +17,11 @@ export default function MetricCard({
 
   const isPositive = trend?.startsWith('+');
   const isNegative = trend?.startsWith('-');
-  const trendColor = isPositive ? 'text-emerald-400' : isNegative ? 'text-rose-400' : 'text-[var(--text-muted)]';
+  const trendColor = isPositive 
+    ? 'text-emerald-500 dark:text-emerald-400' 
+    : isNegative 
+      ? 'text-rose-500 dark:text-rose-400' 
+      : 'text-[var(--text-muted)]';
 
   return (
     <div className="glass-card shadow-premium transition-all duration-500 hover:scale-[1.02] hover:border-[var(--accent)]/40 group relative overflow-hidden animate-fade-in">

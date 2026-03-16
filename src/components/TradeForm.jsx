@@ -113,7 +113,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
       {/* Left Column: Core Data */}
       <div className="lg:col-span-2 space-y-8">
         {/* Section 1: Instrument & Direction */}
-        <div className="glass-card rounded-[40px] border-white/5 p-8 shadow-premium stagger-children">
+        <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-8 shadow-premium stagger-children">
           <h3 className="text-[10px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-8 flex items-center gap-2">
             <Target size={14} /> Configuration
           </h3>
@@ -140,7 +140,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                     className={`flex-1 flex items-center justify-center gap-2 text-[11px] font-black rounded-xl transition-all ${
                       formData.direction === d 
                         ? d === 'Buy' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-rose-500 text-white shadow-lg shadow-rose-500/20'
-                        : 'text-[var(--text-muted)] hover:text-white'
+                        : 'text-[var(--text-muted)] hover:text-[var(--foreground)]'
                     }`}
                   >
                     <TrendingUp size={14} className={d === 'Sell' ? 'rotate-180' : ''} />
@@ -153,7 +153,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
         </div>
 
         {/* Section 2: Pricing Logic */}
-        <div className="glass-card rounded-[40px] border-white/5 p-8 shadow-premium stagger-children">
+        <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-8 shadow-premium stagger-children">
           <h3 className="text-[10px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-8 flex items-center gap-2">
             <Binary size={14} /> Execution Math
           </h3>
@@ -180,17 +180,17 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
           
           {/* Real-time Analytics Panel */}
           <div className="grid grid-cols-2 gap-6">
-            <div className="bg-white/[0.03] rounded-3xl p-6 border border-white/5 group hover:border-[var(--accent)]/30 transition-all">
+            <div className="bg-[var(--glass-bg)] rounded-3xl p-6 border border-[var(--glass-border)] group hover:border-[var(--accent)]/30 transition-all">
               <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2 flex items-center gap-2">
                 <BarChart3 size={12} className="text-[var(--accent)]" /> Performance Ratio
               </p>
-              <p className={`text-2xl font-black tracking-tighter ${autoCalc.rr >= 2 ? 'text-emerald-400' : 'text-white'}`}>
+              <p className={`text-2xl font-black tracking-tighter ${autoCalc.rr >= 2 ? 'text-emerald-500' : 'text-[var(--foreground)]'}`}>
                 {autoCalc.rr}R
               </p>
             </div>
-            <div className="bg-white/[0.03] rounded-3xl p-6 border border-white/5 group hover:border-[var(--accent)]/30 transition-all">
+            <div className="bg-[var(--glass-bg)] rounded-3xl p-6 border border-[var(--glass-border)] group hover:border-[var(--accent)]/30 transition-all">
               <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2">Total Displacement</p>
-              <p className="text-2xl font-black text-white tracking-tighter">
+              <p className="text-2xl font-black text-[var(--foreground)] tracking-tighter">
                 {autoCalc.pips} <span className="text-[10px] text-[var(--text-muted)] uppercase font-black ml-1">Pips</span>
               </p>
             </div>
@@ -253,11 +253,11 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 name="result"
                 value={formData.result}
                 onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-black text-white outline-none focus:border-[var(--accent)] focus:bg-white/[0.08] transition-all appearance-none cursor-pointer"
+                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
               >
-                <option value="Win" className="bg-[#0A0A0B]">PROFITABLE (WIN)</option>
-                <option value="Loss" className="bg-[#0A0A0B]">LIQUIDATED (LOSS)</option>
-                <option value="Break Even" className="bg-[#0A0A0B]">NEUTRAL (BE)</option>
+                <option value="Win" className="bg-[var(--background)]">PROFITABLE (WIN)</option>
+                <option value="Loss" className="bg-[var(--background)]">LIQUIDATED (LOSS)</option>
+                <option value="Break Even" className="bg-[var(--background)]">NEUTRAL (BE)</option>
               </select>
             </div>
             <div className="space-y-3">
@@ -266,9 +266,9 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 name="strategy"
                 value={formData.strategy}
                 onChange={handleChange}
-                className={`w-full bg-white/5 border ${errors.strategy ? 'border-rose-500/50' : 'border-white/10'} rounded-2xl px-6 py-4 text-sm font-black text-white outline-none focus:border-[var(--accent)] focus:bg-white/[0.08] transition-all appearance-none cursor-pointer`}
+                className={`w-full bg-[var(--glass-bg)] border ${errors.strategy ? 'border-rose-500/50' : 'border-[var(--glass-border)]'} rounded-2xl px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer`}
               >
-                {strategies.map(s => <option key={s} value={s} className="bg-[#0A0A0B]">{s.toUpperCase()}</option>)}
+                {strategies.map(s => <option key={s} value={s} className="bg-[var(--background)]">{s.toUpperCase()}</option>)}
               </select>
             </div>
             <div className="space-y-3 font-bold">
@@ -277,9 +277,9 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 name="session"
                 value={formData.session}
                 onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-black text-white outline-none focus:border-[var(--accent)] focus:bg-white/[0.08] transition-all appearance-none cursor-pointer"
+                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
               >
-                {SESSIONS.map(s => <option key={s} value={s} className="bg-[#0A0A0B]">{s.toUpperCase()} SESSION</option>)}
+                {SESSIONS.map(s => <option key={s} value={s} className="bg-[var(--background)]">{s.toUpperCase()} SESSION</option>)}
               </select>
             </div>
             <div className="space-y-3">
@@ -290,11 +290,11 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 name="lotSize"
                 value={formData.lotSize}
                 onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm font-black text-white outline-none focus:border-[var(--accent)] focus:bg-white/[0.08] transition-all"
+                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all"
               />
             </div>
 
-            <div className="pt-4 border-t border-white/5">
+            <div className="pt-4 border-t border-[var(--glass-border)]">
               <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em] mb-4">Confluence Trace</p>
               <div className="flex flex-wrap gap-2">
                 {SMC_TAGS.map(tag => (
@@ -305,7 +305,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                     className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                       formData.smcTags.includes(tag) 
                         ? 'bg-[var(--accent)] text-white shadow-lg shadow-[var(--accent)]/20 border border-[var(--accent)]/50' 
-                        : 'bg-white/5 text-[var(--text-muted)] border border-white/5 hover:border-white/20'
+                        : 'bg-[var(--glass-bg)] text-[var(--text-muted)] border border-[var(--glass-border)] hover:border-[var(--accent)]/30'
                     }`}
                   >
                     {tag}

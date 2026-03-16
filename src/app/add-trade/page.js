@@ -81,16 +81,16 @@ export default function AddTrade() {
             <div className="flex-1">
                 <button 
                   onClick={() => router.back()}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-effect border-white/5 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-8 hover:text-white hover:border-white/20 transition-all group w-fit"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-8 hover:text-[var(--foreground)] hover:border-[var(--accent)]/30 transition-all group w-fit"
                 >
                   <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back to Dashboard
                 </button>
                 <div className="flex items-center gap-2 mb-4">
-                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-white/5 text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
+                    <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">
                         <Sparkles size={12} /> Execution Profile
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none text-gradient mb-4">
+                <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-none text-gradient mb-4">
                     New Entry Log
                 </h1>
                 <p className="text-[var(--text-secondary)] font-medium max-w-lg">Log your institutional setups with millisecond precision.</p>
@@ -102,7 +102,7 @@ export default function AddTrade() {
             <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mb-6 border border-emerald-500/20">
               <Check className="text-emerald-500" size={40} />
             </div>
-            <h2 className="text-3xl font-black text-white tracking-tighter mb-2">Committed to Vault</h2>
+            <h2 className="text-3xl font-black text-[var(--foreground)] tracking-tighter mb-2">Committed to Vault</h2>
             <p className="text-[var(--text-secondary)] font-medium">Your sequence has been archived with institutional precision.</p>
           </div>
         ) : (

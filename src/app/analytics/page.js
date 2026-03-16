@@ -149,7 +149,7 @@ export default function Analytics() {
                                         <stop offset="95%" stopColor="var(--accent)" stopOpacity={0}/>
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" stroke="white" strokeOpacity={0.05} vertical={false} />
+                                <CartesianGrid strokeDasharray="3 3" stroke="currentColor" strokeOpacity={0.1} className="text-[var(--glass-border)]" vertical={false} />
                                 <XAxis dataKey="date" tick={{ fill: 'var(--text-muted)', fontSize: 10, fontWeight: 800 }} axisLine={false} tickLine={false} dy={10} />
                                 <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 10, fontWeight: 800 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}R`} />
                                 <Tooltip content={<CustomTooltip suffix="R" />} />
@@ -171,7 +171,7 @@ export default function Analytics() {
                                     <CartesianGrid strokeDasharray="3 3" stroke="white" strokeOpacity={0.05} vertical={false} />
                                     <XAxis dataKey="name" tick={{ fill: 'var(--text-muted)', fontSize: 10, fontWeight: 800 }} axisLine={false} tickLine={false} dy={10} />
                                     <YAxis tick={{ fill: 'var(--text-muted)', fontSize: 10, fontWeight: 800 }} axisLine={false} tickLine={false} />
-                                    <Tooltip cursor={{fill: 'white', fillOpacity: 0.03}} content={<CustomTooltip />} />
+                                    <Tooltip cursor={{fill: 'var(--accent)', fillOpacity: 0.05}} content={<CustomTooltip />} />
                                     <Bar dataKey="count" fill="var(--accent)" radius={[8, 8, 0, 0]} animationDuration={2000} />
                                 </BarChart>
                             </ResponsiveContainer>
@@ -214,7 +214,7 @@ export default function Analytics() {
                             <BarChart data={strategyData} layout="vertical" margin={{ top: 10, right: 30, left: 30, bottom: 10 }}>
                                 <XAxis type="number" hide domain={[0, 100]} />
                                 <YAxis dataKey="name" type="category" tick={{ fill: 'var(--text-secondary)', fontSize: 11, fontWeight: 900 }} axisLine={false} tickLine={false} width={120} />
-                                <Tooltip cursor={{fill: 'white', fillOpacity: 0.03}} content={<CustomTooltip suffix="%" />} />
+                                <Tooltip cursor={{fill: 'var(--accent)', fillOpacity: 0.05}} content={<CustomTooltip suffix="%" />} />
                                 <Bar dataKey="winRate" fill="var(--accent)" radius={[0, 12, 12, 0]} barSize={20} animationDuration={1800} />
                             </BarChart>
                         </ResponsiveContainer>

@@ -176,10 +176,10 @@ export default function Sidebar() {
             
             {isLoading ? (
                 <div className="flex items-center gap-3 animate-pulse">
-                    <div className="w-10 h-10 rounded-full bg-white/5" />
+                    <div className="w-10 h-10 rounded-full bg-[var(--glass-border)]" />
                     <div className="space-y-2 flex-1">
-                        <div className="h-2 bg-white/5 rounded w-20" />
-                        <div className="h-2 bg-white/5 rounded w-12" />
+                        <div className="h-2 bg-[var(--glass-border)] rounded w-20" />
+                        <div className="h-2 bg-[var(--glass-border)] rounded w-12" />
                     </div>
                 </div>
             ) : user ? (
@@ -216,7 +216,7 @@ export default function Sidebar() {
       </aside>
 
       {/* Mobile Bottom Nav */}
-      <nav className="lg:hidden fixed bottom-4 left-4 right-4 h-20 glass-card rounded-[32px] border-white/10 z-50 flex items-center justify-around px-2 shadow-2xl">
+      <nav className="lg:hidden fixed bottom-4 left-4 right-4 h-20 glass-card rounded-[32px] border-[var(--glass-border)] z-50 flex items-center justify-around px-2 shadow-2xl">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;

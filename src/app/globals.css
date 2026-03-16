@@ -44,8 +44,8 @@
   --accent-glow: rgba(79, 70, 229, 0.2);
   --accent-hover: #4338CA;
   --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
+  --text-secondary: #334155;
+  --text-muted: #475569;
   --glass-bg: rgba(255, 255, 255, 0.85); /* Slightly more opaque for better readability */
   --glass-border: rgba(0, 0, 0, 0.12); /* More visible border */
   --sidebar-bg: #FFFFFF;
