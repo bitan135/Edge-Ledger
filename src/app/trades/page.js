@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  Search, Filter, SlidersHorizontal, Library, Eye, Trash2, Calendar, TrendingUp, Target, Clock, Image as ImageIcon, ArrowLeft, ArrowUpRight, SearchX, Sparkles, ChevronRight, BarChart3
+  Search, SlidersHorizontal, Library, Trash2, TrendingUp, Target, Clock, Image as ImageIcon, SearchX, Sparkles, ChevronRight, BarChart3, Edit3, X
 } from 'lucide-react';
-import { getTrades, deleteTrade, INSTRUMENTS, SESSIONS, DEFAULT_STRATEGIES } from '@/lib/storage';
+import { getTrades, deleteTrade, updateTrade, getStrategies, INSTRUMENTS, SESSIONS, DEFAULT_STRATEGIES } from '@/lib/storage';
 import ResultBadge from '@/components/ui/ResultBadge';
 import SessionBadge from '@/components/ui/SessionBadge';
-import TagBadge from '@/components/ui/TagBadge';
 import ModalContainer from '@/components/ui/ModalContainer';
-import EmptyState from '@/components/ui/EmptyState';
 import { TableRowSkeleton } from '@/components/ui/SkeletonLoader';
+import TradeForm from '@/components/TradeForm';
 
 export default function TradeLibrary() {
   const [trades, setTrades] = useState([]);
@@ -24,19 +23,26 @@ export default function TradeLibrary() {
   });
   const [selectedTrade, setSelectedTrade] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [strategies, setStrategies] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const loadTrades = async () => {
+    const loadData = async () => {
       try {
-        const fetchedTrades = await getTrades();
+        const [fetchedTrades, fetchedStrategies] = await Promise.all([
+          getTrades(),
+          getStrategies()
+        ]);
         setTrades(fetchedTrades.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt)));
+        setStrategies(fetchedStrategies);
       } catch (err) {
         console.error('Library load failed:', err);
       } finally {
         setIsLoading(false);
       }
     };
-    loadTrades();
+    loadData();
   }, []);
 
   const handleDelete = async (id, e) => {
@@ -49,6 +55,52 @@ export default function TradeLibrary() {
       } catch (err) {
         alert('Failed to delete trade');
       }
+    }
+  };
+
+  const handleUpdate = async (formData) => {
+    setIsSubmitting(true);
+    try {
+      let screenshotBeforeUrl = formData.screenshotBefore;
+      let screenshotAfterUrl = formData.screenshotAfter;
+
+      const { tradeService } = await import('@/lib/supabase');
+
+      // Upload new screenshots if files are provided
+      if (formData.screenshotBeforeFile) {
+        screenshotBeforeUrl = await tradeService.uploadScreenshot(formData.screenshotBeforeFile, 'before');
+      }
+      if (formData.screenshotAfterFile) {
+        screenshotAfterUrl = await tradeService.uploadScreenshot(formData.screenshotAfterFile, 'after');
+      }
+
+      const updates = {
+        instrument: formData.instrument,
+        direction: formData.direction,
+        entry_price: parseFloat(formData.entryPrice),
+        stop_loss: parseFloat(formData.stopLoss),
+        take_profit: parseFloat(formData.takeProfit),
+        lot_size: parseFloat(formData.lotSize),
+        result: formData.result,
+        rr: formData.rr,
+        pips: formData.pips,
+        session: formData.session,
+        strategy: formData.strategy,
+        smc_tags: formData.smcTags,
+        notes: formData.notes,
+        screenshot_before: screenshotBeforeUrl,
+        screenshot_after: screenshotAfterUrl,
+      };
+
+      const updated = await updateTrade(selectedTrade.id, updates);
+      
+      setTrades(prev => prev.map(t => t.id === selectedTrade.id ? updated : t));
+      setSelectedTrade(updated);
+      setIsEditMode(false);
+    } catch (err) {
+      console.error('Update error:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -68,6 +120,7 @@ export default function TradeLibrary() {
 
   const openTradeDetails = (trade) => {
     setSelectedTrade(trade);
+    setIsEditMode(false);
     setIsModalOpen(true);
   };
 
@@ -248,108 +301,136 @@ export default function TradeLibrary() {
         )}
       </div>
 
-      {/* Trade Detail Modal Overhaul */}
+      {/* Trade Detail / Edit Modal */}
       <ModalContainer 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)}
-        title={`${selectedTrade?.instrument} Institutional Analysis`}
+        onClose={() => { setIsModalOpen(false); setIsEditMode(false); }}
+        title={isEditMode ? `Modify ${selectedTrade?.instrument} Sequence` : `${selectedTrade?.instrument} Institutional Analysis`}
         className="max-w-4xl"
       >
         {selectedTrade && (
           <div className="space-y-12 animate-fade-in p-2">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {[
-                    { label: 'Outcome', value: <ResultBadge result={selectedTrade.result} />, icon: Target },
-                    { label: 'Efficiency', value: `${selectedTrade.rr}R`, icon: TrendingUp },
-                    { label: 'Window', value: <SessionBadge session={selectedTrade.session} />, icon: Clock },
-                    { label: 'Volume', value: `${selectedTrade.pips} Pips`, icon: BarChart3 },
-                ].map((item, idx) => (
-                    <div key={idx} className="glass-card rounded-[32px] p-6 border-white/5 shadow-inner">
-                        <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                           <item.icon size={12} className="text-[var(--accent)]" /> {item.label}
-                        </p>
-                        <div className="text-xl font-black text-white">{item.value}</div>
-                    </div>
-                ))}
-            </div>
+            {isEditMode ? (
+              <div className="animate-fade-in pt-4">
+                <button 
+                  onClick={() => setIsEditMode(false)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-8 hover:text-white hover:border-white/20 transition-all group"
+                >
+                  <X size={14} /> Discard Changes
+                </button>
+                <TradeForm 
+                  initialData={selectedTrade}
+                  strategies={strategies}
+                  onSubmit={handleUpdate}
+                  isSubmitting={isSubmitting}
+                  submitLabel="Refine Execution"
+                />
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {[
+                        { label: 'Outcome', value: <ResultBadge result={selectedTrade.result} />, icon: Target },
+                        { label: 'Efficiency', value: `${selectedTrade.rr}R`, icon: TrendingUp },
+                        { label: 'Window', value: <SessionBadge session={selectedTrade.session} />, icon: Clock },
+                        { label: 'Volume', value: `${selectedTrade.pips} Pips`, icon: BarChart3 },
+                    ].map((item, idx) => (
+                        <div key={idx} className="glass-card rounded-[32px] p-6 border-white/5 shadow-inner">
+                            <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                               <item.icon size={12} className="text-[var(--accent)]" /> {item.label}
+                            </p>
+                            <div className="text-xl font-black text-white">{item.value}</div>
+                        </div>
+                    ))}
+                </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div className="space-y-6">
+                        <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em]">
+                            <Sparkles size={16} className="animate-pulse" /> Precision Entry Data
+                        </h4>
+                        <div className="grid grid-cols-1 gap-4">
+                            {[
+                                { label: 'Institutional Entry', val: selectedTrade.entry_price || selectedTrade.entryPrice },
+                                { label: 'Safety Buffer (SL)', val: selectedTrade.stop_loss || selectedTrade.stopLoss },
+                                { label: 'Liquidity Target (TP)', val: selectedTrade.take_profit || selectedTrade.takeProfit }
+                            ].map((price, i) => (
+                                <div key={i} className="flex items-center justify-between p-5 rounded-3xl glasseffect glass-card border-white/5">
+                                    <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-wider">{price.label}</span>
+                                    <span className="text-lg font-black text-white font-mono">{price.val}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="space-y-6">
+                        <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em]">
+                            <SlidersHorizontal size={16} /> SMC Confluences
+                        </h4>
+                        <div className="glass-card rounded-[40px] border-white/5 p-8 h-full min-h-[200px]">
+                            <div className="flex flex-wrap gap-3">
+                                {(selectedTrade.smc_tags || selectedTrade.smcTags)?.length > 0 ? (
+                                (selectedTrade.smc_tags || selectedTrade.smcTags).map(tag => (
+                                    <div key={tag} className="px-5 py-2.5 rounded-2xl bg-[var(--accent)]/5 text-[var(--accent)] text-xs font-black uppercase tracking-widest border border-[var(--accent)]/10">
+                                        {tag}
+                                    </div>
+                                ))
+                                ) : (
+                                <p className="text-sm text-[var(--text-muted)] font-medium italic opacity-50">Zero SMC traces recorded.</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="space-y-6">
                     <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em]">
-                        <Sparkles size={16} className="animate-pulse" /> Precision Entry Data
+                        <ImageIcon size={16} /> High-Fidelity Capture
                     </h4>
-                    <div className="grid grid-cols-1 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {[
-                            { label: 'Institutional Entry', val: selectedTrade.entry_price || selectedTrade.entryPrice },
-                            { label: 'Safety Buffer (SL)', val: selectedTrade.stop_loss || selectedTrade.stopLoss },
-                            { label: 'Liquidity Target (TP)', val: selectedTrade.take_profit || selectedTrade.takeProfit }
-                        ].map((price, i) => (
-                            <div key={i} className="flex items-center justify-between p-5 rounded-3xl glasseffect glass-card border-white/5">
-                                <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-wider">{price.label}</span>
-                                <span className="text-lg font-black text-white font-mono">{price.val}</span>
+                            { label: 'Origin Configuration', img: selectedTrade.screenshot_before || selectedTrade.screenshotBefore },
+                            { label: 'Final Settlement', img: selectedTrade.screenshot_after || selectedTrade.screenshotAfter }
+                        ].map((shot, i) => (
+                            <div key={i} className="space-y-4 group">
+                                <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] ml-2">{shot.label}</p>
+                                {shot.img ? (
+                                    <div className="rounded-[40px] overflow-hidden border border-white/10 shadow-premium transition-transform duration-700 group-hover:scale-[1.02]">
+                                        <img src={shot.img} className="w-full object-cover" alt={shot.label} />
+                                    </div>
+                                ) : (
+                                    <div className="aspect-video glass-card border-white/5 rounded-[40px] flex items-center justify-center italic text-xs text-[var(--text-muted)] font-black uppercase tracking-widest opacity-20">NO CAPTURE</div>
+                                )}
                             </div>
                         ))}
                     </div>
                 </div>
 
-                <div className="space-y-6">
-                    <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em]">
-                        <SlidersHorizontal size={16} /> SMC Confluences
+                <div className="glass-card rounded-[40px] border-white/5 p-10">
+                    <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-6">
+                        <TrendingUp size={16} /> Journal Log
                     </h4>
-                    <div className="glass-card rounded-[40px] border-white/5 p-8 h-full min-h-[200px]">
-                        <div className="flex flex-wrap gap-3">
-                            {(selectedTrade.smc_tags || selectedTrade.smcTags)?.length > 0 ? (
-                            (selectedTrade.smc_tags || selectedTrade.smcTags).map(tag => (
-                                <div key={tag} className="px-5 py-2.5 rounded-2xl bg-[var(--accent)]/5 text-[var(--accent)] text-xs font-black uppercase tracking-widest border border-[var(--accent)]/10">
-                                    {tag}
-                                </div>
-                            ))
-                            ) : (
-                            <p className="text-sm text-[var(--text-muted)] font-medium italic opacity-50">Zero SMC traces recorded.</p>
-                            )}
-                        </div>
-                    </div>
+                    <p className="text-lg font-medium text-white/70 leading-relaxed italic whitespace-pre-wrap">
+                        "{selectedTrade.notes || 'Institutional logic not logged.'}"
+                    </p>
                 </div>
-            </div>
 
-            <div className="space-y-6">
-                <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em]">
-                    <ImageIcon size={16} /> High-Fidelity Capture
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {[
-                        { label: 'Origin Configuration', img: selectedTrade.screenshot_before || selectedTrade.screenshotBefore },
-                        { label: 'Final Settlement', img: selectedTrade.screenshot_after || selectedTrade.screenshotAfter }
-                    ].map((shot, i) => (
-                        <div key={i} className="space-y-4 group">
-                            <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.3em] ml-2">{shot.label}</p>
-                            {shot.img ? (
-                                <div className="rounded-[40px] overflow-hidden border border-white/10 shadow-premium transition-transform duration-700 group-hover:scale-[1.02]">
-                                    <img src={shot.img} className="w-full object-cover" alt={shot.label} />
-                                </div>
-                            ) : (
-                                <div className="aspect-video glass-card border-white/5 rounded-[40px] flex items-center justify-center italic text-xs text-[var(--text-muted)] font-black uppercase tracking-widest opacity-20">NO CAPTURE</div>
-                            )}
-                        </div>
-                    ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <button
+                        onClick={() => setIsEditMode(true)}
+                        className="w-full py-6 rounded-[32px] bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 text-[11px] font-black uppercase tracking-[0.3em] hover:bg-[var(--accent)]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-4"
+                    >
+                        <Edit3 size={20} /> Modify Sequence
+                    </button>
+                    <button
+                        onClick={(e) => handleDelete(selectedTrade.id, e)}
+                        className="w-full py-6 rounded-[32px] bg-rose-500/5 text-rose-500 border border-rose-500/10 text-[11px] font-black uppercase tracking-[0.3em] hover:bg-rose-500/10 hover:border-rose-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-4"
+                    >
+                        <Trash2 size={20} /> Purge This Sequence
+                    </button>
                 </div>
-            </div>
-
-            <div className="glass-card rounded-[40px] border-white/5 p-10">
-                <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-6">
-                    <TrendingUp size={16} /> Journal Log
-                </h4>
-                <p className="text-lg font-medium text-white/70 leading-relaxed italic whitespace-pre-wrap">
-                    "{selectedTrade.notes || 'Institutional logic not logged.'}"
-                </p>
-            </div>
-
-            <button
-                onClick={(e) => handleDelete(selectedTrade.id, e)}
-                className="w-full py-6 rounded-[32px] bg-rose-500/5 text-rose-500 border border-rose-500/10 text-[11px] font-black uppercase tracking-[0.3em] hover:bg-rose-500/10 hover:border-rose-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-4"
-            >
-                <Trash2 size={20} /> Purge This Sequence
-            </button>
+              </>
+            )}
           </div>
         )}
       </ModalContainer>

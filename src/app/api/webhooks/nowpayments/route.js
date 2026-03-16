@@ -64,10 +64,12 @@ export async function POST(req) {
       let periodEnd = null;
 
       // Calculate period end for monthly plan
-      if (planId === 'pro_monthly') {
+      if (planId === 'pro') {
         const date = new Date();
         date.setDate(date.getDate() + 30);
         periodEnd = date.toISOString();
+      } else if (planId === 'lifetime') {
+        periodEnd = null; // Infinite access
       }
 
       // Atomically upgrade subscription

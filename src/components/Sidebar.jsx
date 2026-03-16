@@ -36,6 +36,7 @@ export default function Sidebar() {
   const { isSidebarCollapsed, setSidebarCollapsed } = useTheme();
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [subscription, setSubscription] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -44,26 +45,36 @@ export default function Sidebar() {
       setUser(authUser);
       
       if (authUser) {
+        // Fetch profile
         const { data: profileData } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', authUser.id)
           .single();
         setProfile(profileData);
+
+        // Fetch subscription
+        const { data: subData } = await supabase
+          .from('subscriptions')
+          .select('*')
+          .eq('user_id', authUser.id)
+          .single();
+        setSubscription(subData || { plan_id: 'free' });
       }
       setIsLoading(false);
     };
 
     getUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (!session) {
         setProfile(null);
+        setSubscription(null);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => authSub.unsubscribe();
   }, []);
 
   const handleLogout = async () => {
@@ -73,6 +84,13 @@ export default function Sidebar() {
   };
 
   if (pathname === '/login' || pathname === '/signup' || pathname === '/auth/callback') return null;
+
+  const getPlanBadge = () => {
+    const plan = subscription?.plan_id || 'free';
+    if (plan === 'lifetime') return 'Lifetime Elite';
+    if (plan === 'pro') return 'Pro Trader';
+    return 'Free Plan';
+  };
 
   return (
     <>
@@ -164,8 +182,10 @@ export default function Sidebar() {
                                 {profile?.full_name || user.email.split('@')[0]}
                             </p>
                             <div className="flex items-center gap-1.5 mt-0.5">
-                                <Sparkles size={10} className="text-[var(--accent)] animate-pulse" />
-                                <span className="text-[10px] font-black text-[var(--accent)] uppercase tracking-widest">Pro Elite</span>
+                                <Sparkles size={10} className={`${subscription?.plan_id === 'free' ? 'text-[var(--text-muted)]' : 'text-[var(--accent)] animate-pulse'}`} />
+                                <span className={`text-[10px] font-black uppercase tracking-widest ${subscription?.plan_id === 'free' ? 'text-[var(--text-muted)]' : 'text-[var(--accent)]'}`}>
+                                    {getPlanBadge()}
+                                </span>
                             </div>
                         </div>
                     </div>

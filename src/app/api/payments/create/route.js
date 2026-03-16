@@ -15,7 +15,7 @@ export async function POST(req) {
     
     // Define prices
     const prices = {
-      'pro_monthly': 10,
+      'pro': 10,
       'lifetime': 50
     };
 

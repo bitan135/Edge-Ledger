@@ -233,11 +233,8 @@ export async function getTrades() {
 }
 
 export async function canAddTrade() {
-  const subscription = await profileService.getSubscription();
-  if (subscription.plan_id !== 'free') return true;
-  
-  const trades = await getTrades();
-  return trades.length < 30;
+  // Core journal is now completely free and unlimited for all users
+  return true;
 }
 
 export async function saveTrade(trade) {
