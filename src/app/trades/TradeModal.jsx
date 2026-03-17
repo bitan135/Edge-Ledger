@@ -68,16 +68,32 @@ export default function TradeModal({
                         <Sparkles size={16} className="animate-pulse" /> Precision Entry Data
                     </h4>
                     <div className="grid grid-cols-1 gap-4">
-                        {[
-                            { label: 'Institutional Entry', val: selectedTrade.entry_price || selectedTrade.entryPrice },
-                            { label: 'Safety Buffer (SL)', val: selectedTrade.stop_loss || selectedTrade.stopLoss },
-                            { label: 'Liquidity Target (TP)', val: selectedTrade.take_profit || selectedTrade.takeProfit }
-                        ].map((price, i) => (
+                        {(() => {
+                            const instr = (selectedTrade.instrument || '').toUpperCase();
+                            const formatPrice = (val) => {
+                                if (val == null || val === '') return '—';
+                                const num = parseFloat(val);
+                                if (isNaN(num)) return val;
+                                // Preserve full precision based on instrument
+                                if (instr.includes('JPY')) return num.toFixed(3);
+                                if (instr.includes('XAU') || instr.includes('GOLD')) return num.toFixed(2);
+                                if (instr.includes('XAG') || instr.includes('SILVER')) return num.toFixed(3);
+                                if (instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX') || instr.includes('GER') || instr.includes('UK100')) return num.toFixed(1);
+                                if (instr.includes('BTC') || instr.includes('ETH') || instr.includes('SOL') || instr.includes('BNB')) return num.toFixed(2);
+                                // Standard forex (EURUSD, GBPUSD, etc.) — 5 decimals
+                                return num.toFixed(5);
+                            };
+                            return [
+                                { label: 'Institutional Entry', val: formatPrice(selectedTrade.entry_price || selectedTrade.entryPrice) },
+                                { label: 'Safety Buffer (SL)', val: formatPrice(selectedTrade.stop_loss || selectedTrade.stopLoss) },
+                                { label: 'Liquidity Target (TP)', val: formatPrice(selectedTrade.take_profit || selectedTrade.takeProfit) }
+                            ].map((price, i) => (
                             <div key={i} className="flex items-center justify-between p-5 rounded-3xl glasseffect glass-card border-[var(--glass-border)]">
                                 <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-wider">{price.label}</span>
                                 <span className="text-lg font-black text-[var(--foreground)] font-mono">{price.val}</span>
                             </div>
-                        ))}
+                            ));
+                        })()}
                     </div>
                 </div>
 
