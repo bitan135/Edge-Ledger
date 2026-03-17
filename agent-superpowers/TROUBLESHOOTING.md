@@ -264,8 +264,8 @@ claude --version
 # Requires Claude Code 2.0+
 
 # Manual install (if marketplace fails)
-git clone https://github.com/affaan-m/everything-claude-code.git
-cp -r everything-claude-code ~/.claude/plugins/ecc
+git clone https://github.com/affaan-m/agent-superpowers.git
+cp -r agent-superpowers ~/.claude/plugins/ecc
 ```
 
 ### Package Manager Detection Fails
@@ -370,7 +370,7 @@ chmod -R u+rwX,go+rX ~/.claude/homunculus
 
 ```bash
 # Install plugin dependencies
-cd ~/.claude/plugins/cache/everything-claude-code
+cd ~/.claude/plugins/cache/agent-superpowers
 npm install
 
 # Or for manual install
@@ -396,7 +396,7 @@ find ~/.claude/plugins -name "*.sh" -exec dos2unix {} \;
 
  If you're still experiencing issues:
 
-1. **Check GitHub Issues**: [github.com/affaan-m/everything-claude-code/issues](https://github.com/affaan-m/everything-claude-code/issues)
+1. **Check GitHub Issues**: [github.com/affaan-m/agent-superpowers/issues](https://github.com/affaan-m/agent-superpowers/issues)
 2. **Enable Debug Logging**:
    ```bash
    export CLAUDE_DEBUG=1

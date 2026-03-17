@@ -285,7 +285,7 @@ test('claude-history adapter loads the latest recorded session', () => {
     '**Date:** 2026-03-13',
     '**Started:** 09:00',
     '**Last Updated:** 11:30',
-    '**Project:** everything-claude-code',
+    '**Project:** agent-superpowers',
     '**Branch:** feat/session-adapter',
     '**Worktree:** /tmp/ecc-worktree',
     '',

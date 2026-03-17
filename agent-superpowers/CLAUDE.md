@@ -1,4 +1,4 @@
-# ECC + SMC Journal Agent Environment
+# Agent Superpowers — Claude Intelligence Layer
 
 This folder contains the ECC infrastructure plus SMC Journal project-specific agents, skills, rules, and commands.
 

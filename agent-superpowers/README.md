@@ -2,9 +2,9 @@
 
 # Everything Claude Code
 
-[![Stars](https://img.shields.io/github/stars/affaan-m/everything-claude-code?style=flat)](https://github.com/affaan-m/everything-claude-code/stargazers)
-[![Forks](https://img.shields.io/github/forks/affaan-m/everything-claude-code?style=flat)](https://github.com/affaan-m/everything-claude-code/network/members)
-[![Contributors](https://img.shields.io/github/contributors/affaan-m/everything-claude-code?style=flat)](https://github.com/affaan-m/everything-claude-code/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/affaan-m/agent-superpowers?style=flat)](https://github.com/affaan-m/agent-superpowers/stargazers)
+[![Forks](https://img.shields.io/github/forks/affaan-m/agent-superpowers?style=flat)](https://github.com/affaan-m/agent-superpowers/network/members)
+[![Contributors](https://img.shields.io/github/contributors/affaan-m/agent-superpowers?style=flat)](https://github.com/affaan-m/agent-superpowers/graphs/contributors)
 [![npm ecc-universal](https://img.shields.io/npm/dw/ecc-universal?label=ecc-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/ecc-universal)
 [![npm ecc-agentshield](https://img.shields.io/npm/dw/ecc-agentshield?label=ecc-agentshield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/ecc-agentshield)
 [![GitHub App Install](https://img.shields.io/badge/GitHub%20App-150%20installs-2ea44f?logo=github)](https://github.com/marketplace/ecc-tools)
@@ -104,7 +104,7 @@ This repo is the raw code only. The guides explain everything.
 
 ### v1.4.1 — Bug Fix (Feb 2026)
 
-- **Fixed instinct import content loss** — `parse_instinct_file()` was silently dropping all content after frontmatter (Action, Evidence, Examples sections) during `/instinct-import`. Fixed by community contributor @ericcai0814 ([#148](https://github.com/affaan-m/everything-claude-code/issues/148), [#161](https://github.com/affaan-m/everything-claude-code/pull/161))
+- **Fixed instinct import content loss** — `parse_instinct_file()` was silently dropping all content after frontmatter (Action, Evidence, Examples sections) during `/instinct-import`. Fixed by community contributor @ericcai0814 ([#148](https://github.com/affaan-m/agent-superpowers/issues/148), [#161](https://github.com/affaan-m/agent-superpowers/pull/161))
 
 ### v1.4.0 — Multi-Language Rules, Installation Wizard & PM2 (Feb 2026)
 
@@ -128,7 +128,7 @@ This repo is the raw code only. The guides explain everything.
 - **Session management** — `/sessions` command for session history
 - **Continuous learning v2** — Instinct-based learning with confidence scoring, import/export, evolution
 
-See the full changelog in [Releases](https://github.com/affaan-m/everything-claude-code/releases).
+See the full changelog in [Releases](https://github.com/affaan-m/agent-superpowers/releases).
 
 ---
 
@@ -140,10 +140,10 @@ Get up and running in under 2 minutes:
 
 ```bash
 # Add marketplace
-/plugin marketplace add affaan-m/everything-claude-code
+/plugin marketplace add affaan-m/agent-superpowers
 
 # Install plugin
-/plugin install everything-claude-code@everything-claude-code
+/plugin install agent-superpowers@agent-superpowers
 ```
 
 ### Step 2: Install Rules (Required)
@@ -152,8 +152,8 @@ Get up and running in under 2 minutes:
 
 ```bash
 # Clone the repo first
-git clone https://github.com/affaan-m/everything-claude-code.git
-cd everything-claude-code
+git clone https://github.com/affaan-m/agent-superpowers.git
+cd agent-superpowers
 
 # Recommended: use the installer (handles common + language rules safely)
 ./install.sh typescript    # or python or golang or swift or php
@@ -171,13 +171,13 @@ For manual install instructions see the README in the `rules/` folder.
 
 ```bash
 # Try a command (plugin install uses namespaced form)
-/everything-claude-code:plan "Add user authentication"
+/agent-superpowers:plan "Add user authentication"
 
 # Manual install (Option 2) uses the shorter form:
 # /plan "Add user authentication"
 
 # Check available commands
-/plugin list everything-claude-code@everything-claude-code
+/plugin list agent-superpowers@agent-superpowers
 ```
 
 ✨ **That's it!** You now have access to 16 agents, 65 skills, and 40 commands.
@@ -236,7 +236,7 @@ export ECC_DISABLED_HOOKS="pre:bash:tmux-reminder,post:edit:typecheck"
 This repo is a **Claude Code plugin** - install it directly or copy components manually.
 
 ```
-everything-claude-code/
+agent-superpowers/
 |-- .claude-plugin/   # Plugin and marketplace manifests
 |   |-- plugin.json         # Plugin metadata and component paths
 |   |-- marketplace.json    # Marketplace catalog for /plugin marketplace add
@@ -520,7 +520,7 @@ Claude Code v2.1+ **automatically loads** `hooks/hooks.json` from any installed 
 Duplicate hooks file detected: ./hooks/hooks.json resolves to already-loaded file
 ```
 
-**History:** This has caused repeated fix/revert cycles in this repo ([#29](https://github.com/affaan-m/everything-claude-code/issues/29), [#52](https://github.com/affaan-m/everything-claude-code/issues/52), [#103](https://github.com/affaan-m/everything-claude-code/issues/103)). The behavior changed between Claude Code versions, leading to confusion. We now have a regression test to prevent this from being reintroduced.
+**History:** This has caused repeated fix/revert cycles in this repo ([#29](https://github.com/affaan-m/agent-superpowers/issues/29), [#52](https://github.com/affaan-m/agent-superpowers/issues/52), [#103](https://github.com/affaan-m/agent-superpowers/issues/103)). The behavior changed between Claude Code versions, leading to confusion. We now have a regression test to prevent this from being reintroduced.
 
 ---
 
@@ -532,10 +532,10 @@ The easiest way to use this repo - install as a Claude Code plugin:
 
 ```bash
 # Add this repo as a marketplace
-/plugin marketplace add affaan-m/everything-claude-code
+/plugin marketplace add affaan-m/agent-superpowers
 
 # Install the plugin
-/plugin install everything-claude-code@everything-claude-code
+/plugin install agent-superpowers@agent-superpowers
 ```
 
 Or add directly to your `~/.claude/settings.json`:
@@ -543,15 +543,15 @@ Or add directly to your `~/.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "everything-claude-code": {
+    "agent-superpowers": {
       "source": {
         "source": "github",
-        "repo": "affaan-m/everything-claude-code"
+        "repo": "affaan-m/agent-superpowers"
       }
     }
   },
   "enabledPlugins": {
-    "everything-claude-code@everything-claude-code": true
+    "agent-superpowers@agent-superpowers": true
   }
 }
 ```
@@ -562,20 +562,20 @@ This gives you instant access to all commands, agents, skills, and hooks.
 >
 > ```bash
 > # Clone the repo first
-> git clone https://github.com/affaan-m/everything-claude-code.git
+> git clone https://github.com/affaan-m/agent-superpowers.git
 >
 > # Option A: User-level rules (applies to all projects)
 > mkdir -p ~/.claude/rules
-> cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # pick your stack
-> cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/php/* ~/.claude/rules/
+> cp -r agent-superpowers/rules/common/* ~/.claude/rules/
+> cp -r agent-superpowers/rules/typescript/* ~/.claude/rules/   # pick your stack
+> cp -r agent-superpowers/rules/python/* ~/.claude/rules/
+> cp -r agent-superpowers/rules/golang/* ~/.claude/rules/
+> cp -r agent-superpowers/rules/php/* ~/.claude/rules/
 >
 > # Option B: Project-level rules (applies to current project only)
 > mkdir -p .claude/rules
-> cp -r everything-claude-code/rules/common/* .claude/rules/
-> cp -r everything-claude-code/rules/typescript/* .claude/rules/     # pick your stack
+> cp -r agent-superpowers/rules/common/* .claude/rules/
+> cp -r agent-superpowers/rules/typescript/* .claude/rules/     # pick your stack
 > ```
 
 ---
@@ -586,29 +586,29 @@ If you prefer manual control over what's installed:
 
 ```bash
 # Clone the repo
-git clone https://github.com/affaan-m/everything-claude-code.git
+git clone https://github.com/affaan-m/agent-superpowers.git
 
 # Copy agents to your Claude config
-cp everything-claude-code/agents/*.md ~/.claude/agents/
+cp agent-superpowers/agents/*.md ~/.claude/agents/
 
 # Copy rules (common + language-specific)
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # pick your stack
-cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
-cp -r everything-claude-code/rules/php/* ~/.claude/rules/
+cp -r agent-superpowers/rules/common/* ~/.claude/rules/
+cp -r agent-superpowers/rules/typescript/* ~/.claude/rules/   # pick your stack
+cp -r agent-superpowers/rules/python/* ~/.claude/rules/
+cp -r agent-superpowers/rules/golang/* ~/.claude/rules/
+cp -r agent-superpowers/rules/php/* ~/.claude/rules/
 
 # Copy commands
-cp everything-claude-code/commands/*.md ~/.claude/commands/
+cp agent-superpowers/commands/*.md ~/.claude/commands/
 
 # Copy skills (core vs niche)
 # Recommended (new users): core/general skills only
-cp -r everything-claude-code/.agents/skills/* ~/.claude/skills/
-cp -r everything-claude-code/skills/search-first ~/.claude/skills/
+cp -r agent-superpowers/.agents/skills/* ~/.claude/skills/
+cp -r agent-superpowers/skills/search-first ~/.claude/skills/
 
 # Optional: add niche/framework-specific skills only when needed
 # for s in django-patterns django-tdd springboot-patterns; do
-#   cp -r everything-claude-code/skills/$s ~/.claude/skills/
+#   cp -r agent-superpowers/skills/$s ~/.claude/skills/
 # done
 ```
 
@@ -693,8 +693,8 @@ Not sure where to start? Use this quick reference:
 
 | I want to... | Use this command | Agent used |
 |--------------|-----------------|------------|
-| Plan a new feature | `/everything-claude-code:plan "Add auth"` | planner |
-| Design system architecture | `/everything-claude-code:plan` + architect agent | architect |
+| Plan a new feature | `/agent-superpowers:plan "Add auth"` | planner |
+| Design system architecture | `/agent-superpowers:plan` + architect agent | architect |
 | Write code with tests first | `/tdd` | tdd-guide |
 | Review code I just wrote | `/code-review` | code-reviewer |
 | Fix a failing build | `/build-fix` | build-error-resolver |
@@ -710,7 +710,7 @@ Not sure where to start? Use this quick reference:
 
 **Starting a new feature:**
 ```
-/everything-claude-code:plan "Add user authentication with OAuth"
+/agent-superpowers:plan "Add user authentication with OAuth"
                                               → planner creates implementation blueprint
 /tdd                                          → tdd-guide enforces write-tests-first
 /code-review                                  → code-reviewer checks your work
@@ -738,7 +738,7 @@ Not sure where to start? Use this quick reference:
 <summary><b>How do I check which agents/commands are installed?</b></summary>
 
 ```bash
-/plugin list everything-claude-code@everything-claude-code
+/plugin list agent-superpowers@agent-superpowers
 ```
 
 This shows all available agents, commands, and skills from the plugin.
@@ -747,7 +747,7 @@ This shows all available agents, commands, and skills from the plugin.
 <details>
 <summary><b>My hooks aren't working / I see "Duplicate hooks file" errors</b></summary>
 
-This is the most common issue. **Do NOT add a `"hooks"` field to `.claude-plugin/plugin.json`.** Claude Code v2.1+ automatically loads `hooks/hooks.json` from installed plugins. Explicitly declaring it causes duplicate detection errors. See [#29](https://github.com/affaan-m/everything-claude-code/issues/29), [#52](https://github.com/affaan-m/everything-claude-code/issues/52), [#103](https://github.com/affaan-m/everything-claude-code/issues/103).
+This is the most common issue. **Do NOT add a `"hooks"` field to `.claude-plugin/plugin.json`.** Claude Code v2.1+ automatically loads `hooks/hooks.json` from installed plugins. Explicitly declaring it causes duplicate detection errors. See [#29](https://github.com/affaan-m/agent-superpowers/issues/29), [#52](https://github.com/affaan-m/agent-superpowers/issues/52), [#103](https://github.com/affaan-m/agent-superpowers/issues/103).
 </details>
 
 <details>
@@ -798,10 +798,10 @@ Yes. Use Option 2 (manual installation) and copy only what you need:
 
 ```bash
 # Just agents
-cp everything-claude-code/agents/*.md ~/.claude/agents/
+cp agent-superpowers/agents/*.md ~/.claude/agents/
 
 # Just rules
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
+cp -r agent-superpowers/rules/common/* ~/.claude/rules/
 ```
 
 Each component is fully independent.
@@ -813,7 +813,7 @@ Each component is fully independent.
 Yes. ECC is cross-platform:
 - **Cursor**: Pre-translated configs in `.cursor/`. See [Cursor IDE Support](#cursor-ide-support).
 - **OpenCode**: Full plugin support in `.opencode/`. See [OpenCode Support](#-opencode-support).
-- **Codex**: First-class support for both macOS app and CLI, with adapter drift guards and SessionStart fallback. See PR [#257](https://github.com/affaan-m/everything-claude-code/pull/257).
+- **Codex**: First-class support for both macOS app and CLI, with adapter drift guards and SessionStart fallback. See PR [#257](https://github.com/affaan-m/agent-superpowers/pull/257).
 - **Antigravity**: Tightly integrated setup for workflows, skills, and flatten rules in `.agent/`.
 - **Claude Code**: Native — this is the primary target.
 </details>
@@ -1090,7 +1090,7 @@ OpenCode's plugin system is MORE sophisticated than Claude Code with 20+ event t
 
 **Option 1: Use directly**
 ```bash
-cd everything-claude-code
+cd agent-superpowers
 opencode
 ```
 
@@ -1271,7 +1271,7 @@ This project is free and open source. Sponsors help keep it maintained and growi
 
 ## 🌟 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=affaan-m/everything-claude-code&type=Date)](https://star-history.com/#affaan-m/everything-claude-code&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=affaan-m/agent-superpowers&type=Date)](https://star-history.com/#affaan-m/agent-superpowers&Date)
 
 ---
 

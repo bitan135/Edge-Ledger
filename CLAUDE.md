@@ -1,5 +1,7 @@
 # SMC Journal — Claude Code Master Briefing
 
+- **Agent Intel**: Located in `agent-superpowers/` (custom agents, skills, rules, commands)
+
 > Read this fully before writing any code. Every decision must match the patterns here.
 
 ## What This App Is

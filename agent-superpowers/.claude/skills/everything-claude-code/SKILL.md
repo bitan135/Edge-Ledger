@@ -1,8 +1,8 @@
 # Everything Claude Code
 
-Use this skill when working inside the `everything-claude-code` repository and you need repo-specific guidance instead of generic coding advice.
+Use this skill when working inside the `agent-superpowers` repository and you need repo-specific guidance instead of generic coding advice.
 
-Optional companion instincts live at `.claude/homunculus/instincts/inherited/everything-claude-code-instincts.yaml` for teams using `continuous-learning-v2`.
+Optional companion instincts live at `.claude/homunculus/instincts/inherited/agent-superpowers-instincts.yaml` for teams using `continuous-learning-v2`.
 
 ## When to Use
 
