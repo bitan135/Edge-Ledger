@@ -19,7 +19,7 @@ const SESSIONS = ['London', 'New York', 'Asia'];
 const SMC_TAGS = [
   'Liquidity Sweep', 'BOS', 'CHoCH', 'FVG', 'Order Block', 
   'Inducement', 'SMT Divergence', 'Internal Structure', 'Swing Structure',
-  'Premium/Discount', 'OTE', 'IFVG', 'BPR', 'Supply Zone', 'Demand Zone'
+  'Premium/Discount', 'OTE', 'IFVG', 'BPR'
 ];
 
 const DEFAULT_STRATEGIES = [
@@ -33,9 +33,7 @@ const DEFAULT_STRATEGIES = [
   'AMD (Power of 3)',
   'London Open Expansion',
   'NY Killzone Sweep',
-  'Unicorn Setup',
-  'Supply Zone Reversal',
-  'Demand Zone Reversal'
+  'Unicorn Setup'
 ];
 
 const DEFAULT_SETTINGS = {
