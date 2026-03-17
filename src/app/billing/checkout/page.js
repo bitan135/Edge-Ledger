@@ -88,11 +88,11 @@ function CheckoutFormContent() {
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-6xl mx-auto animate-fade-in relative overflow-hidden">
       {/* Background Ambience */}
-      <div className="absolute top-[-5%] left-[-5%] w-[40%] h-[40%] bg-[var(--accent)]/5 blur-[120px] rounded-full animate-float"></div>
+      <div className="absolute top-[-5%] left-[-5%] w-[40%] h-[40%] bg-[var(--accent)]/5 blur-[120px] rounded-full animate-float pointer-events-none"></div>
       
       <Link 
         href="/billing"
-        className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-12 hover:text-[var(--foreground)] transition-all group w-fit"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-12 hover:text-[var(--foreground)] transition-all group w-fit relative z-10"
       >
         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Change Plan
       </Link>
