@@ -18,7 +18,8 @@ import {
   Crown,
   Loader2,
   Sparkles,
-  Heart
+  Heart,
+  Lock
 } from 'lucide-react';
 
 const navItems = [
@@ -157,6 +158,11 @@ export default function Sidebar() {
                 {item.href === '/add-trade' && !isActive && (
                   <div className="ml-auto flex items-center justify-center w-6 h-6 rounded-lg bg-[var(--accent)]/10 border border-[var(--accent)]/20">
                     <Plus size={14} className="text-[var(--accent)]" />
+                  </div>
+                )}
+                {item.href === '/strategies' && (subscription?.plan_id || 'free') === 'free' && (
+                  <div className="ml-auto flex items-center justify-center w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                    <Lock size={12} className="text-amber-500" />
                   </div>
                 )}
               </Link>
