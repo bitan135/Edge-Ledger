@@ -10,11 +10,17 @@ import { supabase, tradeService, strategyService } from './supabase';
 
 const INSTRUMENTS = [
   'EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD', 'NAS100', 'US30', 'GBPJPY', 'AUDUSD',
+  'USDCAD', 'USDCHF', 'NZDUSD', 'EURJPY', 'SPX500', 'GER40', 'UK100', 'XAGUSD',
+  'BTCUSD', 'ETHUSD', 'SOLUSD', 'BNBUSD'
 ];
 
 const SESSIONS = ['London', 'New York', 'Asia'];
 
-const SMC_TAGS = ['Liquidity Sweep', 'BOS', 'CHoCH', 'FVG', 'Order Block'];
+const SMC_TAGS = [
+  'Liquidity Sweep', 'BOS', 'CHoCH', 'FVG', 'Order Block', 
+  'Inducement', 'SMT Divergence', 'Internal Structure', 'Swing Structure',
+  'Premium/Discount', 'OTE', 'IFVG', 'BPR'
+];
 
 const DEFAULT_STRATEGIES = [
   'FVG Continuation',
@@ -23,6 +29,11 @@ const DEFAULT_STRATEGIES = [
   'Mitigation Block',
   'Order Block Bounce',
   'CHoCH Reversal',
+  'Silver Bullet',
+  'AMD (Power of 3)',
+  'London Open Expansion',
+  'NY Killzone Sweep',
+  'Unicorn Setup'
 ];
 
 const DEFAULT_SETTINGS = {
@@ -57,12 +68,13 @@ export function calculatePips(entry, stopLoss, instrument) {
   
   if (instr.includes('JPY')) return parseFloat((diff * 100).toFixed(1));
   if (instr.includes('XAU') || instr.includes('GOLD')) return parseFloat((diff * 10).toFixed(1));
+  if (instr.includes('XAG') || instr.includes('SILVER')) return parseFloat((diff * 10).toFixed(1));
   
   // Indices & Crypto
-  if (instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX') || instr.includes('NDX') || instr.includes('GER') || instr.includes('DAX') || instr.includes('UK100')) {
+  if (instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX') || instr.includes('NDX') || instr.includes('GER') || instr.includes('DAX') || instr.includes('UK100') || instr.includes('DOW')) {
     return parseFloat(diff.toFixed(1));
   }
-  if (instr.includes('BTC') || instr.includes('ETH') || instr.includes('SOL')) return parseFloat(diff.toFixed(0));
+  if (instr.includes('BTC') || instr.includes('ETH') || instr.includes('SOL') || instr.includes('BNB')) return parseFloat(diff.toFixed(0));
   
   // Standard 4/5 decimal pairs
   return parseFloat((diff * 10000).toFixed(1));
@@ -73,8 +85,8 @@ export function calculateRiskAmount(lotSize, pips, instrument) {
   const lot = parseFloat(lotSize);
   const instr = instrument?.toUpperCase() || '';
   
-  if (instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX')) return parseFloat((lot * pips).toFixed(2));
-  if (instr.includes('XAU') || instr.includes('GOLD')) return parseFloat((lot * 100 * pips / 10).toFixed(2));
+  if (instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX') || instr.includes('DOW')) return parseFloat((lot * pips).toFixed(2));
+  if (instr.includes('XAU') || instr.includes('GOLD') || instr.includes('XAG') || instr.includes('SILVER')) return parseFloat((lot * 100 * pips / 10).toFixed(2));
   if (instr.includes('JPY')) return parseFloat((lot * 100000 * pips / 100).toFixed(2));
   
   // Standard Forex (100k units)
