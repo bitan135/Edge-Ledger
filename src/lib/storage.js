@@ -356,8 +356,10 @@ export async function deleteTrade(id) {
 // Strategies
 export async function getStrategies() {
   try {
-    const strategies = await strategyService.getStrategies();
-    return strategies.length > 0 ? strategies : DEFAULT_STRATEGIES;
+    const dbStrategies = await strategyService.getStrategies();
+    // Merge defaults with DB strategies and deduplicate
+    const combined = [...new Set([...DEFAULT_STRATEGIES, ...dbStrategies])];
+    return combined;
   } catch {
     return DEFAULT_STRATEGIES;
   }
