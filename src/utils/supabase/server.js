@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies, headers } from 'next/headers';
+import { ENV } from '@/lib/env';
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -10,8 +11,8 @@ export async function createClient() {
                  host.includes('127.0.0.1');
 
   return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    ENV.url,
+    ENV.anonKey,
     {
       cookies: {
         getAll() {
