@@ -35,6 +35,14 @@ export default function RootLayout({ children }) {
             __html: `
               (function() {
                 try {
+                  // Suppress non-fatal Next.js 16 AbortError (Lock broken) noise
+                  const originalError = console.error;
+                  console.error = (...args) => {
+                    if (args[0] && typeof args[0] === 'string' && args[0].includes("Lock broken by another request with the 'steal' option")) return;
+                    if (args[0] instanceof Error && args[0].message.includes("Lock broken by another request")) return;
+                    originalError(...args);
+                  };
+
                   const savedTheme = localStorage.getItem('theme') || 'auto';
                   const root = document.documentElement;
                   if (savedTheme === 'auto') {
