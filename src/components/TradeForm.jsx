@@ -63,7 +63,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
   const autoCalc = (formData.entryPrice && formData.stopLoss && formData.takeProfit) ? {
     rr: calculateRR(formData.entryPrice, formData.stopLoss, formData.takeProfit, formData.direction),
     pips: calculatePips(formData.entryPrice, formData.stopLoss, formData.instrument),
-    riskAmount: calculateRiskAmount(formData.entryPrice, formData.stopLoss, formData.lotSize, formData.instrument)
+    riskAmount: calculateRiskAmount(formData.lotSize, calculatePips(formData.entryPrice, formData.stopLoss, formData.instrument), formData.instrument)
   } : { rr: 0, pips: 0, riskAmount: 0 };
 
   const handleChange = (e) => {

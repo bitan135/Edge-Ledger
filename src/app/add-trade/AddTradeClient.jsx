@@ -93,7 +93,7 @@ export default function AddTrade() {
         router.push('/');
       }, 1500);
     } catch (err) {
-      console.error('Submission error:', err);
+      console.error('Submission error:', err?.message || err?.details || err?.code || err);
       // Pass error back to form if needed
     } finally {
       setIsSubmitting(false);

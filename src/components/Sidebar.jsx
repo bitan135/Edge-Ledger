@@ -17,7 +17,8 @@ import {
   User as UserIcon,
   Crown,
   Loader2,
-  Sparkles
+  Sparkles,
+  Heart
 } from 'lucide-react';
 
 const navItems = [
@@ -27,6 +28,7 @@ const navItems = [
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/strategies', label: 'Strategies', icon: Target },
   { href: '/billing', label: 'Billing', icon: Crown },
+  { href: '/donation', label: 'Donation', icon: Heart },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -161,8 +163,6 @@ export default function Sidebar() {
             );
           })}
         </nav>
-
-
 
         {/* Plan Upgrade CTA */}
         {subscription?.plan_id === 'free' && (

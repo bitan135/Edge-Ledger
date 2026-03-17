@@ -56,7 +56,7 @@ export default function Dashboard() {
         setTrades(fetchedTrades);
         setProfile(fetchedProfile);
       } catch (err) {
-        console.error('Dashboard load failed:', err);
+        console.error('Dashboard load failed:', err?.message || err?.details || err?.code || err);
       } finally {
         setIsLoading(false);
       }

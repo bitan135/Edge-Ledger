@@ -32,7 +32,7 @@ export default function Strategies() {
         setStrategies(strats);
         setInsights(getStrategyInsights(trades));
       } catch (err) {
-        console.error('Strategies load failed:', err);
+        console.error('Strategies load failed:', err?.message || err?.details || err?.code || err);
       } finally {
         setIsLoading(false);
       }
@@ -58,7 +58,7 @@ export default function Strategies() {
       setNewStrategy('');
       showToast(`Strategy "${newStrategy}" added successfully.`, 'success');
     } catch (err) {
-      console.error('Add strategy failed:', err);
+      console.error('Add strategy failed:', err?.message || err?.details || err?.code || err);
       showToast('Failed to archive logic in vault.', 'error');
     } finally {
       setIsAdding(false);

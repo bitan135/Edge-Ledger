@@ -10,9 +10,10 @@ export const tradeService = {
    * Fetch all trades for the current user
    */
   async getTrades() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return [];
+    const { data: authData, error: authError } = await supabase.auth.getUser();
+    if (authError || !authData?.user) return [];
     
+    const user = authData.user;
     const { data, error } = await supabase
       .from('trades')
       .select('*')

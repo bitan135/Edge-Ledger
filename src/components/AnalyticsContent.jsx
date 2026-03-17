@@ -67,7 +67,7 @@ export default function AnalyticsContent() {
         setTrades(fetchedTrades);
         setSubscription(sub);
       } catch (err) {
-        console.error('Analytics load failed:', err);
+        console.error('Analytics load failed:', err?.message || err?.details || err?.code || err);
       } finally {
         setIsLoading(false);
       }

@@ -334,7 +334,7 @@ export async function getTrades() {
   try {
     return await tradeService.getTrades();
   } catch (e) {
-    console.error('Fetch trades failed:', e);
+    console.error('Fetch trades failed:', e?.message || e?.details || e?.code || e);
     return [];
   }
 }
@@ -368,9 +368,11 @@ export async function getStrategies() {
   try {
     const dbStrategies = await strategyService.getStrategies();
     // Merge defaults with DB strategies and deduplicate
-    const combined = [...new Set([...DEFAULT_STRATEGIES, ...dbStrategies])];
+    const combined = [...new Set([...DEFAULT_STRATEGIES, ...dbStrategies])]
+      .filter(s => s && s.toLowerCase().trim() !== 'supply zonedemand zone');
     return combined;
-  } catch {
+  } catch (e) {
+    console.error('Fetch strategies failed:', e?.message || e);
     return DEFAULT_STRATEGIES;
   }
 }
