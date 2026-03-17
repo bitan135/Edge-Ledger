@@ -1,6 +1,8 @@
 import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 import { nowPaymentsService } from '@/lib/payments/nowpayments';
+import { rateLimit } from '@/lib/rateLimit';
+import { ENV } from '@/lib/env';
 
 export async function POST(req) {
   const supabase = await createClient();
@@ -10,8 +12,14 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // TODO: Implement rate limiting for payment initiation to prevent spam.
-  // Suggested: 5 requests per 10 minutes per user using a sliding window or bucket.
+  // Rate limiting for payment initiation (3 requests per minute per user)
+  const limit = rateLimit(`payment_${user.id}`, 3, 60000);
+  if (!limit.success) {
+    return NextResponse.json(
+      { error: 'Too many payment requests. Please wait a minute before trying again.' },
+      { status: 429 }
+    );
+  }
 
   try {
     const { planId, billingDetails, coupon } = await req.json();
@@ -26,18 +34,8 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Invalid plan' }, { status: 400 });
     }
 
-    // Construct callback URL with fallback
-    let baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-    
-    // If missing or on localhost, try to get from headers
-    if (!baseUrl || baseUrl.includes('localhost')) {
-      const host = req.headers.get('host');
-      const protocol = req.headers.get('x-forwarded-proto') || 'https';
-      baseUrl = `${protocol}://${host}`;
-    }
-
-    // Ensure no trailing slash
-    baseUrl = baseUrl.replace(/\/$/, '');
+    // Construct callback URL from validated environment variable
+    const baseUrl = ENV.SITE_URL.replace(/\/$/, '');
 
     // Apply Coupon Discount
     let finalPrice = prices[planId];

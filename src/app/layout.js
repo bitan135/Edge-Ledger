@@ -6,6 +6,7 @@ import Onboarding from '@/components/ui/Onboarding';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { ToastProvider } from '@/components/ui/Toast';
 import { ConfirmProvider } from '@/components/ui/ConfirmModal';
+import PostHogProvider from '@/components/PostHogProvider';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -14,7 +15,8 @@ const inter = Inter({
 
 export const metadata = {
   title: 'SMC Journal — Smart Money Trading Journal',
-  description: 'The institutional-grade trading journal for Smart Money Concept traders. Track, analyze, and find your edge.',
+  description: 'The free institutional-grade trading journal for Smart Money Concept traders. Track BOS, CHoCH, FVG setups. Analyse your edge. Completely free forever.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://smcjournal.com'),
   icons: {
     icon: [
       { url: '/favicon.png', type: 'image/png' },
@@ -23,6 +25,28 @@ export const metadata = {
     apple: [
       { url: '/favicon.png', sizes: '180x180', type: 'image/png' },
     ],
+  },
+  openGraph: {
+    title: 'SMC Journal — Smart Money Trading Journal',
+    description: 'The free SMC trading journal. Log trades, tag confluences, analyse your edge. Free forever.',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://smcjournal.com',
+    siteName: 'SMC Journal',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'SMC Journal — Smart Money Trading Journal',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'SMC Journal — Smart Money Trading Journal',
+    description: 'The free SMC trading journal. Log trades, tag confluences, analyse your edge.',
+    images: ['/og-image.png'],
   },
 };
 
@@ -58,17 +82,19 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="font-sans antialiased text-[var(--foreground)] bg-[var(--background)]">
-        <ThemeProvider>
-          <ToastProvider>
-            <ConfirmProvider>
-              <Sidebar />
-              <LayoutWrapper>
-                {children}
-              </LayoutWrapper>
-              <Onboarding />
-            </ConfirmProvider>
-          </ToastProvider>
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider>
+            <ToastProvider>
+              <ConfirmProvider>
+                <Sidebar />
+                <LayoutWrapper>
+                  {children}
+                </LayoutWrapper>
+                <Onboarding />
+              </ConfirmProvider>
+            </ToastProvider>
+          </ThemeProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
