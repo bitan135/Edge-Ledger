@@ -97,8 +97,7 @@ export default function Strategies() {
   }
 
   return (
-    <PlanGuard requiredPlan="pro" featureName="Strategy Vault">
-      <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
         {/* Background Ambience */}
         <div className="absolute top-[25%] left-[-10%] w-[50%] h-[50%] bg-[var(--accent)]/5 blur-[150px] rounded-full animate-float pointer-events-none"></div>
         
@@ -240,7 +239,6 @@ export default function Strategies() {
             </div>
           )}
         </div>
-      </div>
-    </PlanGuard>
+    </div>
   );
 }

@@ -31,8 +31,6 @@ const AnalyticsContent = dynamic(() => import('@/components/AnalyticsContent'), 
 
 export default function AnalyticsPage() {
   return (
-    <PlanGuard requiredPlan="pro" featureName="Quantitative Analytics">
-      <AnalyticsContent />
-    </PlanGuard>
+    <AnalyticsContent />
   );
 }
