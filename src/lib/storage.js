@@ -214,7 +214,7 @@ export function getMonthlyPerformance(trades = []) {
 }
 
 export function getEquityCurve(trades) {
-  const sorted = [...trades].sort((a, b) => new Date(a.created_at || a.createdAt) - new Date(b.created_at || b.createdAt));
+  const sorted = [...trades].sort((a, b) => new Date(a.trade_date || a.tradeDate || a.created_at || a.createdAt) - new Date(b.trade_date || b.trade_date || b.created_at || b.createdAt));
   let balance = 0;
   
   // Add an initial zero point if no trades exist to help charting

@@ -25,10 +25,10 @@ export default function DonationPage() {
                         <Sparkles size={12} /> Institutional Support
                     </div>
                     <h1 className="text-4xl md:text-6xl font-black text-[var(--foreground)] tracking-tighter leading-none mb-6">
-                        Fueling the <span className="text-gradient">SMC Ecosystem</span>
+                        Sustaining the <span className="text-gradient">SMC Architecture</span>
                     </h1>
                     <p className="text-lg text-[var(--text-secondary)] font-medium max-w-2xl mx-auto leading-relaxed">
-                        SMC Journal is an independent passion project engineered by a solo developer. Your support is the cornerstone of its evolution, directly powering the innovation and infrastructure required to maintain an elite professional edge for the community.
+                        SMC Journal is a high-fidelity execution environment meticulously architected and maintained by a solo developer. This platform operates as an independent mission to prioritize transparency, precision, and institutional-grade analytics for the global trading community.
                     </p>
                 </div>
 
