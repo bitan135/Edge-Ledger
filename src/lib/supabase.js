@@ -1,5 +1,6 @@
-import { supabase } from './supabaseClient';
-export { supabase };
+import { createClient } from '@/utils/supabase/client';
+
+export const supabase = createClient();
 
 /**
  * Trade Service - Handles all operations for the trades table in Supabase
