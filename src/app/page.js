@@ -8,6 +8,7 @@ import {
   TrendingUp, Target, BarChart3, Clock, Calendar, ArrowUpRight, ArrowDownRight, Sparkles, Zap
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import MetricCard from '@/components/MetricCard';
 import ChartCard from '@/components/ChartCard';
 import { MetricSkeleton } from '@/components/ui/SkeletonLoader';
