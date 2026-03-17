@@ -101,7 +101,6 @@ export default function TradeLibrary() {
         session: formData.session,
         strategy: formData.strategy,
         smc_tags: formData.smcTags,
-        setup_zone: formData.setup_zone,
         notes: formData.notes,
         screenshot_before: screenshotBeforeUrl,
         screenshot_after: screenshotAfterUrl,
@@ -274,13 +273,8 @@ export default function TradeLibrary() {
                             <div className={`w-1.5 h-10 rounded-full shadow-lg ${trade.direction === 'Buy' ? 'bg-[var(--profit)] shadow-emerald-500/20' : 'bg-[var(--loss)] shadow-rose-500/20'}`} />
                             <div>
                                 <p className="text-lg font-black text-[var(--foreground)] tracking-tighter leading-none mb-1.5">{trade.instrument}</p>
-                                <div className="flex items-center gap-2">
-                                    <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${trade.direction === 'Buy' ? 'bg-[var(--profit-bg)] text-[var(--profit)]' : 'bg-[var(--loss-bg)] text-[var(--loss)]'}`}>
-                                        <TrendingUp size={10} className={trade.direction === 'Sell' ? 'rotate-180' : ''} /> {trade.direction}
-                                    </div>
-                                    <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/10`}>
-                                        {trade.setup_zone || 'Supply'}
-                                    </div>
+                                <div className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest ${trade.direction === 'Buy' ? 'bg-[var(--profit-bg)] text-[var(--profit)]' : 'bg-[var(--loss-bg)] text-[var(--loss)]'}`}>
+                                    <TrendingUp size={10} className={trade.direction === 'Sell' ? 'rotate-180' : ''} /> {trade.direction}
                                 </div>
                             </div>
                         </div>
@@ -321,10 +315,7 @@ export default function TradeLibrary() {
                             <div className={`w-1.5 h-12 rounded-full ${trade.direction === 'Buy' ? 'bg-[var(--profit)]' : 'bg-[var(--loss)]'}`} />
                             <div>
                                 <p className="text-lg font-black text-[var(--foreground)] tracking-tighter leading-none mb-1">{trade.instrument}</p>
-                                <div className="flex items-center gap-2 mt-1">
-                                    <p className="text-[11px] font-black text-[var(--text-muted)] uppercase tracking-wider">{trade.strategy}</p>
-                                    <span className="text-[9px] font-black text-[var(--accent)] uppercase tracking-widest opacity-60">| {trade.setup_zone || 'Supply'}</span>
-                                </div>
+                                <p className="text-[11px] font-black text-[var(--text-muted)] uppercase tracking-wider">{trade.strategy}</p>
                             </div>
                         </div>
                         <ResultBadge result={trade.result} />
@@ -441,14 +432,9 @@ export default function TradeLibrary() {
                     </div>
 
                     <div className="space-y-6">
-                        <div className="flex items-center justify-between">
-                            <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em]">
-                                <SlidersHorizontal size={16} /> SMC Confluences
-                            </h4>
-                            <div className="px-3 py-1 rounded-lg bg-[var(--accent)]/10 text-[var(--accent)] text-[10px] font-black uppercase tracking-widest border border-[var(--accent)]/20">
-                                {selectedTrade.setup_zone || 'Supply'} Zone
-                            </div>
-                        </div>
+                        <h4 className="flex items-center gap-3 text-[11px] font-black text-[var(--accent)] uppercase tracking-[0.3em]">
+                            <SlidersHorizontal size={16} /> SMC Confluences
+                        </h4>
                         <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-8 h-full min-h-[200px]">
                             <div className="flex flex-wrap gap-3">
                                 {(selectedTrade.smc_tags || selectedTrade.smcTags)?.length > 0 ? (
