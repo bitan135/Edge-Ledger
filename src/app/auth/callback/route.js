@@ -12,7 +12,7 @@ export async function GET(request) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      const response = NextResponse.redirect(new URL(next, request.url));
+      const response = NextResponse.redirect(new URL(next, origin));
       
       // Expert Hard-Link: Manually bridge all cookies with sanitized attributes
       const host = request.headers.get('host') || '';
