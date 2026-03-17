@@ -118,6 +118,7 @@ export default function TradeLibrary() {
         emotional_state: formData.emotionalState || null,
         discipline_score: formData.disciplineScore || null,
         rule_adherence: formData.ruleAdherence,
+        setup_zone: formData.setupZone || null,
       };
 
       const updated = await updateTrade(selectedTrade.id, updates);

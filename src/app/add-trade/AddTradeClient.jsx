@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
-  Plus, Check, ArrowLeft, Sparkles
+  Plus, Check, ArrowLeft, Sparkles, AlertCircle
 } from 'lucide-react';
 import { 
   saveTrade, getStrategies, canAddTrade, getTrades
@@ -17,6 +17,7 @@ export default function AddTrade() {
   const [strategies, setStrategies] = useState([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   useEffect(() => {
     const loadData = async () => {
       const data = await getStrategies();
@@ -27,6 +28,7 @@ export default function AddTrade() {
 
   const handleSubmit = async (formData) => {
     setIsSubmitting(true);
+    setSubmitError(null);
     try {
       let screenshotBeforeUrl = formData.screenshotBefore;
       let screenshotAfterUrl = formData.screenshotAfter;
@@ -61,6 +63,7 @@ export default function AddTrade() {
         emotional_state: formData.emotionalState || null,
         discipline_score: formData.disciplineScore || null,
         rule_adherence: formData.ruleAdherence,
+        setup_zone: formData.setupZone || null,
       };
 
       try {
@@ -78,10 +81,10 @@ export default function AddTrade() {
           posthog.capture('first_trade_logged');
         }
       } catch (saveErr) {
-        // Fallback for schema mismatches (e.g. discipline_score not yet propagated)
-        if (saveErr.message?.includes('discipline_score') || saveErr.code === 'PGRST204') {
-          console.warn('Persistence mismatch detected. Deploying fallback sequence...');
-          const { emotional_state, discipline_score, rule_adherence, ...fallbackTrade } = tradeToSave;
+        // Fallback for schema mismatches — strips all optional psychology/new columns on any schema error
+        if (saveErr.code === 'PGRST204' || saveErr.code === '42703' || saveErr.message?.includes('column') || saveErr.message?.includes('schema')) {
+          console.warn('Schema mismatch — retrying with core fields only');
+          const { emotional_state, discipline_score, rule_adherence, setup_zone, liquidity_sweep, ...fallbackTrade } = tradeToSave;
           await saveTrade(fallbackTrade);
         } else {
           throw saveErr;
@@ -94,7 +97,7 @@ export default function AddTrade() {
       }, 1500);
     } catch (err) {
       console.error('Submission error:', err?.message || err?.details || err?.code || err);
-      // Pass error back to form if needed
+      setSubmitError('Failed to save trade. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -135,12 +138,20 @@ export default function AddTrade() {
             <p className="text-[var(--text-secondary)] font-medium">Your sequence has been archived with institutional precision.</p>
           </div>
         ) : (
-          <TradeForm 
-            strategies={strategies}
-            onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-            submitLabel="Log Sequence"
-          />
+          <>
+            {submitError && (
+              <div className="mb-6 p-4 bg-[#EF444410] border border-[#EF444420] rounded-2xl flex items-center gap-3 text-[var(--loss)] animate-slide-up">
+                <AlertCircle size={20} />
+                <p className="text-xs font-bold leading-tight">{submitError}</p>
+              </div>
+            )}
+            <TradeForm 
+              strategies={strategies}
+              onSubmit={handleSubmit}
+              isSubmitting={isSubmitting}
+              submitLabel="Log Sequence"
+            />
+          </>
         )}
 
       </div>

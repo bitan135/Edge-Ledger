@@ -49,6 +49,8 @@ CREATE TABLE public.trades (
     emotional_state TEXT,
     discipline_score INTEGER CHECK (discipline_score >= 1 AND discipline_score <= 5),
     rule_adherence BOOLEAN DEFAULT TRUE,
+    liquidity_sweep TEXT[] DEFAULT '{}',
+    setup_zone TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );

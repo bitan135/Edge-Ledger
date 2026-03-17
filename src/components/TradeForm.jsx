@@ -29,6 +29,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
     emotionalState: 'Neutral',  // consistent default
     disciplineScore: 5,
     ruleAdherence: true,
+    setupZone: null,
     // Overrides for edit mode — all come from initialData
     ...initialData ? {
       entryPrice: initialData?.entry_price || initialData?.entryPrice || '',
@@ -46,6 +47,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
       emotionalState: initialData?.emotional_state || initialData?.emotionalState || 'Neutral',
       disciplineScore: initialData?.discipline_score || initialData?.disciplineScore || 5,
       ruleAdherence: initialData?.rule_adherence ?? initialData?.ruleAdherence ?? true,
+      setupZone: initialData?.setup_zone || initialData?.setupZone || null,
     } : {},
   });
 
@@ -131,6 +133,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
       emotionalState: formData.emotionalState,
       disciplineScore: formData.disciplineScore,
       ruleAdherence: formData.ruleAdherence,
+      setupZone: formData.setupZone,
     };
     
     onSubmit(finalData);
