@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Check, Zap, Crown, Rocket, Loader2, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { profileService } from '@/lib/storage';
 
 const plans = [
