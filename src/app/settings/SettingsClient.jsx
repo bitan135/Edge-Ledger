@@ -158,6 +158,7 @@ export default function Settings() {
       a.href = url;
       a.download = `smc_journal_vault_export_${new Date().toISOString().split('T')[0]}.json`;
       a.click();
+      URL.revokeObjectURL(url);
     } catch (err) {
       showToast('Export failed. Please try again.', 'error');
     }

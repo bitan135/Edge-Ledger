@@ -21,7 +21,7 @@ export const tradeService = {
       .order('trade_date', { ascending: false });
     
     if (error) throw error;
-    return data;
+    return data || [];
   },
 
   /**
@@ -102,11 +102,12 @@ export const strategyService = {
       .order('name');
     
     if (error) throw error;
-    return data.map(s => s.name);
+    return (data || []).map(s => s.name);
   },
 
   async addStrategy(name) {
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
     const { data, error } = await supabase
       .from('strategies')
       .insert([{ name, user_id: user.id }])
@@ -119,6 +120,7 @@ export const strategyService = {
 
   async deleteStrategy(name) {
     const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
     const { error } = await supabase
       .from('strategies')
       .delete()

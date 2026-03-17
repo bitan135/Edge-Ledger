@@ -116,12 +116,13 @@ export function getSessionFromTime(date) {
 // -------------- Analytics Helpers --------------------
 
 export function getWinRate(trades) {
-  if (!trades.length) return 0;
+  if (!trades || !trades.length) return 0;
   const wins = trades.filter(t => t.result === 'Win').length;
   return parseFloat(((wins / trades.length) * 100).toFixed(1));
 }
 
 export function getProfitFactor(trades) {
+  if (!trades || !trades.length) return 0;
   const wins = trades.filter(t => t.result === 'Win');
   const losses = trades.filter(t => t.result === 'Loss');
   const totalWinRR = wins.reduce((sum, t) => sum + (t.rr || 0), 0);
@@ -148,7 +149,7 @@ export function getExpectancy(trades = []) {
 }
 
 export function getTrend(trades = [], key, samples = 10) {
-  if (trades.length < samples * 2) return 0;
+  if (!trades || trades.length < samples * 2) return 0;
   const recent = trades.slice(0, samples);
   const previous = trades.slice(samples, samples * 2);
   
@@ -177,7 +178,7 @@ export function getDrawdownCurve(trades = []) {
     const r = t.result === 'Win' ? (t.rr || 0) : t.result === 'Break Even' ? 0 : -1;
     balance += r;
     if (balance > peak) peak = balance;
-    const dd = peak === 0 ? 0 : ((balance - peak) / (peak || 1)) * 0; // Simplified R-based drawdown
+    const dd = peak === 0 ? 0 : ((balance - peak) / peak) * 100;
     const ddR = balance - peak;
     return {
       index: i + 1,
@@ -214,7 +215,8 @@ export function getMonthlyPerformance(trades = []) {
 }
 
 export function getEquityCurve(trades) {
-  const sorted = [...trades].sort((a, b) => new Date(a.trade_date || a.tradeDate || a.created_at || a.createdAt) - new Date(b.trade_date || b.trade_date || b.created_at || b.createdAt));
+  if (!trades || !trades.length) return [];
+  const sorted = [...trades].sort((a, b) => new Date(a.trade_date || a.tradeDate || a.created_at || a.createdAt) - new Date(b.trade_date || b.tradeDate || b.created_at || b.createdAt));
   let balance = 0;
   
   // Add an initial zero point if no trades exist to help charting
@@ -237,6 +239,7 @@ export function getEquityCurve(trades) {
 }
 
 export function getWinRateByGroup(trades, groupKey) {
+  if (!trades || !trades.length) return [];
   const groups = {};
   trades.forEach(t => {
     const key = t[groupKey] || 'Unknown';
@@ -255,6 +258,7 @@ export function getWinRateByGroup(trades, groupKey) {
 }
 
 export function getStrategyInsights(trades) {
+  if (!trades || !trades.length) return [];
   const groups = {};
   trades.forEach(t => {
     const key = t.strategy || 'Unknown';
@@ -285,6 +289,7 @@ export function getStrategyInsights(trades) {
 }
 
 export function getRRDistribution(trades) {
+  if (!trades || !trades.length) return [];
   const buckets = { '0-0.5': 0, '0.5-1': 0, '1-1.5': 0, '1.5-2': 0, '2-2.5': 0, '2.5-3': 0, '3+': 0 };
   trades.filter(t => t.result === 'Win').forEach(t => {
     const rr = t.rr || 0;

@@ -57,6 +57,7 @@ export default function AnalyticsContent() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     const loadData = async () => {
       try {
         const { getTrades, profileService } = await import('@/lib/storage');
@@ -64,15 +65,17 @@ export default function AnalyticsContent() {
           getTrades(),
           profileService.getSubscription()
         ]);
+        if (!isMounted) return;
         setTrades(fetchedTrades);
         setSubscription(sub);
       } catch (err) {
         console.error('Analytics load failed:', err?.message || err?.details || err?.code || err);
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
     loadData();
+    return () => { isMounted = false; };
   }, []);
 
   if (isLoading) {

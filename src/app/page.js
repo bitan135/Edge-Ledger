@@ -42,6 +42,7 @@ export default function Dashboard() {
   const [greeting, setGreeting] = useState('');
 
   useEffect(() => {
+    let isMounted = true;
     const hours = new Date().getHours();
     if (hours < 12) setGreeting('Good Morning');
     else if (hours < 18) setGreeting('Good Afternoon');
@@ -53,15 +54,17 @@ export default function Dashboard() {
           getTrades(),
           profileService.getProfile()
         ]);
+        if (!isMounted) return;
         setTrades(fetchedTrades);
         setProfile(fetchedProfile);
       } catch (err) {
         console.error('Dashboard load failed:', err?.message || err?.details || err?.code || err);
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
     loadData();
+    return () => { isMounted = false; };
   }, []);
 
   const totalTrades = trades.length;
