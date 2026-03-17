@@ -5,6 +5,7 @@ import { Check, Zap, Crown, Rocket, Loader2, ArrowRight, ShieldCheck, Sparkles }
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { profileService } from '@/lib/storage';
+import { posthog } from '@/lib/posthog';
 
 const plans = [
   {
@@ -58,6 +59,7 @@ export default function BillingPage() {
   }, []);
   const handleUpgrade = (planId) => {
     if (planId === 'free' || planId === currentPlan) return;
+    posthog.capture('upgrade_clicked', { plan_id: planId });
     router.push(`/billing/checkout?plan=${planId}`);
   };
 

@@ -93,7 +93,7 @@ export async function POST(req) {
 
       if (subError) throw subError;
       
-      console.log(`Successfully upgraded user ${userId} to ${planId}`);
+      // Upgrade logged silently — use Supabase logs or PostHog for audit trail
     }
 
     return NextResponse.json({ received: true });

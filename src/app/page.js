@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Cell
+  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, BarChart, Bar, Cell
 } from 'recharts';
 import {
   TrendingUp, Target, BarChart3, Clock, Calendar, ArrowUpRight, ArrowDownRight, Sparkles, Zap

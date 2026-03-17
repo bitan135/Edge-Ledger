@@ -6,8 +6,9 @@ import {
   Plus, Check, ArrowLeft, Sparkles
 } from 'lucide-react';
 import { 
-  saveTrade, getStrategies, canAddTrade
+  saveTrade, getStrategies, canAddTrade, getTrades
 } from '@/lib/storage';
+import { posthog } from '@/lib/posthog';
 import { Crown } from 'lucide-react';
 import TradeForm from '@/components/TradeForm';
 
@@ -64,6 +65,18 @@ export default function AddTrade() {
 
       try {
         await saveTrade(tradeToSave);
+        
+        // Track Event
+        const allTrades = await getTrades();
+        posthog.capture('trade_logged', {
+          instrument: tradeToSave.instrument,
+          result: tradeToSave.result,
+          rr: tradeToSave.rr
+        });
+        
+        if (allTrades.length === 1) {
+          posthog.capture('first_trade_logged');
+        }
       } catch (saveErr) {
         // Fallback for schema mismatches (e.g. discipline_score not yet propagated)
         if (saveErr.message?.includes('discipline_score') || saveErr.code === 'PGRST204') {

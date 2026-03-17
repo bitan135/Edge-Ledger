@@ -53,13 +53,9 @@ export async function POST(req) {
       order_description: `SMC Journal ${planId.replace('_', ' ').toUpperCase()} Plan${isPromo ? ' (PROMO: SMC2026)' : ''}`
     };
 
-    console.log('--- Payment Request Started ---');
-    console.log('Plan:', planId);
-    console.log('Payload:', JSON.stringify(payload, null, 2));
 
     const payment = await nowPaymentsService.createPayment(payload);
     
-    console.log('NOWPayments Response:', JSON.stringify(payment, null, 2));
 
     if (payment.status === false || payment.error || !payment.payment_id) {
        const msg = payment.message || payment.error || 'NOWPayments API Error';

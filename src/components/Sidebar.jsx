@@ -17,10 +17,7 @@ import {
   User as UserIcon,
   Crown,
   Loader2,
-  Sparkles,
-  Heart,
-  Copy,
-  Check
+  Sparkles
 } from 'lucide-react';
 
 const navItems = [
@@ -30,7 +27,6 @@ const navItems = [
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/strategies', label: 'Strategies', icon: Target },
   { href: '/billing', label: 'Billing', icon: Crown },
-  { href: '/donation', label: 'Donation', icon: Heart },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -93,14 +89,6 @@ export default function Sidebar() {
     router.refresh();
   };
 
-  const [copiedDonation, setCopiedDonation] = useState(false);
-  const donationAddr = "0xA7608672cc489538F3b96c32f2f0eee74fe91205";
-
-  const copyDonation = () => {
-    navigator.clipboard.writeText(donationAddr);
-    setCopiedDonation(true);
-    setTimeout(() => setCopiedDonation(false), 2000);
-  };
 
   if (pathname === '/login' || pathname === '/signup' || pathname === '/auth/callback') return null;
 

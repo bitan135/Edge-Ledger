@@ -157,7 +157,7 @@ export default function Login() {
           onClick={handleGoogleLogin}
           className="w-full mt-8 py-5 rounded-[24px] glass-effect border-[var(--glass-border)] text-[var(--foreground)] font-black text-sm hover:bg-[var(--card-hover)] transition-all flex items-center justify-center gap-3 tracking-[0.2em] uppercase"
         >
-          <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-5 h-5" alt="Google" />
+          <img src="/google-icon.svg" className="w-5 h-5" alt="Google" />
           Google Sync
         </button>
 

@@ -17,9 +17,6 @@
   --glass-border: rgba(255, 255, 255, 0.05);
   --glass-bg: rgba(255, 255, 255, 0.015);
   
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 10, 10, 11;
-  --background-end-rgb: 0, 0, 0;
   --accent-hover: #818CF8;
   --profit: #10B981;
   --profit-bg: rgba(16, 185, 129, 0.1);
