@@ -1,4 +1,4 @@
--- EdgeLedger Database Schema
+-- SMC Journal Database Schema
 -- Run this in your Supabase SQL Editor
 
 -- 1. Profiles Table (Extends Auth.Users)
