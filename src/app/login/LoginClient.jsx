@@ -12,11 +12,16 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const next = searchParams.get('next') || '/dashboard';
-  const host = typeof window !== 'undefined' ? window.location.host : '';
-  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+  const [mounted, setMounted] = useState(false);
+  const [host, setHost] = useState('');
+  const [isLocal, setIsLocal] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const currentHost = window.location.host;
+    setHost(currentHost);
+    setIsLocal(currentHost.includes('localhost') || currentHost.includes('127.0.0.1'));
+  }, []);
 
   const getErrorMessage = (err) => {
     if (!err) return null;
