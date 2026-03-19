@@ -70,7 +70,15 @@ export async function GET(request) {
       // The Supabase client in server.js handles cookie setting via setAll during exchange
       // We don't need manual bridging anymore.
       
-      return NextResponse.redirect(new URL(next, origin));
+      // The Supabase client in server.js handles cookie setting via setAll during exchange.
+      // However, NextResponse.redirect needs explicit bridging in some Next.js versions 
+      // to ensure the set-cookie headers are carried over to the immediate next request.
+      const response = NextResponse.redirect(new URL(next, origin));
+      cookieStore.getAll().forEach((cookie) => {
+        response.cookies.set(cookie.name, cookie.value);
+      });
+      
+      return response;
     }
     console.error('OAuth Code Exchange Error:', error);
   } else {
