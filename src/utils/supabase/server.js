@@ -26,6 +26,7 @@ export async function createClient() {
                 secure: isLocal ? false : true,
                 sameSite: isLocal ? 'lax' : 'none',
                 path: '/',
+                domain: isLocal ? undefined : '.smcjournal.app',
               };
               cookieStore.set(name, value, cookieOptions);
             });

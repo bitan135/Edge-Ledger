@@ -39,6 +39,7 @@ export async function updateSession(request) {
               secure: isLocal ? false : true,
               sameSite: isLocal ? 'lax' : 'none',
               path: '/',
+              domain: isLocal ? undefined : '.smcjournal.app',
             };
             
             request.cookies.set({ name, value, ...cookieOptions });
@@ -95,6 +96,7 @@ export async function updateSession(request) {
       secure: isLocal ? false : true,
       sameSite: isLocal ? 'lax' : 'none',
       path: '/',
+      domain: isLocal ? undefined : '.smcjournal.app',
     });
   });
 

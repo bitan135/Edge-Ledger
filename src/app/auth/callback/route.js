@@ -73,7 +73,9 @@ export async function GET(request) {
       
       // The Supabase client in server.js handles cookie setting via setAll during exchange.
       // Redirect to the canonical site URL to ensure unified domain session recognition.
-      return NextResponse.redirect(new URL(next, ENV.SITE_URL));
+      const isConfigured = ENV.SITE_URL && !ENV.SITE_URL.includes('localhost');
+      const finalUrl = isConfigured ? `https://www.smcjournal.app${next}` : new URL(next, ENV.SITE_URL).toString();
+      return NextResponse.redirect(finalUrl);
     }
     console.error('OAuth Code Exchange Error:', error);
   } else {
