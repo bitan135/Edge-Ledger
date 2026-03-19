@@ -11,13 +11,11 @@ export async function updateSession(request) {
 
   // 0. Canonical Domain Enforcement (Production only)
   // Ensures session cookies match the intended domain (Apex vs WWW)
-  if (!isLocal && ENV.SITE_URL.includes('https://www.')) {
-    if (host === 'smcjournal.app') {
-      const url = request.nextUrl.clone();
-      url.host = 'www.smcjournal.app';
-      url.protocol = 'https';
-      return NextResponse.redirect(url);
-    }
+  if (!isLocal && host === 'smcjournal.app') {
+    const url = request.nextUrl.clone();
+    url.host = 'www.smcjournal.app';
+    url.protocol = 'https';
+    return NextResponse.redirect(url);
   }
 
   let supabaseResponse = NextResponse.next({

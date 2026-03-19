@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { TrendingUp, Mail, Lock, Eye, EyeOff, ShieldCheck, Github, AlertCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,6 +13,10 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get('next') || '/dashboard';
+  const host = typeof window !== 'undefined' ? window.location.host : '';
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
 
   const getErrorMessage = (err) => {
     if (!err) return null;
@@ -51,7 +55,7 @@ export default function Login() {
       const { error: googleError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: isConfigured ? 'https://www.smcjournal.app/auth/callback' : `${window.location.origin}/auth/callback`,
+          redirectTo: isLocal ? `${window.location.origin}/auth/callback` : 'https://www.smcjournal.app/auth/callback',
         },
       });
       if (googleError) throw googleError;

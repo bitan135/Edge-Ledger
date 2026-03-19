@@ -5,5 +5,13 @@ export function createClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
   
-  return createBrowserClient(url, key);
+  const host = typeof window !== 'undefined' ? window.location.host : '';
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+
+  return createBrowserClient(url, key, {
+    cookieOptions: {
+      domain: isLocal ? undefined : '.smcjournal.app',
+      path: '/',
+    }
+  });
 }
