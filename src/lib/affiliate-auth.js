@@ -1,33 +1,19 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.AFFILIATE_JWT_SECRET || 'fallback-secret-for-dev-only-replace-in-prod';
+const JWT_SECRET = process.env.AFFILIATE_JWT_SECRET || 'dev-secret-change-in-production';
 
-/**
- * Generates a JWT for an affiliate session.
- * @param {Object} payload - User/Affiliate data
- * @returns {string} Token
- */
-export function signAffiliateToken(payload) {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
+if (!process.env.AFFILIATE_JWT_SECRET && process.env.NODE_ENV === 'production') {
+  console.warn('WARNING: AFFILIATE_JWT_SECRET is missing in production environment');
 }
 
-/**
- * Verifies an affiliate JWT.
- * @param {string} token 
- * @returns {Object|null} Decoded payload or null
- */
+export function signAffiliateToken(affiliateId, email) {
+  return jwt.sign({ affiliateId, email }, JWT_SECRET, { expiresIn: '24h' });
+}
+
 export function verifyAffiliateToken(token) {
   try {
     return jwt.verify(token, JWT_SECRET);
-  } catch (error) {
+  } catch {
     return null;
   }
-}
-
-/**
- * Generates a random referral code.
- * @returns {string} 8-character alphanumeric code
- */
-export function generateReferralCode() {
-  return Math.random().toString(36).substring(2, 10).toUpperCase();
 }

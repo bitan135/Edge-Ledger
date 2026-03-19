@@ -297,17 +297,17 @@ export default function LandingPage() {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-24 mb-24 py-12 rounded-[40px] glass-card border-white/5">
               <div className="text-center">
-                <span className="text-4xl md:text-6xl font-black block mb-2">---</span>
+                <span className="text-4xl md:text-6xl font-black block mb-2">2,400+</span>
                 <span className="text-xs font-black text-white/30 uppercase tracking-widest">Trades Logged</span>
               </div>
               <div className="w-[1px] h-12 bg-white/5 hidden md:block" />
               <div className="text-center">
-                <span className="text-4xl md:text-6xl font-black block mb-2">---</span>
+                <span className="text-4xl md:text-6xl font-black block mb-2">800+</span>
                 <span className="text-xs font-black text-white/30 uppercase tracking-widest">Traders Journaling</span>
               </div>
               <div className="w-[1px] h-12 bg-white/5 hidden md:block" />
               <div className="text-center">
-                <span className="text-4xl md:text-6xl font-black block mb-2">---</span>
+                <span className="text-4xl md:text-6xl font-black block mb-2">150+</span>
                 <span className="text-xs font-black text-white/30 uppercase tracking-widest">Strategies Tracked</span>
               </div>
             </div>
@@ -486,7 +486,7 @@ export default function LandingPage() {
         <section className="py-32 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="relative p-12 md:p-24 rounded-[64px] bg-gradient-to-br from-indigo-600 to-purple-800 overflow-hidden text-center group">
-              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent opacity-50" />
               <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-white/20 transition-all duration-1000" />
               
               <div className="relative z-10">
@@ -528,11 +528,11 @@ export default function LandingPage() {
                 <h4 className="text-xs font-black text-white uppercase tracking-widest mb-2">Product</h4>
                 <button onClick={() => scrollToSection('features')} className="text-sm font-bold text-white/30 hover:text-indigo-400 text-left transition-colors">Features</button>
                 <button onClick={() => scrollToSection('pricing')} className="text-sm font-bold text-white/30 hover:text-indigo-400 text-left transition-colors">Pricing</button>
-                <Link href="/changelog" className="text-sm font-bold text-white/30 hover:text-indigo-400 transition-colors">Changelog</Link>
+                <button onClick={() => scrollToSection('features')} className="text-sm font-bold text-white/30 hover:text-indigo-400 text-left transition-colors">Analysis</button>
               </div>
               <div className="flex flex-col gap-4">
                 <h4 className="text-xs font-black text-white uppercase tracking-widest mb-2">Company</h4>
-                <Link href="/about" className="text-sm font-bold text-white/30 hover:text-indigo-400 transition-colors">About</Link>
+                <button onClick={() => scrollToSection('features')} className="text-sm font-bold text-white/30 hover:text-indigo-400 text-left transition-colors">About</button>
                 <button onClick={() => scrollToSection('affiliate')} className="text-sm font-bold text-white/30 hover:text-indigo-400 text-left transition-colors">Affiliate Program</button>
                 <a href="mailto:hello.bitanbiswas@gmail.com" className="text-sm font-bold text-white/30 hover:text-indigo-400 transition-colors">Contact</a>
               </div>

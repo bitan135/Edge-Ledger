@@ -15,7 +15,6 @@ import {
   TrendingUp,
   LogOut,
   User as UserIcon,
-  Users,
   Crown,
   Loader2,
   Sparkles,
@@ -32,7 +31,6 @@ const navItems = [
   { href: '/billing', label: 'Billing', icon: Crown },
   { href: '/donation', label: 'Donation', icon: Heart },
   { href: '/settings', label: 'Settings', icon: Settings },
-  { href: '/dashboard/affiliate', label: 'Affiliate', icon: Users },
 ];
 
 export default function Sidebar() {
@@ -44,6 +42,19 @@ export default function Sidebar() {
   const [subscription, setSubscription] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const isPublicRoute =
+    pathname === '/' ||
+    pathname === '/login' ||
+    pathname === '/signup' ||
+    pathname === '/features' ||
+    pathname === '/pricing' ||
+    pathname === '/privacy' ||
+    pathname === '/terms' ||
+    pathname === '/forgot-password' ||
+    pathname === '/reset-password' ||
+    pathname.startsWith('/affiliate');
+
+  if (isPublicRoute) return null;
   useEffect(() => {
     const isConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
     
@@ -234,7 +245,7 @@ export default function Sidebar() {
       {/* Mobile Bottom Nav */}
       <nav className="lg:hidden fixed bottom-4 left-4 right-4 h-16 md:h-20 glass-card rounded-[32px] border-[var(--glass-border)] z-50 flex items-center justify-around px-2 shadow-2xl">
         {navItems
-          .filter(item => ['Dashboard', 'Trades', 'Add Trade', 'Analytics', 'Affiliate'].includes(item.label))
+          .filter(item => ['Dashboard', 'Trades', 'Add Trade', 'Analytics', 'Settings'].includes(item.label))
           .map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
