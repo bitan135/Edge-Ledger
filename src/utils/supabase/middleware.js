@@ -11,7 +11,7 @@ export async function updateSession(request) {
 
   // 0. Canonical Domain Enforcement (Production only)
   // Ensures session cookies match the intended domain (Apex vs WWW)
-  if (!isLocal && host === 'smcjournal.app') {
+  if (!isLocal && host.includes('smcjournal.app') && !host.startsWith('www.')) {
     const url = request.nextUrl.clone();
     url.host = 'www.smcjournal.app';
     url.protocol = 'https';

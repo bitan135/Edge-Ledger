@@ -100,8 +100,8 @@ export default function Sidebar() {
   }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    window.location.href = '/?logout=true';
+    // Navigate to the server-side logout route to ensure .smcjournal.app cookies are cleared
+    window.location.href = '/api/auth/logout';
   };
 
 
