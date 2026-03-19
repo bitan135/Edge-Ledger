@@ -40,6 +40,12 @@ export default function Dashboard() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [greeting, setGreeting] = useState('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -128,7 +134,7 @@ export default function Dashboard() {
                 <div className="flex items-center gap-2 mb-3">
                       <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
                         <Calendar size={12} className="text-[var(--accent)]" />
-                        {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                        {mounted ? new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) : 'Loading date...'}
                     </span>
                     <span className="flex items-center gap-2 px-3 py-1 rounded-full glass-effect border-[var(--glass-border)] text-[var(--accent)] text-[10px] font-black uppercase tracking-[0.2em] animate-pulse leading-relaxed">
                         <Sparkles size={12} /> Live Engine

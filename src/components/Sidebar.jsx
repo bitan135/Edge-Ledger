@@ -54,7 +54,6 @@ export default function Sidebar() {
     pathname === '/reset-password' ||
     pathname.startsWith('/affiliate');
 
-  if (isPublicRoute) return null;
   useEffect(() => {
     const isConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
     
@@ -89,9 +88,12 @@ export default function Sidebar() {
     getUser();
 
     const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((_event, session) => {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(session?.user ?? null);
       if (!session) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setProfile(null);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setSubscription(null);
       }
     });
@@ -113,6 +115,8 @@ export default function Sidebar() {
     if (plan === 'pro') return 'Pro Trader';
     return 'Free Plan';
   };
+
+  if (isPublicRoute) return null;
 
   return (
     <>

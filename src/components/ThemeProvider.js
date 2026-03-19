@@ -8,20 +8,24 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState('auto');
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) setTheme(savedTheme);
-    
-    const savedCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-    setSidebarCollapsed(savedCollapsed);
-  }, []);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const handle = requestAnimationFrame(() => {
-      setMounted(true);
-    });
-    return () => cancelAnimationFrame(handle);
+    // 1. Mark as mounted to prevent hydration mismatches
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+
+    // 2. Hydrate theme from localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTheme(t => (t === savedTheme ? t : savedTheme));
+    }
+    
+    // 3. Hydrate sidebar state
+    const savedCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSidebarCollapsed(c => (c === savedCollapsed ? c : savedCollapsed));
   }, []);
 
   useEffect(() => {

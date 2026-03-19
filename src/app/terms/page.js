@@ -29,7 +29,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-black text-white mb-4 uppercase tracking-widest">2. Description of Service</h2>
-            <p>SMC Journal is a performance tracking tool for traders. We provide analytics, journaling capabilities, and data visualization. The "Free" plan is provided at no cost, while "Pro" and "Legacy" are paid subscriptions or one-time purchases.</p>
+            <p>SMC Journal is a performance tracking tool for traders. We provide analytics, journaling capabilities, and data visualization. The &quot;Free&quot; plan is provided at no cost, while &quot;Pro&quot; and &quot;Legacy&quot; are paid subscriptions or one-time purchases.</p>
           </section>
 
           <section>
