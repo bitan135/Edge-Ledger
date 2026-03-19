@@ -47,13 +47,13 @@ export default function LandingPage() {
           </div>
           
           <div className="hidden md:flex items-center gap-10">
-            <button onClick={() => scrollToSection('features')} className="text-sm font-bold text-white/60 hover:text-white transition-colors">Features</button>
-            <button onClick={() => scrollToSection('proof')} className="text-sm font-bold text-white/60 hover:text-white transition-colors">Performance</button>
-            <Link href="/pricing" className="text-sm font-bold text-white/60 hover:text-white transition-colors">Pricing</Link>
+            <button onClick={() => scrollToSection('features')} className="text-sm font-bold text-white/70 hover:text-white transition-colors">Features</button>
+            <button onClick={() => scrollToSection('proof')} className="text-sm font-bold text-white/70 hover:text-white transition-colors">Performance</button>
+            <Link href="/pricing" className="text-sm font-bold text-white/70 hover:text-white transition-colors">Pricing</Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-bold py-3 px-6 rounded-xl hover:bg-white/5 transition-colors">Log In</Link>
+            <Link href="/login" className="text-sm font-bold py-3 px-6 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-colors">Log In</Link>
             <Link href="/signup" className="text-sm font-bold py-3 px-6 bg-white text-black rounded-xl hover:bg-white/90 transition-transform active:scale-95">Get Started</Link>
           </div>
         </div>
@@ -70,12 +70,12 @@ export default function LandingPage() {
             Institutional Grade Journaling
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-black tracking-tightest leading-[0.9] mb-8 animate-slide-up">
+          <h1 className="text-5xl md:text-8xl font-black tracking-tightest leading-[0.9] mb-8 animate-slide-up">
             Quantify Your <span className="text-gradient">SMC Edge.</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-white/60 font-medium max-w-2xl mx-auto mb-12 leading-relaxed animate-slide-up animation-delay-200">
-            Stop guessing. Start tracking BOC, CHoCH, and FVG setups with institutional-grade analytics designed for Smart Money Concept traders.
+          <p className="text-lg md:text-2xl text-white/80 font-medium max-w-2xl mx-auto mb-12 leading-relaxed animate-slide-up animation-delay-200">
+            Stop guessing. Start tracking BOC, CHoCH, and FVG setups with institutional-grade analytics designed specifically for Smart Money Concept traders.
           </p>
           
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 animate-slide-up animation-delay-500">
@@ -89,18 +89,18 @@ export default function LandingPage() {
           </div>
 
           {/* Social Proof Stats */}
-          <div id="proof" className="mt-32 pt-24 border-t border-white/5 grid grid-cols-1 md:grid-cols-3 gap-12 text-center opacity-80">
-            <div>
-              <div className="text-4xl font-black mb-2">2,400+</div>
-              <div className="text-xs font-black uppercase tracking-widest text-white/30">Trades Logged</div>
+          <div id="proof" className="mt-32 pt-24 border-t border-white/10 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+            <div className="space-y-2">
+              <div className="text-4xl md:text-5xl font-black text-white">2,400+</div>
+              <div className="text-xs font-black uppercase tracking-[0.2em] text-indigo-400">Trades Logged</div>
             </div>
-            <div>
-              <div className="text-4xl font-black mb-2">800+</div>
-              <div className="text-xs font-black uppercase tracking-widest text-white/30">Active Traders</div>
+            <div className="space-y-2">
+              <div className="text-4xl md:text-5xl font-black text-white">800+</div>
+              <div className="text-xs font-black uppercase tracking-[0.2em] text-indigo-400">Active Traders</div>
             </div>
-            <div>
-              <div className="text-4xl font-black mb-2">150+</div>
-              <div className="text-xs font-black uppercase tracking-widest text-white/30">Strategies Validated</div>
+            <div className="space-y-2">
+              <div className="text-4xl md:text-5xl font-black text-white">150+</div>
+              <div className="text-xs font-black uppercase tracking-[0.2em] text-indigo-400">Strategies Validated</div>
             </div>
           </div>
         </div>
@@ -114,8 +114,8 @@ export default function LandingPage() {
               <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-8 leading-tight text-white">
                 Most SMC traders fail because they lack <span className="text-indigo-500">structured data.</span>
               </h2>
-              <p className="text-xl text-white/50 leading-relaxed mb-10">
-                Scrolling through charts isn't "backtesting." Successful institutional trading requires rigorous data capture and cognitive analysis.
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10">
+                Scrolling through charts isn't "backtesting." Successful institutional trading requires rigorous data capture and cognitive analysis. SMC Journal provides the framework you need to scale.
               </p>
               
               <div className="space-y-6">
@@ -162,32 +162,32 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-24">
             <h2 className="text-4xl md:text-7xl font-black mb-6 tracking-tight text-white">The Professional's Toolset.</h2>
-            <p className="text-xl text-white/50 max-w-2xl mx-auto">Everything you need to turn SMC theory into a high-probability trading machine.</p>
+            <p className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto">Everything you need to turn SMC theory into a high-probability trading machine with zero friction.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-10 rounded-[40px] glass-card border-white/5 hover:border-indigo-500/30 transition-all group hover:-translate-y-2 duration-500">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-8 border border-white/5 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
+            <div className="p-10 rounded-[40px] glass-card border-white/10 hover:border-indigo-500/30 transition-all group hover:-translate-y-2 duration-500">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-8 border border-white/10 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
                 <Layers size={28} />
               </div>
               <h3 className="text-2xl font-black mb-4 text-white">Contextual Logging</h3>
-              <p className="text-white/40 leading-relaxed font-medium">Tag confluences like H4 Bias, M15 CHoCH, and FVG Tap in seconds. Native SMC terminology for serious traders.</p>
+              <p className="text-white/70 leading-relaxed font-medium">Tag confluences like H4 Bias, M15 CHoCH, and FVG Tap in seconds. Native SMC terminology for serious trading journal users.</p>
             </div>
 
-            <div className="p-10 rounded-[40px] glass-card border-white/5 hover:border-indigo-500/30 transition-all group hover:-translate-y-2 duration-500">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-8 border border-white/5 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
+            <div className="p-10 rounded-[40px] glass-card border-white/10 hover:border-indigo-500/30 transition-all group hover:-translate-y-2 duration-500">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-8 border border-white/10 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
                 <BarChart3 size={28} />
               </div>
               <h3 className="text-2xl font-black mb-4 text-white">Advanced Analytics</h3>
-              <p className="text-white/40 leading-relaxed font-medium">Deep dive into win rates by session, drawdown curves, and equity growth. Data-driven psychological insights.</p>
+              <p className="text-white/70 leading-relaxed font-medium">Deep dive into win rates by session, drawdown curves, and equity growth. Data-driven psychological insights for forex and crypto.</p>
             </div>
 
-            <div className="p-10 rounded-[40px] glass-card border-white/5 hover:border-indigo-500/30 transition-all group hover:-translate-y-2 duration-500">
-              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-8 border border-white/5 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
+            <div className="p-10 rounded-[40px] glass-card border-white/10 hover:border-indigo-500/30 transition-all group hover:-translate-y-2 duration-500">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-8 border border-white/10 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-500">
                 <Target size={28} />
               </div>
               <h3 className="text-2xl font-black mb-4 text-white">Edge Validation</h3>
-              <p className="text-white/40 leading-relaxed font-medium">Is your CHoCH setup actually profitable? Our system isolates setup data to confirm what works in real market conditions.</p>
+              <p className="text-white/70 leading-relaxed font-medium">Is your CHoCH setup actually profitable? our institutional-grade system confirms what works in real market conditions.</p>
             </div>
           </div>
         </div>
@@ -218,30 +218,30 @@ export default function LandingPage() {
               <TrendingUp size={24} className="text-indigo-500" />
               <span className="text-xl font-black tracking-tighter text-white">SMC JOURNAL</span>
             </div>
-            <p className="text-sm font-bold text-white/30 leading-relaxed">
-              The institutional-grade trading journal for Smart Money Concept traders. Built by traders, for traders.
+            <p className="text-sm font-bold text-white/50 leading-relaxed">
+              The institutional-grade trading journal for Smart Money Concept traders. Built by traders, for traders. Quantify your edge with data.
             </p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-16">
             <div className="flex flex-col gap-4">
-              <h4 className="text-xs font-black text-white uppercase tracking-widest mb-2">Product</h4>
-              <button onClick={() => scrollToSection('features')} className="text-sm font-bold text-white/30 hover:text-indigo-400 text-left transition-colors">Features</button>
-              <Link href="/pricing" className="text-sm font-bold text-white/30 hover:text-indigo-400 transition-colors">Pricing</Link>
-              <Link href="/affiliate" className="text-sm font-bold text-white/30 hover:text-indigo-400 transition-colors">Affiliate</Link>
+              <h4 className="text-xs font-black text-white/90 uppercase tracking-widest mb-2">Product</h4>
+              <button onClick={() => scrollToSection('features')} className="text-sm font-bold text-white/50 hover:text-indigo-400 text-left transition-colors">Features</button>
+              <Link href="/pricing" className="text-sm font-bold text-white/50 hover:text-indigo-400 transition-colors">Pricing</Link>
+              <Link href="/affiliate" className="text-sm font-bold text-white/50 hover:text-indigo-400 transition-colors">Affiliate</Link>
             </div>
             <div className="flex flex-col gap-4">
-              <h4 className="text-xs font-black text-white uppercase tracking-widest mb-2">Company</h4>
-              <Link href="/privacy" className="text-sm font-bold text-white/30 hover:text-indigo-400 transition-colors">Privacy</Link>
-              <Link href="/terms" className="text-sm font-bold text-white/30 hover:text-indigo-400 transition-colors">Terms</Link>
+              <h4 className="text-xs font-black text-white/90 uppercase tracking-widest mb-2">Company</h4>
+              <Link href="/privacy" className="text-sm font-bold text-white/50 hover:text-indigo-400 transition-colors">Privacy</Link>
+              <Link href="/terms" className="text-sm font-bold text-white/50 hover:text-indigo-400 transition-colors">Terms</Link>
             </div>
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-xs font-bold text-white/20 uppercase tracking-widest">© 2026 SMC Journal. All rights reserved.</p>
+        <div className="max-w-7xl mx-auto mt-24 pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
+          <p className="text-xs font-bold text-white/40 uppercase tracking-widest">© 2026 SMC Journal. All rights reserved.</p>
           <div className="flex gap-8">
-            <span className="text-xs font-bold text-white/20 uppercase tracking-widest">Sustainably coded in India.</span>
+            <span className="text-xs font-bold text-white/40 uppercase tracking-widest">Sustainably coded in India.</span>
           </div>
         </div>
       </footer>

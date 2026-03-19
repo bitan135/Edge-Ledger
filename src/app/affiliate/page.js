@@ -51,8 +51,8 @@ export default function AffiliatePublicPage() {
             <span className="text-xl font-black tracking-tighter">SMC JOURNAL</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/affiliate/login" className="text-sm font-bold text-white/60 hover:text-white transition-colors">Partner Login</Link>
-            <Link href="/" className="text-sm font-bold py-3 px-6 glass-card border-white/10 rounded-xl hover:bg-white/5 transition-all text-white">Back to Site</Link>
+            <Link href="/affiliate/login" className="text-sm font-bold text-white/70 hover:text-white transition-colors">Partner Login</Link>
+            <Link href="/" className="text-sm font-bold py-3 px-6 glass-card border-white/20 rounded-xl hover:bg-white/5 transition-all text-white">Back to Site</Link>
           </div>
         </div>
       </nav>
@@ -71,8 +71,8 @@ export default function AffiliatePublicPage() {
             Partner with the #1 <br /> <span className="text-gradient">SMC Journaling Tool.</span>
           </h1>
           
-          <p className="text-xl text-white/50 max-w-2xl mx-auto mb-12 font-medium">
-            Earn 30% lifetime recurring commissions by helping your audience quantify their edge with institutional-grade data.
+          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 font-medium">
+            Earn 30% lifetime recurring commissions by helping your audience quantify their edge with institutional-grade data. High transparency, no friction.
           </p>
 
           <button onClick={() => document.getElementById('apply').scrollIntoView({ behavior: 'smooth' })} className="px-10 py-5 bg-white text-black rounded-2xl font-black text-lg hover:bg-white/90 transition-all flex items-center justify-center gap-3 mx-auto shadow-2xl shadow-white/10 border-0">
@@ -89,25 +89,25 @@ export default function AffiliatePublicPage() {
             {
               icon: <PieChart size={28} className="text-indigo-400" />,
               title: "30% Lifetime Share",
-              desc: "Earn every month as long as your referred trader remains a subscriber. No caps, no limits."
+              desc: "Earn every month as long as your referred trader remains a subscriber. No caps, no unreadable fine print."
             },
             {
               icon: <Zap size={28} className="text-yellow-400" />,
               title: "Best-in-Class CR",
-              desc: "High converting trial-to-subscription funnel designed specifically for the SMC community."
+              desc: "High converting trial-to-subscription funnel designed specifically for the SMC and forex community."
             },
             {
               icon: <BarChart size={28} className="text-emerald-400" />,
               title: "Real-time Metrics",
-              desc: "Dedicated partner dashboard with live click-tracking and conversion data reporting."
+              desc: "Dedicated partner dashboard with high-visibility click-tracking and conversion data reporting."
             }
           ].map((benefit, i) => (
-            <div key={i} className="p-10 rounded-[40px] glass-card border-white/5 hover:border-white/10 transition-all">
-              <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/5">
+            <div key={i} className="p-10 rounded-[40px] glass-card border-white/10 hover:border-white/20 transition-all">
+              <div className="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-8 border border-white/10">
                 {benefit.icon}
               </div>
-              <h3 className="text-2xl font-black mb-4 text-white">{benefit.title}</h3>
-              <p className="text-white/40 leading-relaxed font-medium">{benefit.desc}</p>
+              <h3 className="text-2xl font-black mb-4 text-white uppercase tracking-tight">{benefit.title}</h3>
+              <p className="text-white/70 leading-relaxed font-medium">{benefit.desc}</p>
             </div>
           ))}
         </div>
@@ -140,23 +140,23 @@ export default function AffiliatePublicPage() {
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-3">
-                    <label className="text-xs font-black uppercase tracking-widest text-white/30 ml-2">Full Name</label>
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50 ml-2">Full Name</label>
                     <input 
                       required
                       type="text" 
                       placeholder="Your Name"
-                      className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 outline-none focus:border-indigo-500/50 transition-all font-bold placeholder:text-white/10 text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-indigo-500 transition-all font-bold placeholder:text-white/20 text-white"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-xs font-black uppercase tracking-widest text-white/30 ml-2">Email Address</label>
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50 ml-2">Email Address</label>
                     <input 
                       required
                       type="email" 
                       placeholder="partner@example.com"
-                      className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 outline-none focus:border-indigo-500/50 transition-all font-bold placeholder:text-white/10 text-white"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-indigo-500 transition-all font-bold placeholder:text-white/20 text-white"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                     />
@@ -164,24 +164,24 @@ export default function AffiliatePublicPage() {
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-xs font-black uppercase tracking-widest text-white/30 ml-2">Primary Platform (Link)</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50 ml-2">Primary Platform (Link)</label>
                   <input 
                     required
                     type="text" 
-                    placeholder="YouTube / X / VIP Discord Link"
-                    className="w-full bg-white/5 border border-white/5 rounded-2xl px-6 py-4 outline-none focus:border-indigo-500/50 transition-all font-bold placeholder:text-white/10 text-white"
+                    placeholder="YouTube / Instagram / X / Discord Link"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-indigo-500 transition-all font-bold placeholder:text-white/20 text-white"
                     value={formData.platform}
                     onChange={(e) => setFormData({...formData, platform: e.target.value})}
                   />
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-xs font-black uppercase tracking-widest text-white/30 ml-2">Audience Description</label>
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50 ml-2">Audience Description</label>
                   <textarea 
                     required
-                    placeholder="Tell us about your audience and how you plan to promote SMC Journal..."
+                    placeholder="Tell us about your audience size and how you plan to promote SMC Journal to traders..."
                     rows={4}
-                    className="w-full bg-white/5 border border-white/5 rounded-3xl px-6 py-4 outline-none focus:border-indigo-500/50 transition-all font-bold placeholder:text-white/10 resize-none text-white"
+                    className="w-full bg-white/5 border border-white/10 rounded-3xl px-6 py-4 outline-none focus:border-indigo-500 transition-all font-bold placeholder:text-white/20 resize-none text-white text-base"
                     value={formData.audience}
                     onChange={(e) => setFormData({...formData, audience: e.target.value})}
                   />

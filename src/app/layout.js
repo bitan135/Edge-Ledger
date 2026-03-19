@@ -16,8 +16,9 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: 'SMC Journal — Smart Money Trading Journal',
-  description: 'The free institutional-grade trading journal for Smart Money Concept traders. Track BOS, CHoCH, FVG setups. Analyse your edge. Completely free forever.',
+  title: 'SMC Journal — The Free Smart Money Trading Journal',
+  description: 'The #1 free institutional-grade trading journal for Smart Money Concept (SMC) traders. Log BOC, CHoCH, and FVG setups with deep analytics. Optimize your forex edge today.',
+  keywords: 'trading journal, SMC journal, free forex journal, smart money concepts, trading analytics, forex trade log, BOC CHoCH FVG, institutional trading tool',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://smcjournal.com'),
   icons: {
     icon: [
@@ -29,8 +30,8 @@ export const metadata = {
     ],
   },
   openGraph: {
-    title: 'SMC Journal — Smart Money Trading Journal',
-    description: 'The free SMC trading journal. Log trades, tag confluences, analyse your edge. Free forever.',
+    title: 'SMC Journal — The #1 SMC Trading Journal',
+    description: 'Log your SMC trades with precision. Free forever institutional-grade analytics for forex and crypto traders.',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://smcjournal.com',
     siteName: 'SMC Journal',
     images: [
@@ -46,8 +47,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SMC Journal — Smart Money Trading Journal',
-    description: 'The free SMC trading journal. Log trades, tag confluences, analyse your edge.',
+    title: 'SMC Journal — Master your SMC Edge',
+    description: 'The free institutional-grade trading journal. Analytics for the serious SMC trader.',
     images: ['/og-image.png'],
   },
 };
