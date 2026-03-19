@@ -55,4 +55,45 @@ AND column_name IN ('trade_date', 'emotional_state', 'discipline_score', 'rule_a
 -- Confirm RPC exists:
 SELECT routine_name FROM information_schema.routines 
 WHERE routine_name = 'delete_user';
+
+## Step 3: Affiliate System
+```sql
+-- Migration: Affiliate System
+-- Date: 2026-03-19
+
+CREATE TABLE IF NOT EXISTS public.affiliates (
+  id UUID PRIMARY KEY REFERENCES public.profiles(id) ON DELETE CASCADE,
+  referral_code TEXT UNIQUE NOT NULL,
+  total_referrals INTEGER DEFAULT 0,
+  total_earnings_usd DECIMAL(12, 2) DEFAULT 0.00,
+  withdrawal_address TEXT,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS public.referrals (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  affiliate_id UUID NOT NULL REFERENCES public.affiliates(id) ON DELETE CASCADE,
+  referred_user_id UUID UNIQUE REFERENCES public.profiles(id) ON DELETE SET NULL,
+  status TEXT CHECK (status IN ('pending', 'completed', 'cancelled')) DEFAULT 'pending',
+  commission_amount_usd DECIMAL(12, 2) DEFAULT 0.00,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS referred_by UUID REFERENCES public.affiliates(id);
+
+ALTER TABLE public.affiliates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.referrals ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view their own affiliate profile" ON public.affiliates FOR SELECT USING (auth.uid() = id);
+CREATE POLICY "Users can update their own affiliate profile" ON public.affiliates FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "Affiliates can view their own referrals" ON public.referrals FOR SELECT USING (auth.uid() = affiliate_id);
+
+GRANT ALL ON public.affiliates TO service_role;
+GRANT ALL ON public.referrals TO service_role;
+
+CREATE INDEX IF NOT EXISTS idx_affiliates_referral_code ON public.affiliates(referral_code);
+CREATE INDEX IF NOT EXISTS idx_profiles_referred_by ON public.profiles(referred_by);
+```
 ```
