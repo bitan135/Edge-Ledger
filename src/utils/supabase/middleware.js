@@ -64,7 +64,9 @@ export async function updateSession(request) {
     }
 
     // 2. Redirect Loop Prevention: Authenticated users -> /dashboard
-    if (user && isAuthOrLanding) {
+    // Skip if 'logout=true' is present to allow reaching the landing page after sign out
+    const isLogout = request.nextUrl.searchParams.get('logout') === 'true';
+    if (user && isAuthOrLanding && !isLogout) {
       const url = request.nextUrl.clone();
       url.pathname = '/dashboard';
       return NextResponse.redirect(url);
