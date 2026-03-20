@@ -78,11 +78,11 @@ export async function GET(request) {
       
       return NextResponse.redirect(finalUrl);
     }
-    console.error('OAuth Code Exchange Error:', error);
+    console.error('[Auth Callback] Code Exchange Error:', error.code, error.message);
   } else {
-    console.warn('No code provided in OAuth callback');
+    console.warn('[Auth Callback] No code provided in OAuth callback');
   }
 
   // return the user to an error page with instructions
-  return NextResponse.redirect(new URL('/login?error=auth_callback_failed', request.url));
+  return NextResponse.redirect(new URL(`/login?error=auth_callback_failed&msg=${encodeURIComponent(error?.message || 'No code provided')}`, request.url));
 }

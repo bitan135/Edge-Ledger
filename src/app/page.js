@@ -14,10 +14,12 @@ import {
   Search
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/components/AuthProvider';
 
 export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     setMounted(true);
@@ -34,6 +36,9 @@ export default function LandingPage() {
   };
 
   if (!mounted) return <div className="min-h-screen bg-background" />;
+
+  const loginLink = user ? '/dashboard' : '/login';
+  const signupLink = user ? '/dashboard' : '/signup';
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-accent/30 font-sans relative overflow-hidden">
@@ -60,8 +65,12 @@ export default function LandingPage() {
           </div>
 
           <div className="flex items-center gap-4">
-            <Link href="/login" className="text-xs font-black uppercase tracking-widest py-3 px-6 rounded-xl text-text-secondary hover:text-text-primary hover:bg-white/5 transition-colors">Log In</Link>
-            <Link href="/signup" className="text-xs font-black uppercase tracking-widest py-3 px-6 bg-accent text-white rounded-xl hover:bg-accent-hover transition-transform active:scale-95 shadow-lg shadow-accent/20">Get Started</Link>
+            <Link href={loginLink} className="text-xs font-black uppercase tracking-widest py-3 px-6 rounded-xl text-text-secondary hover:text-text-primary hover:bg-white/5 transition-colors">
+              {user ? 'Dashboard' : 'Log In'}
+            </Link>
+            <Link href={signupLink} className="text-xs font-black uppercase tracking-widest py-3 px-6 bg-accent text-white rounded-xl hover:bg-accent-hover transition-transform active:scale-95 shadow-lg shadow-accent/20">
+              {user ? 'Open Cockpit' : 'Get Started'}
+            </Link>
           </div>
         </div>
       </nav>
@@ -87,8 +96,8 @@ export default function LandingPage() {
           </p>
           
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 animate-slide-up">
-            <Link href="/signup" className="w-full md:w-auto px-12 py-6 bg-accent text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-accent-hover transition-all flex items-center justify-center gap-3 group shadow-2xl shadow-accent/20">
-              Launch Your Journal
+            <Link href={signupLink} className="w-full md:w-auto px-12 py-6 bg-accent text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-accent-hover transition-all flex items-center justify-center gap-3 group shadow-2xl shadow-accent/20">
+              {user ? 'Enter Cockpit' : 'Launch Your Journal'}
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <button onClick={() => scrollToSection('features')} className="w-full md:w-auto px-12 py-6 glass-card border-border-custom hover:border-accent/40 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all text-text-primary">
@@ -197,8 +206,8 @@ export default function LandingPage() {
             <h2 className="text-4xl md:text-7xl font-black mb-10 leading-[1.1] text-white tracking-tightest">Secure Your <br /> Institutional Edge.</h2>
             <p className="text-xl md:text-2xl text-white/90 font-black uppercase tracking-widest mb-16 max-w-xl mx-auto border-b border-white/20 pb-8">Ready for Launch.</p>
             
-            <Link href="/signup" className="inline-flex items-center gap-6 px-16 py-8 bg-white text-accent rounded-3xl font-black text-xs uppercase tracking-[0.3em] hover:scale-105 transition-all shadow-3xl active:scale-95 border-none">
-              Initialize Account
+            <Link href={signupLink} className="inline-flex items-center gap-6 px-16 py-8 bg-white text-accent rounded-3xl font-black text-xs uppercase tracking-[0.3em] hover:scale-105 transition-all shadow-3xl active:scale-95 border-none">
+              {user ? 'Enter Workspace' : 'Initialize Account'}
               <ArrowRight size={24} />
             </Link>
           </div>
