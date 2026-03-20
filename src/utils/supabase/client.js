@@ -12,6 +12,8 @@ export function createClient() {
     cookieOptions: {
       domain: isLocal ? undefined : '.smcjournal.app',
       path: '/',
+      sameSite: 'lax',
+      secure: isLocal ? false : true,
     }
   });
 }

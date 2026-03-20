@@ -69,15 +69,15 @@ export async function GET(request) {
         }
         // --- END: Affiliate Referral Logic ---
 
-        const finalUrl = !isLocal ? `https://www.smcjournal.app${next}` : new URL(next, request.url).toString();
+        const finalUrl = !isLocal ? `https://www.smcjournal.app/dashboard` : new URL('/dashboard', request.url).toString();
         return NextResponse.redirect(finalUrl);
       }
       console.error('[Auth Callback] Code Exchange Error:', error?.code, error?.message);
+      return NextResponse.redirect(new URL(`/login?error=auth_callback_failed&msg=${encodeURIComponent(error?.message || 'exchange_failed')}`, request.url));
     } else {
       console.warn('[Auth Callback] No code provided');
+      return NextResponse.redirect(new URL(`/login?error=auth_callback_failed&msg=no_code`, request.url));
     }
-
-    return NextResponse.redirect(new URL(`/login?error=auth_callback_failed&msg=code_exchange_failed`, request.url));
   } catch (err) {
     console.error('[Auth Callback] Global Crash:', err);
     return NextResponse.redirect(new URL(`/login?error=auth_callback_failed&msg=system_error`, request.url));

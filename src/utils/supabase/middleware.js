@@ -10,23 +10,31 @@ export async function updateSession(request) {
                  host.includes('localhost') || 
                  host.includes('127.0.0.1');
 
-  // 0. OAuth Code Interceptor (CRITICAL FIX)
-  // If a ?code= is detected on ANY path (like the root /) but we are not on the callback route,
-  // we must immediately redirect to /auth/callback to ensure the server-side exchange logic handles it.
   const code = request.nextUrl.searchParams.get('code');
-  if (code && pathname !== '/auth/callback') {
-    const url = request.nextUrl.clone();
-    url.pathname = '/auth/callback';
-    // Preserve all other search params (like 'next' or 'state')
-    return NextResponse.redirect(url);
-  }
 
-  // 1. Canonical Domain Enforcement (Production only)
+  // 1. Canonical Domain Enforcement (Production only) - PRIORITY 1
   // Ensures session cookies match the intended domain (Apex vs WWW)
+  // If a code is present, we jump DIRECTLY to the callback on the canonical domain to avoid double redirects.
   if (!isLocal && host.includes('smcjournal.app') && !host.startsWith('www.')) {
     const url = request.nextUrl.clone();
     url.host = 'www.smcjournal.app';
     url.protocol = 'https';
+    
+    // Efficiency: If there's a code, jump straight to callback on canonical domain
+    if (code && pathname !== '/auth/callback') {
+      url.pathname = '/auth/callback';
+    }
+    
+    return NextResponse.redirect(url);
+  }
+
+  // 2. OAuth Code Interceptor
+  // If a ?code= is detected on ANY path (like the root /) but we are not on the callback route,
+  // we must immediately redirect to /auth/callback to ensure the server-side exchange logic handles it.
+  if (code && pathname !== '/auth/callback') {
+    const url = request.nextUrl.clone();
+    url.pathname = '/auth/callback';
+    // Preserve all other search params (like 'next' or 'state')
     return NextResponse.redirect(url);
   }
 
