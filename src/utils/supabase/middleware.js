@@ -10,7 +10,18 @@ export async function updateSession(request) {
                  host.includes('localhost') || 
                  host.includes('127.0.0.1');
 
-  // 0. Canonical Domain Enforcement (Production only)
+  // 0. OAuth Code Interceptor (CRITICAL FIX)
+  // If a ?code= is detected on ANY path (like the root /) but we are not on the callback route,
+  // we must immediately redirect to /auth/callback to ensure the server-side exchange logic handles it.
+  const code = request.nextUrl.searchParams.get('code');
+  if (code && pathname !== '/auth/callback') {
+    const url = request.nextUrl.clone();
+    url.pathname = '/auth/callback';
+    // Preserve all other search params (like 'next' or 'state')
+    return NextResponse.redirect(url);
+  }
+
+  // 1. Canonical Domain Enforcement (Production only)
   // Ensures session cookies match the intended domain (Apex vs WWW)
   if (!isLocal && host.includes('smcjournal.app') && !host.startsWith('www.')) {
     const url = request.nextUrl.clone();

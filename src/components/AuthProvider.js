@@ -31,48 +31,25 @@ export function AuthProvider({ children }) {
       return;
     }
 
+    let isInitializing = true;
+
     const initializeAuth = async () => {
       try {
-        // 1. Handle PKCE OAuth Code Exchange (CRITICAL FIX)
-        const params = new URLSearchParams(window.location.search);
-        const code = params.get('code');
+        // 1. Detect if we are in an OAuth callback flow
+        // The middleware now redirects ?code= to /auth/callback, so we should 
+        // generally not see a code here.
         
-        if (code) {
-          console.log('[AuthProvider] OAuth code detected. Exchanging for session...');
-          const { data, error } = await supabase.auth.exchangeCodeForSession(window.location.href);
-          
-          if (error) {
-            console.error('[AuthProvider] Code exchange failed:', error);
-          } else if (data.session) {
-            console.log('[AuthProvider] Code exchange successful.');
-            
-            // Clean the URL immediately to prevent double-exchange on refresh
-            const newUrl = new URL(window.location.href);
-            newUrl.searchParams.delete('code');
-            newUrl.searchParams.delete('state'); // Standard OAuth state param
-            window.history.replaceState({}, document.title, newUrl.pathname);
-            
-            setSession(data.session);
-            setUser(data.session.user);
-            await fetchUserData(data.session.user.id);
-            
-            // Deterministic redirect to dashboard after success
-            window.location.href = '/dashboard';
-            return; // Exit initialization as we are redirecting
-          }
-        }
-
         // 2. Standard Session Check
         const { data: { session: initialSession } } = await supabase.auth.getSession();
-        setSession(initialSession);
-        setUser(initialSession?.user ?? null);
-        
-        if (initialSession?.user) {
+        if (initialSession) {
+          setSession(initialSession);
+          setUser(initialSession.user);
           await fetchUserData(initialSession.user.id);
         }
       } catch (error) {
         console.error('[AuthProvider] Initialization failed:', error);
       } finally {
+        isInitializing = false;
         setIsLoading(false);
       }
     };
@@ -94,10 +71,14 @@ export function AuthProvider({ children }) {
     initializeAuth();
 
     const { data: { subscription: authListener } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
+      // Only suppress loading state updates if we are in the middle of a manual initialization
+      if (isInitializing) return;
+
+      console.log(`[AuthProvider] Auth Event: ${event}`);
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       
-      if (event === 'SIGNED_IN' && currentSession?.user) {
+      if ((event === 'SIGNED_IN' || event === 'USER_UPDATED') && currentSession?.user) {
         await fetchUserData(currentSession.user.id);
       } else if (event === 'SIGNED_OUT') {
         setProfile(null);
