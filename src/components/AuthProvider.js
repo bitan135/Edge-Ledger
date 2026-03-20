@@ -33,27 +33,6 @@ export function AuthProvider({ children }) {
 
     let isInitializing = true;
 
-    const initializeAuth = async () => {
-      try {
-        // 1. Detect if we are in an OAuth callback flow
-        // The middleware now redirects ?code= to /auth/callback, so we should 
-        // generally not see a code here.
-        
-        // 2. Standard Session Check
-        const { data: { session: initialSession } } = await supabase.auth.getSession();
-        if (initialSession) {
-          setSession(initialSession);
-          setUser(initialSession.user);
-          await fetchUserData(initialSession.user.id);
-        }
-      } catch (error) {
-        console.error('[AuthProvider] Initialization failed:', error);
-      } finally {
-        isInitializing = false;
-        setIsLoading(false);
-      }
-    };
-
     const fetchUserData = async (userId) => {
       try {
         const [profileRes, subRes] = await Promise.all([
@@ -63,8 +42,28 @@ export function AuthProvider({ children }) {
         
         setProfile(profileRes.data);
         setSubscription(subRes.data || { plan_id: 'free' });
+        return { profile: profileRes.data, subscription: subRes.data };
       } catch (error) {
         console.error('[AuthProvider] Data fetch failed:', error);
+        setSubscription({ plan_id: 'free' });
+        return { profile: null, subscription: { plan_id: 'free' } };
+      }
+    };
+
+    const initializeAuth = async () => {
+      try {
+        const { data: { session: initialSession } } = await supabase.auth.getSession();
+        if (initialSession) {
+          setSession(initialSession);
+          setUser(initialSession.user);
+          // Wait for data BEFORE resolving loading state
+          await fetchUserData(initialSession.user.id);
+        }
+      } catch (error) {
+        console.error('[AuthProvider] Initialization failed:', error);
+      } finally {
+        isInitializing = false;
+        setIsLoading(false);
       }
     };
 
@@ -124,7 +123,9 @@ export function AuthProvider({ children }) {
 
   // Deterministic Gate: Block ALL rendering until auth state is resolved.
   // This prevents UI flicker and unauthorized page flashes.
-  if (isLoading) {
+  const isRedirecting = !isLoading && user && isPublicRoute(pathname);
+
+  if (isLoading || isRedirecting) {
     return (
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-6 text-center">
         <div className="flex flex-col items-center gap-6 animate-pulse">
@@ -137,7 +138,7 @@ export function AuthProvider({ children }) {
                 SMC Journal
             </p>
             <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--accent)] animate-pulse">
-                Synchronizing Secure Session...
+                {isRedirecting ? 'Establishing Institutional Sync...' : 'Synchronizing Secure Session...'}
             </p>
           </div>
         </div>

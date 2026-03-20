@@ -25,8 +25,15 @@
   --neutral: #94A3B8;
   --text-primary: #FFFFFF;
   --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  --text-muted: #8BA1B4; /* Lightened for better contrast against #050505 */
   --sidebar-bg: #0A0A0B;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: clamp(2.5rem, 10vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
 }
 
 [data-theme='light'] {

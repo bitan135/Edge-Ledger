@@ -26,6 +26,13 @@ export default function Signup() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    
+    const isConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
+    if (!isConfigured) {
+      setError("Configuration missing. Please add Supabase credentials to Vercel.");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 

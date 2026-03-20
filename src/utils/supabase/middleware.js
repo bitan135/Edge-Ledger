@@ -60,8 +60,20 @@ export async function updateSession(request) {
     }
   );
 
-  // IMPORTANT: Do not use getUser() here if it's not strictly necessary for the redirect logic,
-  // but since we need it for the guards, we must handle it carefully.
+  // Helper to ensure ALL redirects carry the session cookies
+  const finalizeResponse = (res) => {
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      res.cookies.set(cookie.name, cookie.value, {
+        ...cookie.options,
+        secure: isLocal ? false : true,
+        sameSite: 'lax',
+        path: '/',
+        domain: isLocal ? undefined : '.smcjournal.app',
+      });
+    });
+    return res;
+  };
+
   const { data: { user } } = await supabase.auth.getUser();
   const isPublic = isPublicRoute(pathname);
   const isProtected = isProtectedRoute(pathname);
@@ -71,16 +83,7 @@ export async function updateSession(request) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('next', pathname);
-    
-    // Create the redirect response
-    const redirectResponse = NextResponse.redirect(url);
-    
-    // Transfer the cookies from the Supabase response to the redirect response
-    supabaseResponse.cookies.getAll().forEach(cookie => {
-      redirectResponse.cookies.set(cookie.name, cookie.value, cookie.options);
-    });
-    
-    return redirectResponse;
+    return finalizeResponse(NextResponse.redirect(url));
   }
 
   // 2. Redirect Loop Prevention: Authenticated users -> /dashboard
@@ -91,26 +94,9 @@ export async function updateSession(request) {
   if (user && (isLoginPage || isLandingPage) && !isLogoutSignal) {
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
-    const redirectResponse = NextResponse.redirect(url);
-    
-    // Sync cookies
-    supabaseResponse.cookies.getAll().forEach(cookie => {
-      redirectResponse.cookies.set(cookie.name, cookie.value, cookie.options);
-    });
-    
-    return redirectResponse;
+    return finalizeResponse(NextResponse.redirect(url));
   }
 
   // Final safety sync for standard next() response
-  supabaseResponse.cookies.getAll().forEach(cookie => {
-    supabaseResponse.cookies.set(cookie.name, cookie.value, {
-      ...cookie.options,
-      secure: isLocal ? false : true,
-      sameSite: 'lax',
-      path: '/',
-      domain: isLocal ? undefined : '.smcjournal.app',
-    });
-  });
-
-  return supabaseResponse;
+  return finalizeResponse(supabaseResponse);
 }
