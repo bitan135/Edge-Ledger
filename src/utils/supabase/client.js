@@ -17,6 +17,7 @@ export function createClient() {
     },
     cookies: {
       getAll() {
+        if (typeof document === 'undefined') return [];
         const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
           const [name, ...rest] = cookie.split('=');
           acc[name] = rest.join('=');
@@ -25,6 +26,7 @@ export function createClient() {
         return Object.entries(cookies).map(([name, value]) => ({ name, value }));
       },
       setAll(cookiesToSet) {
+        if (typeof document === 'undefined') return;
         cookiesToSet.forEach(({ name, value, options }) => {
           const domain = isLocal ? '' : `; domain=.smcjournal.app`;
           const secure = isLocal ? '' : '; Secure';
