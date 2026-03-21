@@ -72,7 +72,7 @@ export default function RootLayout({ children }) {
                     originalError(...args);
                   };
 
-                  const savedTheme = localStorage.getItem('theme') || 'auto';
+                  const savedTheme = localStorage.getItem('theme') || 'dark';
                   const root = document.documentElement;
                   if (savedTheme === 'auto') {
                     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';

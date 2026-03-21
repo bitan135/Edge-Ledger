@@ -5,22 +5,18 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('auto');
+  const [theme, setTheme] = useState('dark'); // Default to dark for "everyone, for now"
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     // 1. Mark as mounted to prevent hydration mismatches
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
 
-    // 2. Hydrate theme from localStorage
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTheme(t => (t === savedTheme ? t : savedTheme));
-    }
+    // 2. Hydrate theme from localStorage (with fallback to dark)
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
     
     // 3. Hydrate sidebar state
     const savedCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';

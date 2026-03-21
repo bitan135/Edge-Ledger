@@ -8,9 +8,37 @@ export function createClient() {
   const host = typeof window !== 'undefined' ? window.location.host : '';
   const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
 
+  // Custom Storage Implementation to ensure PKCE works with SSR callback
+  // Browser client defaults to localStorage, which the server can't see.
+  // We force it into cookies so the auth/callback route can find the verifier.
+  const cookieStorage = {
+    getItem: (key) => {
+      if (typeof document === 'undefined') return null;
+      const name = `${key}=`;
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const ca = decodedCookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+      }
+      return null;
+    },
+    setItem: (key, value) => {
+      if (typeof document === 'undefined') return;
+      const domain = isLocal ? '' : `; domain=smcjournal.app`;
+      const secure = isLocal ? '' : '; Secure';
+      document.cookie = `${key}=${value}; path=/; SameSite=Lax${domain}${secure}; max-age=3600`;
+    },
+    removeItem: (key) => {
+      if (typeof document === 'undefined') return;
+      const domain = isLocal ? '' : `; domain=smcjournal.app`;
+      document.cookie = `${key}=; path=/; SameSite=Lax${domain}; max-age=0`;
+    },
+  };
+
   return createBrowserClient(url, key, {
     cookieOptions: {
-      domain: isLocal ? undefined : 'smcjournal.app', // Explicitly apex to avoid any confusion
+      domain: isLocal ? undefined : 'smcjournal.app',
       path: '/',
       sameSite: 'lax',
       secure: isLocal ? false : true,
@@ -19,7 +47,8 @@ export function createClient() {
       flowType: 'pkce',
       persistSession: true,
       detectSessionInUrl: true,
-      storageKey: 'sb-smcjournal-auth-v3' // Clean slate for apex pivot
+      storageKey: 'sb-smcjournal-auth-v4', // Rotate again for clean slate
+      storage: cookieStorage // FORCE cookies for PKCE storage
     }
   });
 }
