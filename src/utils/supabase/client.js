@@ -10,7 +10,7 @@ export function createClient() {
 
   return createBrowserClient(url, key, {
     cookieOptions: {
-      domain: isLocal ? undefined : '.smcjournal.app',
+      domain: isLocal ? undefined : 'smcjournal.app', // Explicitly apex to avoid any confusion
       path: '/',
       sameSite: 'lax',
       secure: isLocal ? false : true,
@@ -19,7 +19,7 @@ export function createClient() {
       flowType: 'pkce',
       persistSession: true,
       detectSessionInUrl: true,
-      storageKey: 'sb-smcjournal-auth-v2' // Rotate storage key to ensure a fresh cookie-based state
+      storageKey: 'sb-smcjournal-auth-v3' // Clean slate for apex pivot
     }
   });
 }

@@ -25,12 +25,11 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     // 1. Client-Side Canonical Domain Guard (Production Only)
-    // Ensures that the browser is ALWAYS on the www subdomain to prevent PKCE verifier loss.
-    // PKCE storage (cookies/localStorage) is origin-bound; jumping subdomains breaks the flow.
+    // Ensures that the browser is ALWAYS on the apex domain to prevent PKCE verifier loss.
+    // If we initiate on www and land on apex (or vice-versa), the PKCE verifier is lost.
     const host = window.location.hostname;
-    const protocol = window.location.protocol;
-    if (process.env.NODE_ENV === 'production' && host === 'smcjournal.app') {
-      window.location.href = `https://www.smcjournal.app${pathname}${window.location.search}`;
+    if (process.env.NODE_ENV === 'production' && host.startsWith('www.')) {
+      window.location.href = `https://smcjournal.app${pathname}${window.location.search}`;
       return;
     }
 

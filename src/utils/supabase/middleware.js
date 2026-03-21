@@ -58,9 +58,10 @@ export async function updateSession(request) {
   };
 
   // 2. Canonical Domain Enforcement (Production only) - PRIORITY 1
-  if (!isLocal && host.includes('smcjournal.app') && !host.startsWith('www.')) {
+  // Redirects WWW to APEX to ensure PKCE consistency on a single origin.
+  if (!isLocal && host.startsWith('www.smcjournal.app')) {
     const url = request.nextUrl.clone();
-    url.host = 'www.smcjournal.app';
+    url.host = 'smcjournal.app';
     url.protocol = 'https';
     
     if (code && pathname !== '/auth/callback') {

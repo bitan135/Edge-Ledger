@@ -38,7 +38,7 @@ export default function Signup() {
 
     const isProd = !window.location.host.includes('localhost');
     const redirectTo = isProd 
-      ? 'https://www.smcjournal.app/auth/callback'
+      ? 'https://smcjournal.app/auth/callback'
       : `${window.location.origin}/auth/callback`;
 
     const { error: signupError } = await supabase.auth.signUp({
@@ -75,7 +75,7 @@ export default function Signup() {
     try {
       const isProd = !window.location.host.includes('localhost');
       const redirectTo = isProd 
-        ? 'https://www.smcjournal.app/auth/callback'
+        ? 'https://smcjournal.app/auth/callback'
         : `${window.location.origin}/auth/callback`;
 
       const { error: googleError } = await supabase.auth.signInWithOAuth({

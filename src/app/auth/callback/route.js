@@ -69,7 +69,7 @@ export async function GET(request) {
         }
         // --- END: Affiliate Referral Logic ---
 
-        const finalUrl = !isLocal ? `https://www.smcjournal.app/dashboard` : new URL('/dashboard', request.url).toString();
+        const finalUrl = !isLocal ? `https://smcjournal.app/dashboard` : new URL('/dashboard', request.url).toString();
         return NextResponse.redirect(finalUrl);
       }
       console.error('[Auth Callback] Code Exchange Error:', error?.code, error?.message);
