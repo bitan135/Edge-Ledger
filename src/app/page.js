@@ -26,16 +26,17 @@ export default function LandingPage() {
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-[var(--background)]/80 border-b border-[var(--glass-border)]">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-              <span className="text-white font-black text-lg">S</span>
+          <div className="flex items-center gap-2 group cursor-pointer">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--accent)] to-purple-600 flex items-center justify-center shadow-lg shadow-[var(--accent)]/20 group-hover:scale-105 transition-transform duration-500">
+              <TrendingUp size={22} className="text-white" />
             </div>
-            <span className="font-black text-xl tracking-tighter">SMC JOURNAL</span>
+            <span className="font-black text-xl tracking-tighter text-gradient">SMC JOURNAL</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <Link href="#features" className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors">Features</Link>
             <Link href="#insights" className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors">Insight Engine</Link>
             <Link href="/pricing" className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors">Pricing</Link>
+            <Link href="/affiliate" className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors">Affiliate</Link>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--foreground)] transition-colors px-4">Login</Link>
@@ -57,21 +58,26 @@ export default function LandingPage() {
               <Zap size={14} className="animate-pulse" /> The Institutional Gold Standard
             </div>
             
-            <div className="space-y-6 max-w-4xl mx-auto">
-              <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] animate-slide-up">
-                Trade Like an <span className="text-gradient">Institution</span>, Not a Retail Gambler.
-              </h1>
-              <p className="text-lg md:text-xl text-[var(--text-muted)] font-medium max-w-2xl mx-auto leading-relaxed animate-slide-up [animation-delay:200ms]">
-                Stop repeating execution mistakes. SMC Journal provides the quantitative proof you need to refine your edge and master market discipline.
+            <div className="space-y-8 max-w-4xl mx-auto">
+              <div className="space-y-4">
+                <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] animate-slide-up">
+                  Trade Like an <span className="text-gradient">Institution</span>, Not a Retail Gambler.
+                </h1>
+                <p className="text-lg md:text-2xl font-black text-rose-500 tracking-tight animate-slide-up [animation-delay:100ms]">
+                  You’re not losing because of strategy. You’re losing because you repeat the same mistakes.
+                </p>
+              </div>
+              <p className="text-md md:text-lg text-[var(--text-muted)] font-medium max-w-2xl mx-auto leading-relaxed animate-slide-up [animation-delay:200ms]">
+                Stop the cycle of undisciplined execution. SMC Journal identifies your behavioral triggers so you can fix your edge and master the market narrative.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 animate-slide-up [animation-delay:400ms]">
               <Link href="/signup" className="w-full sm:w-auto px-10 py-5 bg-[var(--accent)] text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[12px] hover:scale-105 transition-all shadow-2xl shadow-[var(--accent)]/30 group">
-                Start My Sequence <ArrowRight size={18} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
+                Start Journaling → Fix Your Mistakes
               </Link>
               <Link href="#demo" className="w-full sm:w-auto px-10 py-5 glass-card border-[var(--glass-border)] text-[var(--foreground)] rounded-2xl font-black uppercase tracking-[0.2em] text-[12px] hover:bg-[var(--card-hover)] transition-all">
-                See Product Tour
+                See How It Works
               </Link>
             </div>
 
@@ -145,7 +151,7 @@ export default function LandingPage() {
                    <div className="space-y-12">
                       <div className="space-y-4">
                          <h2 className="text-4xl md:text-6xl font-black tracking-tighter">Why Traders <span className="text-rose-500">Fail</span></h2>
-                         <p className="text-[var(--text-muted)] font-medium">Retail habits lead to retail results. Break the cycle.</p>
+                         <p className="text-[var(--text-muted)] font-medium">It's not your strategy. It's your habits.</p>
                       </div>
 
                       <div className="space-y-8">
@@ -154,27 +160,42 @@ export default function LandingPage() {
                                <XCircle size={24} className="text-rose-500" />
                             </div>
                             <div className="space-y-2">
-                               <p className="text-sm font-black uppercase tracking-widest text-[var(--foreground)]">Repeating Execution Mistakes</p>
-                               <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">Most traders track P&L but ignore the behavioral patterns that destroy their accounts.</p>
+                               <p className="text-sm font-black uppercase tracking-widest text-[var(--foreground)]">Repeating Bad Trades</p>
+                               <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">You take the same low-probability setups over and over because they "look" right, even when they aren't.</p>
                             </div>
                          </div>
                          <div className="flex gap-6">
-                            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center border border-[var(--accent)]/20">
-                               <CheckCircle2 size={24} className="text-[var(--accent)]" />
+                            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center border border-rose-500/20">
+                               <Zap size={24} className="text-rose-500" />
                             </div>
                             <div className="space-y-2">
-                               <p className="text-sm font-black uppercase tracking-widest text-[var(--foreground)]">The Systematic Solution</p>
-                               <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">Our engine identifies exactly which behavioral triggers lead to your losses, so you can stop them.</p>
+                               <p className="text-sm font-black uppercase tracking-widest text-[var(--foreground)]">Breaking Rules After Losses</p>
+                               <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">Emotions take over after a stop-out. You revenge trade or skip your verification steps.</p>
                             </div>
                          </div>
+                         <div className="flex gap-6">
+                            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center border border-rose-500/20">
+                               <Target size={24} className="text-rose-500" />
+                            </div>
+                            <div className="space-y-2">
+                               <p className="text-sm font-black uppercase tracking-widest text-[var(--foreground)]">Blind to Your Best Assets</p>
+                               <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">You don't actually know which setups or timeframes make you money—and which ones steal it.</p>
+                            </div>
+                         </div>
+                      </div>
+
+                      <div className="pt-8">
+                         <Link href="/signup" className="px-8 py-4 bg-[var(--foreground)] text-[var(--background)] rounded-2xl font-black uppercase tracking-widest text-[10px] hover:scale-105 transition-all">
+                            Start Fixing My Trading →
+                         </Link>
                       </div>
                    </div>
 
                    <div className="relative group">
                       <div className="absolute -inset-2 bg-[var(--accent)] rounded-[40px] blur-2xl opacity-10 group-hover:opacity-20 transition-opacity" />
-                      <div className="relative glass-card rounded-[40px] border-[var(--glass-border)] bg-[var(--card-hover)] aspect-[4/5] flex items-center justify-center p-8 -rotate-3 group-hover:rotate-0 transition-transform duration-700">
+                      <div className="relative glass-card rounded-[40px] border-[var(--glass-border)] bg-[var(--card-hover)] aspect-[4/5] flex items-center justify-center p-8 -rotate-3 group-hover:rotate-0 transition-transform duration-700 shadow-2xl">
                           <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--text-muted)]">
-                            [PERFORMANCE_ANALYTICS_SCREENSHOT]
+                            [PERFORMANCE_AUDIT_SCREENSHOT]
                           </p>
                       </div>
                    </div>
@@ -183,28 +204,60 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Phase 4: Insight Engine Highlight */}
+        {/* Phase 4: Solution Positioning */}
+        <section className="py-32 bg-[var(--background)]">
+           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+              <div className="space-y-6 p-8 glass-card border-[var(--glass-border)] rounded-[40px] hover:border-[var(--accent)]/30 transition-all">
+                 <div className="w-12 h-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">
+                    <Binary size={24} />
+                 </div>
+                 <h3 className="text-2xl font-black tracking-tight">Structured Data Capture</h3>
+                 <p className="text-sm text-[var(--text-muted)] font-medium leading-relaxed">Log every institucional detail in seconds. No more messy spreadsheets or vague notes.</p>
+              </div>
+              <div className="space-y-6 p-8 glass-card border-[var(--glass-border)] rounded-[40px] hover:border-[var(--accent)]/30 transition-all">
+                 <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-500">
+                    <XCircle size={24} />
+                 </div>
+                 <h3 className="text-2xl font-black tracking-tight">Identify Execution Errors</h3>
+                 <p className="text-sm text-[var(--text-muted)] font-medium leading-relaxed">Our engine automatically flags when you break your rules, making behavioral leaks impossible to ignore.</p>
+              </div>
+              <div className="space-y-6 p-8 glass-card border-[var(--glass-border)] rounded-[40px] hover:border-[var(--accent)]/30 transition-all">
+                 <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                    <TrendingUp size={24} />
+                 </div>
+                 <h3 className="text-2xl font-black tracking-tight">Better Decision Making</h3>
+                 <p className="text-sm text-[var(--text-muted)] font-medium leading-relaxed">Trade with confidence. Use hard data to decide which setups to scale and which to drop forever.</p>
+              </div>
+           </div>
+        </section>
+
+        {/* Phase 5: Insight Engine Highlight */}
         <section id="insights" className="py-32 bg-black text-white selection:bg-white selection:text-black">
            <div className="max-w-7xl mx-auto px-6 text-center space-y-20">
               <div className="space-y-6 max-w-3xl mx-auto">
                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-[10px] font-black uppercase tracking-[0.2em]">
-                   <Sparkles size={14} className="text-amber-400" /> The Insight Engine
+                   <Sparkles size={14} className="text-amber-400" /> The Secret to Consistency
                  </div>
                  <h2 className="text-5xl md:text-8xl font-black tracking-tighter">See exactly what is <span className="text-[var(--accent)]">working</span></h2>
                  <p className="text-white/60 font-medium text-lg leading-relaxed">
-                   Unlock quantitative alpha. As your journal grows, our engine identifies your highest-probability setups, timeframes, and sessions automatically.
+                   After 100 trades, your edge isn't a theory—it's a mathematical fact. No more guessing which market conditions favor your personality.
                  </p>
               </div>
 
               <div className="relative max-w-5xl mx-auto">
                  <div className="absolute inset-0 bg-[var(--accent)] rounded-[3rem] blur-[100px] opacity-20" />
-                 <div className="relative bg-[#111] rounded-[3rem] border border-white/10 p-6 aspect-[16/10] flex items-center justify-center group overflow-hidden">
+                 <div className="relative bg-[#111] rounded-[3rem] border border-white/10 p-6 aspect-[16/10] flex items-center justify-center group overflow-hidden shadow-3xl">
                     <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30">
-                        [INSIGHT_ENGINE_UNLOCKED_SCREENSHOT]
-                    </p>
+                    <div className="text-center space-y-6 z-10 transition-transform duration-700 group-hover:scale-105">
+                        <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mx-auto border border-white/20">
+                            <TrendingUp size={28} className="text-[var(--accent)]" />
+                        </div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30">
+                            [INSIGHT_ENGINE_UNLOCKED_SCREENSHOT]
+                        </p>
+                    </div>
                     <div className="absolute bottom-12 inset-x-0 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 duration-700">
-                        <span className="px-8 py-4 bg-white text-black rounded-2xl font-black uppercase tracking-widest text-[10px]">Explore Quantitative Alpha</span>
+                        <Link href="/signup" className="px-8 py-4 bg-white text-black rounded-2xl font-black uppercase tracking-widest text-[10px]">Verify My Edge Now</Link>
                     </div>
                  </div>
               </div>
@@ -212,22 +265,28 @@ export default function LandingPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
                  <div className="space-y-4">
                     <p className="text-white font-black uppercase tracking-widest text-xs flex items-center gap-2">
-                       <Zap size={14} className="text-amber-400" /> Statistical Significance
+                       <Zap size={14} className="text-amber-400" /> Your Best Setup
                     </p>
-                    <p className="text-white/40 text-sm leading-relaxed">Proprietary logic requires 30 trades to establish a baseline and 100+ for high-fidelity edge modeling.</p>
+                    <p className="text-white/40 text-sm leading-relaxed">Stop trading 10 different models. Identify the subset of setups that actually account for 80% of your profits.</p>
                  </div>
                  <div className="space-y-4">
                     <p className="text-white font-black uppercase tracking-widest text-xs flex items-center gap-2">
-                       <BrainCircuit size={14} className="text-blue-400" /> Behavior Mapping
+                       <CheckCircle2 size={14} className="text-blue-400" /> Behavioral Mastery
                     </p>
-                    <p className="text-white/40 text-sm leading-relaxed">Correlate your emotional state with execution results to identify "Red Flag" days before they happen.</p>
+                    <p className="text-white/40 text-sm leading-relaxed">Know exactly how "revenge trading" or "skipping checks" impacts your equity curve in real dollar terms.</p>
                  </div>
                  <div className="space-y-4">
                     <p className="text-white font-black uppercase tracking-widest text-xs flex items-center gap-2">
-                       <ShieldCheck size={14} className="text-emerald-400" /> Account Hardening
+                       <Target size={14} className="text-rose-400" /> When You Lose Most
                     </p>
-                    <p className="text-white/40 text-sm leading-relaxed">Reduce drawdown by identifying exactly which setups consistently fail in specific market sessions.</p>
+                    <p className="text-white/40 text-sm leading-relaxed">Pinpoint the specific hours or session overlaps where your performance degrades, and stop trading them.</p>
                  </div>
+              </div>
+
+              <div className="pt-12">
+                 <Link href="/signup" className="inline-flex items-center gap-3 px-10 py-5 bg-[var(--accent)] text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[12px] hover:scale-105 transition-all shadow-2xl shadow-[var(--accent)]/30 group">
+                    Unlock My Insights <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                 </Link>
               </div>
            </div>
         </section>
@@ -286,7 +345,7 @@ export default function LandingPage() {
            <div className="max-w-4xl mx-auto px-6 text-center space-y-12">
               <div className="space-y-6">
                  <h2 className="text-5xl md:text-7xl font-black tracking-tighter">Ready to Master <span className="text-gradient">Your Narrative?</span></h2>
-                 <p className="text-lg text-[var(--text-muted)] font-medium">Join 500+ SMC traders refining their edge every day.</p>
+                 <p className="text-lg text-[var(--text-muted)] font-medium">Trusted by 500+ SMC traders improving their execution daily.</p>
               </div>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                  <Link href="/signup" className="w-full sm:w-auto px-12 py-6 bg-[var(--accent)] text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[14px] hover:scale-110 transition-all shadow-2xl shadow-[var(--accent)]/30">
@@ -309,11 +368,11 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="space-y-6">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded bg-[var(--accent)] flex items-center justify-center">
-                  <span className="text-white font-black text-sm">S</span>
+              <div className="flex items-center gap-2 group cursor-pointer">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--accent)] to-purple-600 flex items-center justify-center shadow-lg shadow-[var(--accent)]/20">
+                  <TrendingUp size={16} className="text-white" />
                 </div>
-                <span className="font-black text-sm tracking-tighter">SMC JOURNAL</span>
+                <span className="font-black text-sm tracking-tighter text-gradient">SMC JOURNAL</span>
               </div>
               <p className="text-xs text-[var(--text-muted)] font-medium leading-relaxed">
                 The institutional standard for professional trader documentation and performance analysis.
