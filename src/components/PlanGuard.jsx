@@ -4,28 +4,12 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Crown, Lock, Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from './AuthProvider';
 
 export default function PlanGuard({ children, requiredPlan = 'pro', featureName = 'Advanced Analytics' }) {
-  const [subscription, setSubscription] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { subscription, isLoading } = useAuth();
 
-  useEffect(() => {
-    const getSubscription = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: subData } = await supabase
-          .from('subscriptions')
-          .select('*')
-          .eq('user_id', user.id)
-          .single();
-        setSubscription(subData || { plan_id: 'free' });
-      }
-      setIsLoading(false);
-    };
-    getSubscription();
-  }, []);
-
-  if (isLoading) {
+  if (isLoading || !subscription) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
         <div className="w-12 h-12 border-4 border-[var(--accent)]/30 border-t-[var(--accent)] rounded-full animate-spin" />

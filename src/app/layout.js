@@ -72,22 +72,8 @@ export default function RootLayout({ children }) {
                     originalError(...args);
                   };
 
-                  const savedTheme = localStorage.getItem('theme') || 'light';
-                  const root = document.documentElement;
-                  
-                  // Check if current path is a marketing path that should be forced light
-                  const marketingPaths = ['/', '/terms', '/privacy', '/affiliate'];
-                  const pathname = window.location.pathname;
-                  const isMarketing = marketingPaths.some(p => p === '/' ? pathname === '/' : pathname.startsWith(p));
-
-                  const activeTheme = isMarketing ? 'light' : savedTheme;
-
-                  if (activeTheme === 'auto') {
-                    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-                    root.setAttribute('data-theme', systemTheme);
-                  } else {
-                    root.setAttribute('data-theme', activeTheme);
-                  }
+                  const theme = localStorage.getItem('theme') || 'light';
+                  document.documentElement.setAttribute('data-theme', theme);
                 } catch (e) {}
               })();
             `,

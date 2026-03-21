@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('dark'); // Default to dark for "everyone, for now"
+  const [theme, setTheme] = useState('light'); // Default to light
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const [mounted, setMounted] = useState(false);
@@ -14,8 +14,8 @@ export function ThemeProvider({ children }) {
     // 1. Mark as mounted to prevent hydration mismatches
     setMounted(true);
 
-    // 2. Hydrate theme from localStorage (with fallback to dark)
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    // 2. Hydrate theme from localStorage (with fallback to light)
+    const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
     
     // 3. Hydrate sidebar state
@@ -29,28 +29,16 @@ export function ThemeProvider({ children }) {
 
     const root = window.document.documentElement;
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const pathname = window.location.pathname;
-
-    // List of routes that MUST be light theme
-    const forceLightRoutes = ['/', '/terms', '/privacy'];
-    const isAffiliate = pathname.startsWith('/affiliate');
-    const isForcedLight = forceLightRoutes.includes(pathname) || isAffiliate;
 
     const applyTheme = (currentTheme) => {
-      // If the route is forced light, ignore the state and force 'light'
-      const activeTheme = isForcedLight ? 'light' : currentTheme;
-
-      if (activeTheme === 'auto') {
-        const systemTheme = mediaQuery.matches ? 'dark' : 'light';
+      const root = window.document.documentElement;
+      if (currentTheme === 'auto') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         root.setAttribute('data-theme', systemTheme);
       } else {
-        root.setAttribute('data-theme', activeTheme);
+        root.setAttribute('data-theme', currentTheme);
       }
-      
-      // Only persist if not forced
-      if (!isForcedLight && currentTheme && currentTheme !== 'undefined') {
-        localStorage.setItem('theme', currentTheme);
-      }
+      localStorage.setItem('theme', currentTheme);
     };
 
     applyTheme(theme);

@@ -31,7 +31,7 @@ export default function Settings() {
     currency: 'USD'
   });
   const { theme, setTheme } = useTheme();
-  const { profile: authProfile, updateProfile, isLoading: authLoading } = useAuth();
+  const { profile: authProfile, updateProfile, isLoading: authLoading, signOut } = useAuth();
 
   useEffect(() => {
     if (authProfile) {

@@ -60,14 +60,21 @@ export function AuthProvider({ children }) {
         if (initialSession) {
           setSession(initialSession);
           setUser(initialSession.user);
-          // Wait for data BEFORE resolving loading state
-          await fetchUserData(initialSession.user.id);
+          // NEW: Resolve loading state IMMEDIATELY once we have a session
+          // This enables "Optimistic Rendering" of the Dashboard
+          setIsLoading(false);
+          isInitializing = false;
+          
+          // Fetch additional data in the background
+          fetchUserData(initialSession.user.id);
+        } else {
+          setIsLoading(false);
+          isInitializing = false;
         }
       } catch (error) {
         console.error('[AuthProvider] Initialization failed:', error);
-      } finally {
-        isInitializing = false;
         setIsLoading(false);
+        isInitializing = false;
       }
     };
 
@@ -128,8 +135,10 @@ export function AuthProvider({ children }) {
   // Deterministic Gate: Block ALL rendering until auth state is resolved.
   // This prevents UI flicker and unauthorized page flashes.
   // EXCEPTION: Allow the landing page (/) to render immediately for marketing.
+  // Optimized Gate: Only block if we are genuinely waiting for the VERY first session check.
+  // We no longer block on profile/subscription fetching.
   const isRedirecting = !isLoading && user && isPublicRoute(pathname);
-  const shouldShowGate = (isLoading || isRedirecting) && pathname !== '/';
+  const shouldShowGate = isLoading && pathname !== '/';
 
   if (shouldShowGate) {
     return (
