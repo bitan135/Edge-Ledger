@@ -57,19 +57,9 @@ export async function updateSession(request) {
     return res;
   };
 
-  // 2. Canonical Domain Enforcement (Production only) - PRIORITY 1
-  // Redirects WWW to APEX to ensure PKCE consistency on a single origin.
-  if (!isLocal && host.startsWith('www.smcjournal.app')) {
-    const url = request.nextUrl.clone();
-    url.host = 'smcjournal.app';
-    url.protocol = 'https';
-    
-    if (code && pathname !== '/auth/callback') {
-      url.pathname = '/auth/callback';
-    }
-    
-    return finalizeResponse(NextResponse.redirect(url));
-  }
+  // 2. Canonical Domain Enforcement (Production only) - REMOVED TO PREVENT VERCEL LOOPS
+  // We now rely on Vercel/DNS to handle the apex vs www redirection to avoid infinite loops.
+  // The user should set 'smcjournal.app' as the PRIMARY domain in Vercel.
 
   // 3. OAuth Code Interceptor
   if (code && pathname !== '/auth/callback') {

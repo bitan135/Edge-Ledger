@@ -24,14 +24,9 @@ export function AuthProvider({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // 1. Client-Side Canonical Domain Guard (Production Only)
-    // Ensures that the browser is ALWAYS on the apex domain to prevent PKCE verifier loss.
-    // If we initiate on www and land on apex (or vice-versa), the PKCE verifier is lost.
-    const host = window.location.hostname;
-    if (process.env.NODE_ENV === 'production' && host.startsWith('www.')) {
-      window.location.href = `https://smcjournal.app${pathname}${window.location.search}`;
-      return;
-    }
+    // 1. Client-Side Canonical Domain Guard (Production Only) - REMOVED
+    // We now rely on Vercel/DNS to handle the apex vs www redirection to avoid infinite loops.
+    // The user should set 'smcjournal.app' as the PRIMARY domain in Vercel.
 
     const isConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder');
     
