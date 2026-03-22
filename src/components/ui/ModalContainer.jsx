@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 
-export default function ModalContainer({ isOpen, onClose, title, children }) {
+export default function ModalContainer({ isOpen, onClose, title, children, className = 'max-w-2xl' }) {
   const [mounted, setMounted] = useState(isOpen);
   const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
 
@@ -48,7 +48,7 @@ export default function ModalContainer({ isOpen, onClose, title, children }) {
       
       {/* Modal Content */}
       <div
-        className={`relative w-full max-w-2xl bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
+        className={`relative w-full ${className} bg-[var(--card)] border border-[var(--border)] rounded-[40px] shadow-2xl overflow-hidden transition-all duration-300 ${
           isOpen ? 'scale-100 translate-y-0' : 'scale-95 translate-y-10'
         }`}
       >

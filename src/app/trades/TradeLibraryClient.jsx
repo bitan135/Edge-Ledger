@@ -10,6 +10,7 @@ import SessionBadge from '@/components/ui/SessionBadge';
 import { TableRowSkeleton } from '@/components/ui/SkeletonLoader';
 import { useToast } from '@/components/ui/Toast';
 import { useConfirm } from '@/components/ui/ConfirmModal';
+import { parseTradeDate } from '@/lib/storage';
 import TradeFilters from './TradeFilters';
 import TradeModal from './TradeModal';
 
@@ -51,10 +52,10 @@ export default function TradeLibrary() {
           getTrades(),
           getStrategies()
         ]);
-        setTrades(fetchedTrades.sort((a, b) => 
-          new Date(b.trade_date || b.created_at) - new Date(a.trade_date || a.created_at)
+        setTrades((fetchedTrades || []).sort((a, b) => 
+          parseTradeDate(b) - parseTradeDate(a)
         ));
-        setStrategies(fetchedStrategies);
+        setStrategies(fetchedStrategies || []);
       } catch (err) {
         console.error('Library load failed:', err);
       } finally {
@@ -249,8 +250,8 @@ export default function TradeLibrary() {
                         <ResultBadge result={trade.result} />
                     </td>
                     <td className="px-10 py-6 text-right">
-                        <p className="text-xs font-black text-[var(--foreground)] opacity-80">{new Date(trade.trade_date || trade.tradeDate || trade.created_at || trade.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
-                        <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mt-1">{new Date(trade.trade_date || trade.tradeDate || trade.created_at || trade.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p>
+                        <p className="text-xs font-black text-[var(--foreground)] opacity-80">{parseTradeDate(trade).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                        <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mt-1">{parseTradeDate(trade).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</p>
                     </td>
                     </tr>
                 ))}
@@ -280,7 +281,7 @@ export default function TradeLibrary() {
                             <SessionBadge session={trade.session} />
                             <span className="text-sm font-black text-[var(--foreground)]">{trade.rr}R</span>
                         </div>
-                        <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">{new Date(trade.created_at || trade.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                        <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">{parseTradeDate(trade).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                     </div>
                 </div>
                 ))}

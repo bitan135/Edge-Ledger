@@ -121,7 +121,7 @@ export default function InsightsPage() {
         </div>
         
         {/* Progress Tracker */}
-        <div className="glass-card rounded-3xl p-6 border-[var(--glass-border)] min-w-[300px]">
+        <div className="glass-card rounded-[28px] p-6 border-[var(--glass-border)] min-w-[300px]">
           <div className="flex justify-between items-end mb-4">
             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[var(--text-muted)]">Sequence Status</span>
             <span className="text-2xl font-black text-[var(--foreground)] tracking-tighter">{tradeCount} <span className="text-xs text-[var(--text-muted)] uppercase">Trades</span></span>
@@ -176,7 +176,7 @@ export default function InsightsPage() {
         <div className="space-y-8 animate-fade-in">
           {/* Quick Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="glass-card rounded-[32px] border-[var(--glass-border)] p-8 space-y-4 hover:border-[var(--accent)]/30 transition-all">
+            <div className="glass-card rounded-[28px] border-[var(--glass-border)] p-8 space-y-4 hover:border-[var(--accent)]/30 transition-all">
                 <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest flex items-center gap-2">
                     <Zap size={14} className="text-amber-500" /> Win Rate
                 </p>
@@ -185,7 +185,7 @@ export default function InsightsPage() {
                     <span className="text-[10px] font-bold text-[var(--text-muted)] mb-1.5 capitalize">Overall Edge</span>
                 </div>
             </div>
-            <div className="glass-card rounded-[32px] border-[var(--glass-border)] p-8 space-y-4 hover:border-[var(--accent)]/30 transition-all">
+            <div className="glass-card rounded-[28px] border-[var(--glass-border)] p-8 space-y-4 hover:border-[var(--accent)]/30 transition-all">
                 <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest flex items-center gap-2">
                     <BarChart3 size={14} className="text-[var(--accent)]" /> Profit Factor
                 </p>
@@ -194,7 +194,7 @@ export default function InsightsPage() {
                     <span className="text-[10px] font-bold text-[var(--text-muted)] mb-1.5 capitalize">Risk/Reward Efficiency</span>
                 </div>
             </div>
-            <div className="glass-card rounded-[32px] border-[var(--glass-border)] p-8 space-y-4 hover:border-[var(--accent)]/30 transition-all">
+            <div className="glass-card rounded-[28px] border-[var(--glass-border)] p-8 space-y-4 hover:border-[var(--accent)]/30 transition-all">
                 <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest flex items-center gap-2">
                     <Target size={14} className="text-emerald-500" /> Average RR
                 </p>

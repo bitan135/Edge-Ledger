@@ -112,11 +112,24 @@ export function calculateRiskAmount(lotSize, pips, instrument) {
 }
 
 export function getSessionFromTime(date) {
+  if (!date) return 'London';
   const hours = new Date(date).getUTCHours();
+  if (isNaN(hours)) return 'London';
   if (hours >= 0 && hours < 8) return 'Asia';
   if (hours >= 7 && hours < 16) return 'London';
   if (hours >= 12 && hours < 21) return 'New York';
   return 'London';
+}
+
+/**
+ * Robustly parse any date format into a JS Date object.
+ * Handles: ISO strings, local-datetime strings, timestamps, and legacy property names.
+ */
+export function parseTradeDate(trade) {
+  if (!trade) return new Date();
+  const rawDate = trade.trade_date || trade.tradeDate || trade.created_at || trade.createdAt || new Date();
+  const date = new Date(rawDate);
+  return isNaN(date.getTime()) ? new Date() : date;
 }
 
 // -------------- Analytics Helpers --------------------
@@ -335,13 +348,52 @@ export async function saveTrade(trade) {
     throw new Error('Trade limit reached! Please upgrade to Pro for unlimited trades.');
   }
 
-  // Handle screenshot uploads if they are base64/files
-  const tradeData = { ...trade };
+  // Hardening: Enforce types and defaults
+  const tradeData = {
+    ...trade,
+    entry_price: parseFloat(trade.entryPrice || trade.entry_price) || 0,
+    stop_loss: parseFloat(trade.stopLoss || trade.stop_loss) || 0,
+    take_profit: parseFloat(trade.takeProfit || trade.take_profit) || 0,
+    lot_size: parseFloat(trade.lotSize || trade.lot_size) || 0.01,
+    rr: parseFloat(trade.rr) || 0,
+    pips: parseFloat(trade.pips) || 0,
+    risk_amount: parseFloat(trade.riskAmount || trade.risk_amount) || 0,
+    trade_date: parseTradeDate(trade).toISOString(),
+    smc_tags: Array.isArray(trade.smcTags || trade.smc_tags) ? (trade.smcTags || trade.smc_tags) : [],
+    liquidity_sweep: Array.isArray(trade.liquiditySweep || trade.liquidity_sweep) ? (trade.liquiditySweep || trade.liquidity_sweep) : [],
+  };
+
+  // Remove legacy/UI keys to keep DB clean
+  delete tradeData.entryPrice;
+  delete tradeData.stopLoss;
+  delete tradeData.takeProfit;
+  delete tradeData.lotSize;
+  delete tradeData.tradeDate;
+  delete tradeData.smcTags;
+  delete tradeData.liquiditySweep;
+  delete tradeData.riskAmount;
+
   return await tradeService.createTrade(tradeData);
 }
 
 export async function updateTrade(id, updates) {
-  return await tradeService.updateTrade(id, updates);
+  // Hardening: Enforce types for updates
+  const hardenedUpdates = { ...updates };
+  
+  if (updates.entryPrice || updates.entry_price) hardenedUpdates.entry_price = parseFloat(updates.entryPrice || updates.entry_price) || 0;
+  if (updates.stopLoss || updates.stop_loss) hardenedUpdates.stop_loss = parseFloat(updates.stopLoss || updates.stop_loss) || 0;
+  if (updates.takeProfit || updates.take_profit) hardenedUpdates.take_profit = parseFloat(updates.takeProfit || updates.take_profit) || 0;
+  if (updates.lotSize || updates.lot_size) hardenedUpdates.lot_size = parseFloat(updates.lotSize || updates.lot_size) || 0;
+  if (updates.rr !== undefined) hardenedUpdates.rr = parseFloat(updates.rr) || 0;
+  if (updates.pips !== undefined) hardenedUpdates.pips = parseFloat(updates.pips) || 0;
+  if (updates.tradeDate || updates.trade_date) hardenedUpdates.trade_date = parseTradeDate(updates).toISOString();
+
+  // Cleanup
+  ['entryPrice', 'stopLoss', 'takeProfit', 'lotSize', 'tradeDate', 'smcTags', 'liquiditySweep', 'riskAmount', 'timeframeBias', 'biasType'].forEach(key => {
+    delete hardenedUpdates[key];
+  });
+
+  return await tradeService.updateTrade(id, hardenedUpdates);
 }
 
 export async function deleteTrade(id) {

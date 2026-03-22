@@ -158,7 +158,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
             <h3 className="text-[10px] font-black text-[var(--accent)] uppercase tracking-[0.3em] flex items-center gap-2">
               <Target size={14} /> Configuration
             </h3>
-            <div className="flex items-center gap-2 px-4 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl">
+            <div className="flex items-center gap-2 px-4 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[20px]">
               <Calendar size={12} className="text-[var(--text-muted)]" />
               <input
                 type="datetime-local"
@@ -176,20 +176,20 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                   name="instrument"
                   value={formData.instrument}
                   onChange={handleChange}
-                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
+                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] px-6 py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
                 >
                   {INSTRUMENTS.map(i => <option key={i} value={i} className="bg-[var(--background)]">{i}</option>)}
                 </select>
             </div>
             <div className="space-y-3">
               <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">Order Flow</label>
-              <div className="flex p-1.5 bg-[var(--glass-bg)] rounded-2xl border border-[var(--glass-border)] h-[58px]">
+              <div className="flex p-1.5 bg-[var(--glass-bg)] rounded-[24px] border border-[var(--glass-border)] h-[58px]">
                 {['Buy', 'Sell'].map(d => (
                   <button
                     key={d}
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, direction: d }))}
-                    className={`flex-1 flex items-center justify-center gap-2 text-[11px] font-black rounded-xl transition-all ${
+                    className={`flex-1 flex items-center justify-center gap-2 text-[11px] font-black rounded-[18px] transition-all ${
                       formData.direction === d 
                         ? d === 'Buy' ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/20' : 'bg-rose-500 text-white shadow-lg shadow-rose-500/20'
                         : 'text-[var(--text-muted)] hover:text-[var(--foreground)]'
@@ -224,7 +224,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                   value={formData[field.name]}
                   onChange={handleChange}
                   placeholder={field.placeholder}
-                  className={`w-full bg-[var(--glass-bg)] border ${errors[field.name] ? 'border-rose-500/50' : 'border-[var(--glass-border)]'} rounded-2xl px-6 py-4 text-sm font-bold text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all`}
+                  className={`w-full bg-[var(--glass-bg)] border ${errors[field.name] ? 'border-rose-500/50' : 'border-[var(--glass-border)]'} rounded-[24px] px-6 py-4 text-sm font-bold text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all`}
                 />
               </div>
             ))}
@@ -232,7 +232,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
           
           {/* Real-time Analytics Panel */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-[var(--glass-bg)] rounded-3xl p-6 border border-[var(--glass-border)] group hover:border-[var(--accent)]/30 transition-all">
+            <div className="bg-[var(--glass-bg)] rounded-[28px] p-6 border border-[var(--glass-border)] group hover:border-[var(--accent)]/30 transition-all">
               <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2 flex items-center gap-2">
                 <BarChart3 size={12} className="text-[var(--accent)]" /> Performance Ratio
               </p>
@@ -240,7 +240,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 {autoCalc.rr}R
               </p>
             </div>
-            <div className="bg-[var(--glass-bg)] rounded-3xl p-6 border border-[var(--glass-border)] group hover:border-[var(--accent)]/30 transition-all">
+            <div className="bg-[var(--glass-bg)] rounded-[28px] p-6 border border-[var(--glass-border)] group hover:border-[var(--accent)]/30 transition-all">
               <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2 flex items-center gap-2">
                 <Zap size={12} className="text-amber-500" /> Total Displacement
               </p>
@@ -248,7 +248,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 {autoCalc.pips} <span className="text-[10px] text-[var(--text-muted)] uppercase font-black ml-1">Pips</span>
               </p>
             </div>
-            <div className="bg-[var(--glass-bg)] rounded-3xl p-6 border border-[var(--glass-border)] group hover:border-rose-500/30 transition-all">
+            <div className="bg-[var(--glass-bg)] rounded-[28px] p-6 border border-[var(--glass-border)] group hover:border-rose-500/30 transition-all">
               <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-2 flex items-center gap-2">
                 <Shield size={12} className="text-rose-500" /> Risk Assessment
               </p>

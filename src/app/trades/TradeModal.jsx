@@ -53,7 +53,7 @@ export default function TradeModal({
                     { label: 'Window', value: <SessionBadge session={selectedTrade.session} />, icon: Clock },
                     { label: 'Volume', value: `${selectedTrade.pips} Pips`, icon: BarChart3 },
                 ].map((item, idx) => (
-                    <div key={idx} className="glass-card rounded-[32px] p-6 border-[var(--glass-border)] shadow-inner">
+                    <div key={idx} className="glass-card rounded-[28px] p-6 border-[var(--glass-border)] shadow-inner">
                         <p className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                            <item.icon size={12} className="text-[var(--accent)]" /> {item.label}
                         </p>
@@ -88,7 +88,7 @@ export default function TradeModal({
                                 { label: 'Safety Buffer (SL)', val: formatPrice(selectedTrade.stop_loss || selectedTrade.stopLoss) },
                                 { label: 'Liquidity Target (TP)', val: formatPrice(selectedTrade.take_profit || selectedTrade.takeProfit) }
                             ].map((price, i) => (
-                            <div key={i} className="flex items-center justify-between p-5 rounded-3xl glasseffect glass-card border-[var(--glass-border)]">
+                            <div key={i} className="flex items-center justify-between p-5 rounded-[28px] glass-card border-[var(--glass-border)]">
                                 <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-wider">{price.label}</span>
                                 <span className="text-lg font-black text-[var(--foreground)] font-mono">{price.val}</span>
                             </div>
@@ -162,14 +162,14 @@ export default function TradeModal({
                         <Brain size={16} /> Psychological Reflection
                     </h4>
                     <div className="space-y-6">
-                        <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)]">
+                        <div className="flex items-center justify-between p-4 rounded-[20px] bg-[var(--glass-bg)] border border-[var(--glass-border)]">
                             <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Emotional State</span>
                             <span className="flex items-center gap-2 text-xs font-black text-[var(--foreground)] uppercase">
                                 <Zap size={12} className="text-amber-500" />
                                 {selectedTrade.emotional_state || selectedTrade.emotionalState || 'Focused'}
                             </span>
                         </div>
-                        <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)]">
+                        <div className="flex items-center justify-between p-4 rounded-[20px] bg-[var(--glass-bg)] border border-[var(--glass-border)]">
                             <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Discipline Score</span>
                             <div className="flex gap-1">
                                 {[1,2,3,4,5].map(i => (
@@ -197,13 +197,13 @@ export default function TradeModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <button
                     onClick={() => setIsEditMode(true)}
-                    className="w-full py-6 rounded-[32px] bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 text-[11px] font-black uppercase tracking-[0.3em] hover:bg-[var(--accent)]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-4"
+                    className="w-full py-6 rounded-[28px] bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20 text-[11px] font-black uppercase tracking-[0.3em] hover:bg-[var(--accent)]/20 transition-all active:scale-[0.98] flex items-center justify-center gap-4"
                 >
                     <Edit3 size={20} /> Modify Sequence
                 </button>
                 <button
                     onClick={(e) => handleDelete(selectedTrade.id, e)}
-                    className="w-full py-6 rounded-[32px] bg-rose-500/5 text-rose-500 border border-rose-500/10 text-[11px] font-black uppercase tracking-[0.3em] hover:bg-rose-500/10 hover:border-rose-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-4"
+                    className="w-full py-6 rounded-[28px] bg-rose-500/5 text-rose-500 border border-rose-500/10 text-[11px] font-black uppercase tracking-[0.3em] hover:bg-rose-500/10 hover:border-rose-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-4"
                 >
                     <Trash2 size={20} /> Delete Trade
                 </button>

@@ -38,7 +38,7 @@ export default function Sidebar() {
   const { user, profile, subscription, isLoading, signOut } = useAuth();
   const { isSidebarCollapsed, setSidebarCollapsed } = useTheme();
 
-  if (pathname === '/login' || pathname === '/signup' || pathname === '/auth/callback') return null;
+  if (isPublicRoute(pathname) || pathname === '/auth/callback') return null;
 
   const getPlanBadge = () => {
     const plan = subscription?.plan_id || 'free';
@@ -46,8 +46,6 @@ export default function Sidebar() {
     if (plan === 'pro') return 'Pro Trader';
     return 'Free Plan';
   };
-
-  if (isPublicRoute(pathname)) return null;
 
   return (
     <>
@@ -114,7 +112,7 @@ export default function Sidebar() {
 
         {/* Plan Upgrade CTA */}
         {subscription?.plan_id === 'free' && (
-          <div className="mx-4 mb-4 p-5 rounded-[24px] bg-gradient-to-br from-[var(--accent)] to-purple-600 relative overflow-hidden group/cta">
+          <div className="mx-4 mb-3 p-5 rounded-[28px] bg-gradient-to-br from-[var(--accent)] to-purple-600 relative overflow-hidden group/cta shadow-lg shadow-[var(--accent)]/10">
             <div className="absolute top-0 right-0 p-2 opacity-20 group-hover/cta:rotate-12 transition-transform">
               <Sparkles size={40} />
             </div>
@@ -132,7 +130,7 @@ export default function Sidebar() {
         )}
 
         {/* User Card */}
-        <div className="p-4 mx-4 mb-4 rounded-[32px] glass-card border-[var(--glass-border)] relative overflow-hidden group">
+        <div className="p-5 mx-4 mb-6 rounded-[28px] glass-card border-[var(--glass-border)] relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             
             {isLoading ? (
