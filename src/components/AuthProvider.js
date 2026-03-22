@@ -45,8 +45,9 @@ export function AuthProvider({ children }) {
         ]);
         
         setProfile(profileRes.data);
-        setSubscription(subRes.data || { plan_id: 'free' });
-        return { profile: profileRes.data, subscription: subRes.data };
+        const subscriptionData = subRes.data || { plan_id: profileRes.data?.plan_type || 'free' };
+        setSubscription(subscriptionData);
+        return { profile: profileRes.data, subscription: subscriptionData };
       } catch (error) {
         console.error('[AuthProvider] Data fetch failed:', error);
         setSubscription({ plan_id: 'free' });

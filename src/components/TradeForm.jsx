@@ -32,6 +32,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
     setupZone: null,
     timeframeBias: '1H',
     biasType: 'Continuation',
+    poiType: '', // Continuous | Extreme
     // Overrides for edit mode — all come from initialData
     ...initialData ? {
       entryPrice: initialData?.entry_price || initialData?.entryPrice || '',
@@ -52,6 +53,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
       setupZone: initialData?.setup_zone || initialData?.setupZone || null,
       timeframeBias: initialData?.timeframe_bias || initialData?.timeframeBias || '1H',
       biasType: initialData?.bias_type || initialData?.biasType || 'Continuation',
+      poiType: initialData?.poi_type || initialData?.poiType || '',
     } : {},
   });
 
@@ -140,6 +142,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
       setupZone: formData.setupZone,
       timeframe_bias: formData.timeframeBias,
       bias_type: formData.biasType,
+      poi_type: (formData.strategy === 'Supply Zone' || formData.strategy === 'Demand Zone') ? formData.poiType : null,
     };
     
     onSubmit(finalData);
@@ -444,6 +447,29 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 </select>
               </div>
             </div>
+
+            {/* POI Type (Conditional) */}
+            {(formData.strategy === 'Supply Zone' || formData.strategy === 'Demand Zone') && (
+              <div className="space-y-3 animate-slide-up">
+                <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">POI Type</label>
+                <div className="flex p-1.5 bg-[var(--glass-bg)] rounded-2xl border border-[var(--glass-border)] h-[58px]">
+                  {['Continuous', 'Extreme'].map(t => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, poiType: t }))}
+                      className={`flex-1 flex items-center justify-center gap-2 text-[10px] font-black rounded-xl transition-all ${
+                        formData.poiType === t 
+                          ? 'bg-[var(--accent)] text-white shadow-lg shadow-[var(--accent)]/20' 
+                          : 'text-[var(--text-muted)] hover:text-[var(--foreground)]'
+                      }`}
+                    >
+                      {t.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="space-y-3">
               <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">Risk Exposure (Lots)</label>

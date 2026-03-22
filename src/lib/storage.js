@@ -20,6 +20,8 @@ const TIMEFRAME_BIAS = ['15M', '30M', '1H', '4H', '1D'];
 
 const BIAS_TYPES = ['Continuation', 'Reversal'];
 
+const POI_TYPES = ['Continuous', 'Extreme'];
+
 const SMC_TAGS = [
   'BOS', 'CHoCH', 'FVG', 'Order Block', 
   'Inducement', 'SMT Divergence', 'Internal Structure', 'Swing Structure',
@@ -410,4 +412,4 @@ export async function migrateLocalToCloud() {
 }
 
 // Exports
-export { INSTRUMENTS, SESSIONS, SMC_TAGS, LIQUIDITY_ZONES, DEFAULT_STRATEGIES, TIMEFRAME_BIAS, BIAS_TYPES };
+export { INSTRUMENTS, SESSIONS, SMC_TAGS, LIQUIDITY_ZONES, DEFAULT_STRATEGIES, TIMEFRAME_BIAS, BIAS_TYPES, POI_TYPES };

@@ -42,8 +42,10 @@ export default function InsightsPage() {
   const tradeCount = trades.length;
   
   // Access Logic
-  const hasBasicAccess = tradeCount >= 30;
-  const hasAdvancedAccess = tradeCount >= 100;
+  const planId = subscription?.plan_id || 'free';
+  const isPaidUser = planId === 'pro' || planId === 'lifetime';
+  const hasBasicAccess = tradeCount >= 30; // Threshold logic still applies
+  const hasAdvancedAccess = tradeCount >= 100 && isPaidUser; // Requires both 100 trades AND pro plan
 
   // Analytics Helpers
   const winRate = getWinRate(trades);
@@ -167,7 +169,22 @@ export default function InsightsPage() {
           </div>
 
           {/* Section 1: Distribution Analysis (30+ Trades) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative">
+            {!isPaidUser && hasBasicAccess && (
+              <div className="absolute inset-0 z-30 backdrop-blur-[6px] bg-[var(--background)]/40 rounded-[40px] flex flex-col items-center justify-center p-8 text-center border border-[var(--glass-border)] shadow-2xl">
+                 <div className="w-16 h-16 rounded-[28px] bg-[var(--glass-bg)] border border-[var(--glass-border)] flex items-center justify-center mb-6 shadow-premium">
+                    <Lock size={28} className="text-[var(--accent)]" />
+                 </div>
+                 <h3 className="text-xl font-black text-[var(--foreground)] tracking-tight mb-2">Unlock Qualitative Insights</h3>
+                 <p className="text-[var(--text-muted)] font-medium max-w-sm mb-8 text-sm">
+                    Upgrade to Pro to see your <span className="text-[var(--accent)] font-bold">Best Session</span>, <span className="text-[var(--accent)] font-bold">Bias Efficiency</span>, and <span className="text-[var(--accent)] font-bold">Performance Patterns</span>.
+                 </p>
+                 <Link href="/billing" className="px-8 py-4 bg-[var(--accent)] text-white rounded-2xl font-black uppercase tracking-widest text-[10px] hover:scale-105 transition-all shadow-lg shadow-[var(--accent)]/30">
+                    Upgrade to Unlock Insights
+                 </Link>
+              </div>
+            )}
+            
             {/* Session Performance */}
             <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-8 shadow-premium">
                 <h3 className="text-[10px] font-black text-[var(--accent)] uppercase tracking-[0.3em] mb-8 flex items-center gap-2">
@@ -226,26 +243,38 @@ export default function InsightsPage() {
             <div className="flex items-center gap-4 mb-8">
                 <h2 className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-[0.4em]">Advanced Performance Modeling</h2>
                 <div className="h-[1px] flex-1 bg-[var(--glass-border)]" />
-                {!hasAdvancedAccess && (
+                {!isPaidUser ? (
+                    <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] text-[8px] font-black uppercase tracking-widest">
+                        <Lock size={10} /> Pro Feature
+                    </div>
+                ) : !hasAdvancedAccess && (
                     <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[8px] font-black uppercase tracking-widest">
                         <Lock size={10} /> {100 - tradeCount} more trades
                     </div>
                 )}
             </div>
 
-            <div className={!hasAdvancedAccess ? 'relative' : ''}>
-                {!hasAdvancedAccess && (
+            <div className={(!hasAdvancedAccess || !isPaidUser) ? 'relative' : ''}>
+                {(!hasAdvancedAccess || !isPaidUser) && (
                     <div className="absolute inset-0 z-20 backdrop-blur-sm bg-black/5 rounded-[40px] flex items-center justify-center border border-[var(--glass-border)]">
                         <div className="text-center space-y-4 p-8 glass-card rounded-3xl border-[var(--glass-border)] shadow-2xl">
                              <div className="w-12 h-12 rounded-2xl bg-[var(--glass-bg)] flex items-center justify-center mx-auto border border-[var(--glass-border)]">
-                                <ShieldCheck size={24} className="text-[var(--accent)]" />
+                                {!isPaidUser ? <Lock size={24} className="text-[var(--accent)]" /> : <ShieldCheck size={24} className="text-[var(--accent)]" />}
                              </div>
-                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--foreground)]">Deep Quantitative Unlock at 100 Trades</p>
-                             <div className="flex gap-2 justify-center">
-                                <div className="h-1 w-8 bg-[var(--accent)] rounded-full" />
-                                <div className="h-1 w-8 bg-[var(--glass-border)] rounded-full" />
-                                <div className="h-1 w-8 bg-[var(--glass-border)] rounded-full" />
-                             </div>
+                             <p className="text-[10px] font-black uppercase tracking-widest text-[var(--foreground)]">
+                                {!isPaidUser ? 'Pro Subscription Required' : 'Deep Quantitative Unlock at 100 Trades'}
+                             </p>
+                             {!isPaidUser ? (
+                               <Link href="/billing" className="mt-2 block text-[9px] font-black text-[var(--accent)] uppercase tracking-widest hover:underline">
+                                 Upgrade Now →
+                               </Link>
+                             ) : (
+                               <div className="flex gap-2 justify-center">
+                                  <div className="h-1 w-8 bg-[var(--accent)] rounded-full" />
+                                  <div className="h-1 w-8 bg-[var(--glass-border)] rounded-full" />
+                                  <div className="h-1 w-8 bg-[var(--glass-border)] rounded-full" />
+                               </div>
+                             )}
                         </div>
                     </div>
                 )}

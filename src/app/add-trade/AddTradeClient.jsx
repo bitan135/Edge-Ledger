@@ -64,6 +64,7 @@ export default function AddTrade() {
         discipline_score: formData.disciplineScore || null,
         rule_adherence: formData.ruleAdherence,
         setup_zone: formData.setupZone || null,
+        poi_type: formData.poi_type || null,
       };
 
       try {
