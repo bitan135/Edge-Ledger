@@ -25,21 +25,31 @@ import {
 import Link from 'next/link';
 
 export default function InsightsPage() {
-  const { user } = useAuth();
+  const { user, subscription } = useAuth();
   const [trades, setTrades] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function loadData() {
-      if (!user) return;
-      const data = await getTrades();
-      setTrades(data);
-      setLoading(false);
+      try {
+        if (!user) return;
+        setLoading(true);
+        const data = await getTrades();
+        setTrades(Array.isArray(data) ? data : []);
+        setError(null);
+      } catch (err) {
+        console.error('[Insights] Failed to load trades:', err);
+        setError('Failed to sync institutional data. Please try again.');
+        setTrades([]);
+      } finally {
+        setLoading(false);
+      }
     }
     loadData();
   }, [user]);
 
-  const tradeCount = trades.length;
+  const tradeCount = trades?.length || 0;
   
   // Access Logic
   const planId = subscription?.plan_id || 'free';
@@ -52,15 +62,42 @@ export default function InsightsPage() {
   const profitFactor = getProfitFactor(trades);
   const avgRR = getAverageRR(trades);
 
-  // Deep Insights
-  const sessionData = getWinRateByGroup(trades, 'session');
-  const biasData = getWinRateByGroup(trades, 'bias_type');
-  const timeframeData = getWinRateByGroup(trades, 'timeframe_bias');
+  // Deep Insights (Safe Defaults)
+  const sessionData = getWinRateByGroup(trades || [], 'session') || [];
+  const biasData = getWinRateByGroup(trades || [], 'bias_type') || [];
+  const timeframeData = getWinRateByGroup(trades || [], 'timeframe_bias') || [];
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-12 h-12 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[10px] font-black uppercase tracking-widest text-[var(--accent)] animate-pulse">Computing Alpha...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh] p-8">
+        <div className="glass-card rounded-[40px] border-[var(--glass-border)] p-12 text-center max-w-lg space-y-6">
+          <div className="w-20 h-20 rounded-[32px] bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto transition-transform duration-500">
+            <AlertCircle size={32} className="text-red-500" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black text-[var(--foreground)] tracking-tight">Sync Disrupted</h2>
+            <p className="text-[var(--text-muted)] font-medium">
+              Institutional insights could not be retrieved at this cycle.
+            </p>
+          </div>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-10 py-4 bg-[var(--accent)] text-white rounded-2xl font-black uppercase tracking-widest text-[11px] hover:scale-105 transition-all shadow-lg shadow-[var(--accent)]/30"
+          >
+            Reconnect Engine
+          </button>
+        </div>
       </div>
     );
   }

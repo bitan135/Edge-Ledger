@@ -138,20 +138,21 @@ export function getProfitFactor(trades) {
 }
 
 export function getAverageRR(trades = []) {
-  if (!trades || !trades.length) return 0;
+  if (!Array.isArray(trades) || trades.length === 0) return 0;
   const wins = trades.filter(t => t && t.result === 'Win');
   if (!wins.length) return 0;
-  const avg = wins.reduce((sum, t) => sum + (t.rr || 0), 0) / wins.length;
+  const avg = wins.reduce((sum, t) => sum + (parseFloat(t.rr) || 0), 0) / wins.length;
   return parseFloat(avg.toFixed(2));
 }
 
 export function getExpectancy(trades = []) {
-  if (!trades || !trades.length) return 0;
+  if (!Array.isArray(trades) || trades.length === 0) return 0;
   const wr = getWinRate(trades) / 100;
   const avgRR = getAverageRR(trades);
   // Expectancy = (WR * AvgRR) - (LossRate * 1)
   const expectancy = (wr * avgRR) - (1 - wr);
-  return parseFloat(expectancy.toFixed(2));
+  const result = parseFloat(expectancy.toFixed(2));
+  return isNaN(result) ? 0 : result;
 }
 
 export function getTrend(trades = [], key, samples = 10) {
@@ -245,9 +246,10 @@ export function getEquityCurve(trades) {
 }
 
 export function getWinRateByGroup(trades, groupKey) {
-  if (!trades || !trades.length) return [];
+  if (!Array.isArray(trades) || trades.length === 0) return [];
   const groups = {};
   trades.forEach(t => {
+    if (!t) return;
     const key = t[groupKey] || 'Unknown';
     if (!groups[key]) groups[key] = { wins: 0, total: 0 };
     groups[key].total++;
@@ -256,7 +258,7 @@ export function getWinRateByGroup(trades, groupKey) {
   
   return Object.entries(groups).map(([name, data]) => ({
     name,
-    winRate: parseFloat(((data.wins / data.total) * 100).toFixed(1)),
+    winRate: parseFloat(data.total > 0 ? ((data.wins / data.total) * 100).toFixed(1) : 0),
     trades: data.total,
     wins: data.wins,
     losses: data.total - data.wins,
