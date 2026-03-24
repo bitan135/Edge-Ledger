@@ -1,32 +1,18 @@
-# 🔄 Mandatory Engineering Workflow
+# 🚦 Critical Engineering Workflow
 
-Every task must follow this deterministic cycle to ensure production readiness.
+You must follow this exact sequence for *every* engineering task. 
 
-## 1. Audit
-- Analyze the current implementation.
-- Identify all affected files and systems.
-- Check for existing technical debt.
+## The Required Flow
 
-## 2. Diagnose
-- Find the **root cause**.
-- Reproduce the issue consistently.
-- Do not move to planning until the problem is fully understood.
+**1. Audit existing implementation:** Never write code blindly. Read the related components and data layer first.
+**2. Identify root cause:** Pinpoint exactly why a bug occurs or how a feature fits into the stack.
+**3. Validate data flow:** Trace the data from Supabase backend -> `storage.js` -> Component.
+**4. Implement fix:** Write clean, modular, and rule-compliant code.
+**5. Add edge case handling:** Defensively wrap every variable. Null-check everything.
+**6. Validate all states:** Test with Empty, Partial, and Full data payloads (mentally or via code assertions).
+**7. Confirm no regression:** Ensure existing functionality remains perfectly intact.
 
-## 3. Plan
-- Draft an implementation plan.
-- Ensure the solution is holistic and follows the Core Rules.
-- Get alignment on breaking changes.
+### 🚫 CRITICAL DIRECTIVE:
+**"Do not finish the task without edge case validation."**
 
-## 4. Implement
-- Write clean, maintainable code.
-- Follow the designated file structure.
-
-## 5. Validate
-- Verify the fix in a production build (`npm run build`).
-- Confirm that the root cause is eliminated.
-
-## 6. Test Edge Cases
-- **Auth Flow**: Test login/logout on different domains.
-- **Refresh Behavior**: Ensure state survives manual page refreshes.
-- **Direct URL**: Access protected paths directly from the address bar.
-- **Mobile**: Verify all interactions on simulated mobile devices.
+If your solution does not explicitly handle `undefined`, `[]`, and malformed data objects, it is considered a failed execution.

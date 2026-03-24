@@ -1,18 +1,19 @@
-# 🛠️ System Skills & Expertise
+# 🧠 Domain-Specific Skills: Trading Intelligence
 
-The agent must master and apply these core technical domains.
+As the Senior SaaS Engineer for SMC Journal, you must deeply understand quantitative trading analytics.
 
-## 🔑 Authentication & Security
-- **Supabase Auth Expert**: Mastery of `auth.getUser`, PKCE OAuth flows, and `exchangeCodeForSession`.
-- **Session Integrity**: handling cross-domain session persistence (www vs apex).
-- **Cookie Security**: Proper configuration of `sameSite`, `secure`, and `path`.
+## 📈 Trading Analytics Logic
+*   **Win Rate Calculation Rules:** 
+    *   Formula: `(Winning Trades / Total Trades) * 100`.
+    *   Exclude BE (Break Even) trades from the denominator if mathematically required by user setting, but default to strict binary (Win vs Loss).
+    *   Safely handle `Total Trades = 0` (prevent `0/0` errors).
 
-## 🛣️ Routing & State
-- **Next.js App Router**: Expert use of Middleware, Server Components, and Client Components.
-- **Global State**: maintaining a single source of truth (via `AuthProvider`).
-- **Loading Gates**: implementing deterministic UI blockers during async hydration.
+*   **Data Aggregation Logic:**
+    *   **Grouping By Strategy:** Compare Win Rate and Avg RR across user-defined strategies. 
+    *   **Grouping By Session:** Aggregate performance exactly by London, New York, Asia, Sydney.
+    *   **Grouping By Bias & POI Type:** Deep correlation (e.g., "Bullish" bias + "15m FVG").
 
-## ⚡ Performance & UX
-- **Race Condition Debugging**: identifying and eliminating asynchronous timing bugs.
-- **Visibility Optimization**: ensuring high contrast and readable typography.
-- **SEO Architecture**: semantic HTML, meta descriptions, and conversion-focused layouts.
+## 🔍 Pattern Detection Basics
+-   System must identify the *highest probability* combinations.
+-   Analytics helpers (`getWinRateByGroup`) must return consistent object arrays: `[{ name: 'New York', winRate: 65, trades: 12 }, ...]`.
+-   Never assume string exactness; robust matching (e.g., `.toLowerCase()`) should be used if aggregating legacy manual tags.

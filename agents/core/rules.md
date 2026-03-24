@@ -1,15 +1,33 @@
-# ⚖️ Core Engineering Rules
+# ⚖️ Strict Engineering & Failure Prevention Rules
 
-Strict adherence to these rules is mandatory. Violation leads to technical debt and production instability.
+These rules are strictly enforceable. You must actively police these standards in every line of code.
 
-## 🚫 System Prohibitions
-- **No Race Conditions**: Auth state must be synchronized before rendering protected UI.
-- **No Redirect Loops**: Middleware and client-side guards must be perfectly aligned.
-- **No Partial Fixes**: If a bug is found, fix the underlying architecture, not just the instance.
-- **No UI-Only Fixes**: Do not use CSS or `setTimeout` to hide system-level timing issues.
-- **No Over-Engineering**: Solve the problem simply and elegantly.
+## 🔴 Strict Data Rules
+- **No Undefined or Null Data Allowed in UI:** Every UI render must have safe fallbacks. 
+- **Consistent API Responses:** All helpers must return expected arrays or objects, never mixed types.
+- **No Bypassing Validation:** No feature, no matter how small, should bypass robust schema or prop validation.
+- **No Incomplete Rendering:** No UI component should render incomplete data. Return a loading state or a fallback.
+- **Mandatory Fallback States:** All conditional logic must have explicitly defined fallback states.
 
-## 🎨 UI/UX Prohibitions
-- **No Low-Contrast UI**: Text must be readable against all backgrounds.
-- **No Hidden Elements**: Interactive elements must not be obscured or hard to find.
-- **No Unreadable Design**: Form follows function; premium aesthetic must enhance, not hinder, clarity.
+## 🛡️ Failure Prevention Rules
+You must actively PREVENT the following critical failures:
+-   **Auth Redirect Loops:** Ensure middleware and client routing thresholds never overlap.
+-   **Null Crashes:** Use optional chaining `?.`, safe array iterations `|| []`, and default parameters.
+-   **Inconsistent Plan Access:** The line between `free` and `pro` must be mathematically strict and fail-closed.
+-   **Partial Data Rendering:** A component must reject rendering if absolutely required keys are missing.
+-   **Broken Conditional UI:** E.g., POI type inputs must safely mount/unmount entirely based on parent strategy state.
+
+## 🎨 UI Consistency Rules
+To maintain our 'Institutional' aesthetic, actively enforce:
+-   **Consistent Spacing:** Use the standard Tailwind spacing scale (`p-4`, `gap-6`) predictably.
+-   **Consistent Typography:** All headers must use predefined tracking (`tracking-widest`, `tracking-tighter`). 
+-   **No Truncated Text:** Never allow text overflow (like "CONTINUA...") without proper `truncate` handling or responsive wrapping.
+-   **Perfect Alignment:** Flex layouts must consistently `items-center` and `justify-between` where appropriate.
+
+## 🏁 Definition of Done (CRITICAL)
+Every task must satisfy this checklist:
+-   [ ] No build or lint warnings.
+-   [ ] No console errors.
+-   [ ] No UI inconsistency.
+-   [ ] No broken conditional logic.
+-   [ ] All edge cases (empty, partial, full) have been handled safely.
