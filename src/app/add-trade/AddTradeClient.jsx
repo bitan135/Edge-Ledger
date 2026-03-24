@@ -20,8 +20,8 @@ export default function AddTrade() {
   const [submitError, setSubmitError] = useState(null);
   useEffect(() => {
     const loadData = async () => {
-      const data = await getStrategies();
-      setStrategies(data);
+      const res = await getStrategies();
+      setStrategies(res.success ? res.data : []);
     };
     loadData();
   }, []);
@@ -68,10 +68,12 @@ export default function AddTrade() {
       };
 
       try {
-        await saveTrade(tradeToSave);
+        const res = await saveTrade(tradeToSave);
+        if (!res.success) throw new Error(res.error);
         
         // Track Event
-        const allTrades = await getTrades();
+        const tradesRes = await getTrades();
+        const allTrades = tradesRes.success ? tradesRes.data : [];
         posthog.capture('trade_logged', {
           instrument: tradeToSave.instrument,
           result: tradeToSave.result,

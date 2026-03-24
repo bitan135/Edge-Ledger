@@ -48,14 +48,16 @@ export default function TradeLibrary() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [fetchedTrades, fetchedStrategies] = await Promise.all([
+        const [tradesRes, strategiesRes] = await Promise.all([
           getTrades(),
           getStrategies()
         ]);
-        setTrades((fetchedTrades || []).sort((a, b) => 
+        const fetchedTrades = tradesRes.success ? tradesRes.data : [];
+        const fetchedStrategies = strategiesRes.success ? strategiesRes.data : [];
+        setTrades(fetchedTrades.sort((a, b) => 
           parseTradeDate(b) - parseTradeDate(a)
         ));
-        setStrategies(fetchedStrategies || []);
+        setStrategies(fetchedStrategies);
       } catch (err) {
         console.error('Library load failed:', err);
       } finally {
@@ -73,7 +75,8 @@ export default function TradeLibrary() {
       confirmLabel: 'Delete Trade',
       onConfirm: async () => {
         try {
-          await deleteTrade(id);
+          const res = await deleteTrade(id);
+          if (!res.success) throw new Error(res.error);
           setTrades(prev => prev.filter(t => t.id !== id));
           setIsModalOpen(false);
           showToast('Trade removed from vault.', 'success');
@@ -122,7 +125,9 @@ export default function TradeLibrary() {
         setup_zone: formData.setupZone || null,
       };
 
-      const updated = await updateTrade(selectedTrade.id, updates);
+      const res = await updateTrade(selectedTrade.id, updates);
+      if (!res.success) throw new Error(res.error);
+      const updated = res.data;
       
       setTrades(prev => prev.map(t => t.id === selectedTrade.id ? updated : t));
       setSelectedTrade(updated);

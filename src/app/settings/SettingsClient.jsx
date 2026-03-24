@@ -141,8 +141,10 @@ export default function Settings() {
 
   const exportData = async () => {
     try {
-      const trades = await getTrades();
-      const strategies = await getStrategies();
+      const tradesRes = await getTrades();
+      const strategiesRes = await getStrategies();
+      const trades = tradesRes.success ? tradesRes.data : [];
+      const strategies = strategiesRes.success ? strategiesRes.data : [];
       const data = {
         trades,
         strategies,

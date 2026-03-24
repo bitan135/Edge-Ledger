@@ -25,12 +25,12 @@ export default function Strategies() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [strats, trades] = await Promise.all([
+        const [stratsRes, tradesRes] = await Promise.all([
           getStrategies(),
           getTrades()
         ]);
-        setStrategies(strats);
-        setInsights(getStrategyInsights(trades));
+        setStrategies(stratsRes.success ? stratsRes.data : []);
+        setInsights(getStrategyInsights(tradesRes.success ? tradesRes.data : []));
       } catch (err) {
         console.error('Strategies load failed:', err?.message || err?.details || err?.code || err);
       } finally {
@@ -51,10 +51,11 @@ export default function Strategies() {
 
     setIsAdding(true);
     try {
-      const added = await addStrategy(newStrategy.trim());
+      const addedRes = await addStrategy(newStrategy.trim());
+      if (!addedRes.success) throw new Error(addedRes.error);
       // Re-fetch to ensure sync including defaults
-      const updated = await getStrategies();
-      setStrategies(updated);
+      const updatedRes = await getStrategies();
+      setStrategies(updatedRes.success ? updatedRes.data : []);
       setNewStrategy('');
       showToast(`Strategy "${newStrategy}" added successfully.`, 'success');
     } catch (err) {
@@ -72,9 +73,10 @@ export default function Strategies() {
       confirmLabel: 'Delete Strategy',
       onConfirm: async () => {
         try {
-          await deleteStrategy(name);
-          const updated = await getStrategies();
-          setStrategies(updated);
+          const delRes = await deleteStrategy(name);
+          if (!delRes.success) throw new Error(delRes.error);
+          const updatedRes = await getStrategies();
+          setStrategies(updatedRes.success ? updatedRes.data : []);
           showToast(`Strategy "${name}" deleted.`, 'info');
         } catch (err) {
           showToast('Failed to delete strategy.', 'error');

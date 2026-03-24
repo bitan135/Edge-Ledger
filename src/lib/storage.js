@@ -330,96 +330,144 @@ export function getRRDistribution(trades) {
 // Trades
 export async function getTrades() {
   try {
-    return await tradeService.getTrades();
+    const data = await tradeService.getTrades();
+    return { success: true, data: Array.isArray(data) ? data : [], error: null };
   } catch (e) {
-    console.error('Fetch trades failed:', e?.message || e?.details || e?.code || e);
-    return [];
+    console.error('[STORAGE API] Fetch trades failed:', e?.message || e?.details || e?.code || e);
+    return { success: false, data: [], error: 'Failed to synchronize institutional data.' };
   }
 }
 
 export async function canAddTrade() {
-  // Core journal is now completely free and unlimited for all users
-  return true;
+  return { success: true, data: true, error: null };
 }
 
 export async function saveTrade(trade) {
-  const canAdd = await canAddTrade();
-  if (!canAdd) {
-    throw new Error('Trade limit reached! Please upgrade to Pro for unlimited trades.');
+  try {
+    const canAddRes = await canAddTrade();
+    if (!canAddRes.data) {
+      return { success: false, data: null, error: 'Trade limit reached! Please upgrade to Pro for unlimited trades.' };
+    }
+
+    // Hardening: Enforce types and defaults
+    const tradeData = {
+      ...trade,
+      entry_price: parseFloat(trade.entryPrice || trade.entry_price) || 0,
+      stop_loss: parseFloat(trade.stopLoss || trade.stop_loss) || null,
+      take_profit: parseFloat(trade.takeProfit || trade.take_profit) || null,
+      lot_size: parseFloat(trade.lotSize || trade.lot_size) || 0.01,
+      rr: parseFloat(trade.rr) || 0,
+      pips: parseFloat(trade.pips) || 0,
+      risk_amount: parseFloat(trade.riskAmount || trade.risk_amount) || 0,
+      trade_date: parseTradeDate(trade).toISOString(),
+      smc_tags: Array.isArray(trade.smcTags || trade.smc_tags) ? (trade.smcTags || trade.smc_tags) : [],
+      liquidity_sweep: Array.isArray(trade.liquiditySweep || trade.liquidity_sweep) ? (trade.liquiditySweep || trade.liquidity_sweep) : [],
+    };
+
+    // Remove legacy/UI keys to keep DB clean
+    delete tradeData.entryPrice;
+    delete tradeData.stopLoss;
+    delete tradeData.takeProfit;
+    delete tradeData.lotSize;
+    delete tradeData.tradeDate;
+    delete tradeData.smcTags;
+    delete tradeData.liquiditySweep;
+    delete tradeData.riskAmount;
+
+    // Strict validation
+    if (tradeData.entry_price === 0) {
+      return { success: false, data: null, error: 'Entry price is required and must be numeric.' };
+    }
+    if (tradeData.stop_loss !== null && tradeData.stop_loss === tradeData.entry_price) {
+      return { success: false, data: null, error: 'Stop Loss cannot equal Entry Price.' };
+    }
+    if (tradeData.take_profit !== null && tradeData.take_profit === tradeData.entry_price) {
+      return { success: false, data: null, error: 'Take Profit cannot equal Entry Price.' };
+    }
+
+    const data = await tradeService.createTrade(tradeData);
+    return { success: true, data, error: null };
+  } catch (e) {
+    console.error('[STORAGE API] Save trade failed:', e?.message || e);
+    return { success: false, data: null, error: e?.message || 'Failed to execute trade log.' };
   }
-
-  // Hardening: Enforce types and defaults
-  const tradeData = {
-    ...trade,
-    entry_price: parseFloat(trade.entryPrice || trade.entry_price) || 0,
-    stop_loss: parseFloat(trade.stopLoss || trade.stop_loss) || 0,
-    take_profit: parseFloat(trade.takeProfit || trade.take_profit) || 0,
-    lot_size: parseFloat(trade.lotSize || trade.lot_size) || 0.01,
-    rr: parseFloat(trade.rr) || 0,
-    pips: parseFloat(trade.pips) || 0,
-    risk_amount: parseFloat(trade.riskAmount || trade.risk_amount) || 0,
-    trade_date: parseTradeDate(trade).toISOString(),
-    smc_tags: Array.isArray(trade.smcTags || trade.smc_tags) ? (trade.smcTags || trade.smc_tags) : [],
-    liquidity_sweep: Array.isArray(trade.liquiditySweep || trade.liquidity_sweep) ? (trade.liquiditySweep || trade.liquidity_sweep) : [],
-  };
-
-  // Remove legacy/UI keys to keep DB clean
-  delete tradeData.entryPrice;
-  delete tradeData.stopLoss;
-  delete tradeData.takeProfit;
-  delete tradeData.lotSize;
-  delete tradeData.tradeDate;
-  delete tradeData.smcTags;
-  delete tradeData.liquiditySweep;
-  delete tradeData.riskAmount;
-
-  return await tradeService.createTrade(tradeData);
 }
 
 export async function updateTrade(id, updates) {
-  // Hardening: Enforce types for updates
-  const hardenedUpdates = { ...updates };
-  
-  if (updates.entryPrice || updates.entry_price) hardenedUpdates.entry_price = parseFloat(updates.entryPrice || updates.entry_price) || 0;
-  if (updates.stopLoss || updates.stop_loss) hardenedUpdates.stop_loss = parseFloat(updates.stopLoss || updates.stop_loss) || 0;
-  if (updates.takeProfit || updates.take_profit) hardenedUpdates.take_profit = parseFloat(updates.takeProfit || updates.take_profit) || 0;
-  if (updates.lotSize || updates.lot_size) hardenedUpdates.lot_size = parseFloat(updates.lotSize || updates.lot_size) || 0;
-  if (updates.rr !== undefined) hardenedUpdates.rr = parseFloat(updates.rr) || 0;
-  if (updates.pips !== undefined) hardenedUpdates.pips = parseFloat(updates.pips) || 0;
-  if (updates.tradeDate || updates.trade_date) hardenedUpdates.trade_date = parseTradeDate(updates).toISOString();
+  try {
+    // Hardening: Enforce types for updates
+    const hardenedUpdates = { ...updates };
+    
+    if (updates.entryPrice || updates.entry_price) hardenedUpdates.entry_price = parseFloat(updates.entryPrice || updates.entry_price) || 0;
+    if (updates.stopLoss !== undefined || updates.stop_loss !== undefined) hardenedUpdates.stop_loss = parseFloat(updates.stopLoss || updates.stop_loss) || null;
+    if (updates.takeProfit !== undefined || updates.take_profit !== undefined) hardenedUpdates.take_profit = parseFloat(updates.takeProfit || updates.take_profit) || null;
+    if (updates.lotSize || updates.lot_size) hardenedUpdates.lot_size = parseFloat(updates.lotSize || updates.lot_size) || 0;
+    if (updates.rr !== undefined) hardenedUpdates.rr = parseFloat(updates.rr) || 0;
+    if (updates.pips !== undefined) hardenedUpdates.pips = parseFloat(updates.pips) || 0;
+    if (updates.tradeDate || updates.trade_date) hardenedUpdates.trade_date = parseTradeDate(updates).toISOString();
 
-  // Cleanup
-  ['entryPrice', 'stopLoss', 'takeProfit', 'lotSize', 'tradeDate', 'smcTags', 'liquiditySweep', 'riskAmount', 'timeframeBias', 'biasType'].forEach(key => {
-    delete hardenedUpdates[key];
-  });
+    // Strict validation if updating prices
+    if (hardenedUpdates.entry_price === 0) return { success: false, data: null, error: 'Entry price cannot be zero.' };
+    if (hardenedUpdates.stop_loss !== null && hardenedUpdates.stop_loss !== undefined && hardenedUpdates.entry_price !== undefined && hardenedUpdates.stop_loss === hardenedUpdates.entry_price) {
+      return { success: false, data: null, error: 'Stop Loss cannot equal Entry Price.' };
+    }
+    if (hardenedUpdates.take_profit !== null && hardenedUpdates.take_profit !== undefined && hardenedUpdates.entry_price !== undefined && hardenedUpdates.take_profit === hardenedUpdates.entry_price) {
+      return { success: false, data: null, error: 'Take Profit cannot equal Entry Price.' };
+    }
 
-  return await tradeService.updateTrade(id, hardenedUpdates);
+    // Cleanup
+    ['entryPrice', 'stopLoss', 'takeProfit', 'lotSize', 'tradeDate', 'smcTags', 'liquiditySweep', 'riskAmount', 'timeframeBias', 'biasType'].forEach(key => {
+      delete hardenedUpdates[key];
+    });
+
+    const data = await tradeService.updateTrade(id, hardenedUpdates);
+    return { success: true, data, error: null };
+  } catch (e) {
+    console.error('[STORAGE API] Update trade failed:', e?.message || e);
+    return { success: false, data: null, error: e?.message || 'Failed to modify trade sequence.' };
+  }
 }
 
 export async function deleteTrade(id) {
-  return await tradeService.deleteTrade(id);
+  try {
+    const data = await tradeService.deleteTrade(id);
+    return { success: true, data, error: null };
+  } catch (e) {
+    console.error('[STORAGE API] Delete trade failed:', e?.message || e);
+    return { success: false, data: null, error: 'Failed to erase trade log from ledger.' };
+  }
 }
 
 // Strategies
 export async function getStrategies() {
   try {
-    const dbStrategies = await strategyService.getStrategies();
+    const dbStrategies = await strategyService.getStrategies() || [];
     // Merge defaults with DB strategies and deduplicate
     const combined = [...new Set([...DEFAULT_STRATEGIES, ...dbStrategies])]
       .filter(s => s && s.toLowerCase().trim() !== 'supply zonedemand zone');
-    return combined;
+    return { success: true, data: combined, error: null };
   } catch (e) {
-    console.error('Fetch strategies failed:', e?.message || e);
-    return DEFAULT_STRATEGIES;
+    console.error('[STORAGE API] Fetch strategies failed:', e?.message || e);
+    return { success: false, data: DEFAULT_STRATEGIES, error: 'Using local strategy defaults.' };
   }
 }
 
 export async function addStrategy(name) {
-  return await strategyService.addStrategy(name);
+  try {
+    const data = await strategyService.addStrategy(name);
+    return { success: true, data, error: null };
+  } catch (e) {
+    return { success: false, data: null, error: 'Failed to inject custom strategy.' };
+  }
 }
 
 export async function deleteStrategy(name) {
-  return await strategyService.deleteStrategy(name);
+  try {
+    const data = await strategyService.deleteStrategy(name);
+    return { success: true, data, error: null };
+  } catch (e) {
+    return { success: false, data: null, error: 'Failed to erase custom strategy.' };
+  }
 }
 
 // Data Bridge: Local Storage to Cloud Migration

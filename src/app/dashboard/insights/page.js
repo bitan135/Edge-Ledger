@@ -35,9 +35,14 @@ export default function InsightsPage() {
       try {
         if (!user) return;
         setLoading(true);
-        const data = await getTrades();
-        setTrades(Array.isArray(data) ? data : []);
-        setError(null);
+        const res = await getTrades();
+        if (!res.success) {
+          setError(res.error || 'Failed to sync institutional data.');
+          setTrades([]);
+        } else {
+          setTrades(Array.isArray(res.data) ? res.data : []);
+          setError(null);
+        }
       } catch (err) {
         console.error('[Insights] Failed to load trades:', err);
         setError('Failed to sync institutional data. Please try again.');

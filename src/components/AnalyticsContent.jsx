@@ -62,9 +62,9 @@ export default function AnalyticsContent() {
     const loadData = async () => {
       try {
         const { getTrades } = await import('@/lib/storage');
-        const fetchedTrades = await getTrades();
+        const res = await getTrades();
         if (!isMounted) return;
-        setTrades(fetchedTrades || []);
+        setTrades(res.success && Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error('Analytics load failed:', err);
       } finally {
