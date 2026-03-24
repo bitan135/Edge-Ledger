@@ -5,39 +5,36 @@ import {
   BarChart3, 
   Target, 
   TrendingUp, 
-  ShieldCheck, 
-  Zap, 
   BrainCircuit, 
   Binary,
   ArrowRight,
   CheckCircle2,
-  XCircle,
-  Sparkles,
-  Activity
+  Activity,
+  ChevronRight
 } from 'lucide-react';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#050505] text-white selection:bg-[var(--accent)] selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white font-sans antialiased overflow-x-hidden">
       
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-[#050505]/70 border-b border-white/5 shadow-2xl">
+      {/* Navigation (Legacy Structure Retrieved) */}
+      <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group cursor-pointer">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--accent)] to-purple-600 flex items-center justify-center shadow-lg shadow-[var(--accent)]/20 transition-transform duration-500">
-              <TrendingUp size={22} className="text-white relative z-10" />
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 rounded-xl transition-opacity duration-300" />
+          <Link href="/" className="flex items-center gap-2 group cursor-pointer">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-800 flex items-center justify-center shadow-lg shadow-indigo-600/20 group-hover:scale-105 transition-transform duration-500">
+              <TrendingUp size={22} className="text-white" />
             </div>
-            <span className="font-black text-xl tracking-tighter text-white">SMC JOURNAL</span>
+            <span className="font-black text-xl tracking-tighter text-slate-900">SMC JOURNAL</span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <Link href="#features" className="text-xs font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors">Platform</Link>
-            <Link href="#audits" className="text-xs font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors">Behavioral Audits</Link>
-            <Link href="/pricing" className="text-xs font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors">Pricing</Link>
+            <Link href="/features" className="text-xs font-black uppercase tracking-[0.15em] text-slate-500 hover:text-indigo-600 transition-colors">Features</Link>
+            <Link href="/insight-engine" className="text-xs font-black uppercase tracking-[0.15em] text-slate-500 hover:text-indigo-600 transition-colors">Insight Engine</Link>
+            <Link href="/pricing" className="text-xs font-black uppercase tracking-[0.15em] text-slate-500 hover:text-indigo-600 transition-colors">Pricing</Link>
+            <Link href="/affiliate" className="text-xs font-black uppercase tracking-[0.15em] text-slate-500 hover:text-indigo-600 transition-colors">Affiliate</Link>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/login" className="text-xs font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors px-4">Login</Link>
-            <Link href="/signup" className="px-6 py-3 bg-white text-black rounded-lg text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-xl shadow-white/10">
+            <Link href="/login" className="text-xs font-black uppercase tracking-[0.15em] text-slate-500 hover:text-indigo-600 transition-colors px-4">Login</Link>
+            <Link href="/signup" className="px-6 py-3 bg-slate-900 text-white rounded-lg text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-xl shadow-slate-900/10">
               Get Started
             </Link>
           </div>
@@ -46,210 +43,194 @@ export default function LandingPage() {
 
       <main className="pt-20">
         
-        {/* Abstract Hero Section */}
-        <section className="relative pt-32 pb-40 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]">
-          {/* Pure CSS Geometric Background representing "Data grids" */}
+        {/* Minimalist Hero Section */}
+        <section className="relative pt-32 pb-40 overflow-hidden flex flex-col items-center justify-center min-h-[85vh] bg-white border-b border-slate-200">
+          {/* Subtle Grid Background */}
           <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" 
-               style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} 
+               style={{ backgroundImage: 'linear-gradient(rgba(15,23,42,1) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,1) 1px, transparent 1px)', backgroundSize: '40px 40px' }} 
           />
-          <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_0%,var(--accent-muted),transparent_70%)] opacity-20 pointer-events-none" />
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-full max-w-3xl h-1 bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent blur-md opacity-50 block rotate-[-5deg]" />
+          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-indigo-50 rounded-bl-full opacity-60 pointer-events-none" />
 
-          <div className="max-w-5xl mx-auto px-6 text-center space-y-12 relative z-10">
-            <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-[10px] font-black uppercase tracking-[0.25em] mx-auto backdrop-blur-sm">
-              <Activity size={12} className="text-[var(--accent)] animate-pulse" /> Precision Engineering for SMC Practitioners
+          <div className="max-w-4xl mx-auto px-6 text-center space-y-10 relative z-10">
+            <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-[10px] font-black uppercase tracking-[0.25em] mx-auto shadow-sm">
+              <Activity size={12} className="text-indigo-600" /> Professional Trade Analytics
             </div>
             
-            <div className="space-y-8">
-              <h1 className="text-6xl md:text-[7rem] font-black tracking-tighter leading-[0.9] text-white selection:bg-white selection:text-black">
-                The Quantitative Edge <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40">For SMC Traders.</span>
+            <div className="space-y-6">
+              <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.95] text-slate-900">
+                The Journal Built for <br />
+                <span className="text-indigo-600">Smart Money Concepts.</span>
               </h1>
-              <p className="text-lg md:text-2xl font-medium text-white/40 max-w-3xl mx-auto leading-relaxed tracking-tight">
-                Retail journals log entries and exits. Institutional journals log narrative, liquidity sweeps, and behavioral leaks. Discover the exact statistical probability of your setups.
+              <p className="text-lg md:text-xl font-medium text-slate-500 max-w-2xl mx-auto leading-relaxed tracking-tight">
+                Generic retail journals log entry and exit prices. We log structural narrative, Fair Value Gaps, mitigating order blocks, and liquidity sweeps. 
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">
-              <Link href="/signup" className="px-12 py-5 bg-[var(--accent)] text-white rounded-xl font-black uppercase tracking-[0.2em] text-[12px] hover:bg-[var(--accent)]/90 transition-all shadow-2xl shadow-[var(--accent)]/20 hover:scale-105 flex items-center gap-3">
-                Start Logging <ArrowRight size={16} />
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+              <Link href="/signup" className="w-full sm:w-auto px-10 py-5 bg-indigo-600 text-white rounded-xl font-black uppercase tracking-[0.15em] text-xs hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-600/20 hover:scale-105 flex items-center justify-center gap-3">
+                Start Journaling <ArrowRight size={16} />
               </Link>
-              <Link href="#features" className="px-12 py-5 bg-transparent border border-white/10 text-white rounded-xl font-black uppercase tracking-[0.2em] text-[12px] hover:bg-white/5 transition-all">
-                Audit Your Edge
+              <Link href="#features" className="w-full sm:w-auto px-10 py-5 bg-white border border-slate-200 text-slate-700 rounded-xl font-black uppercase tracking-[0.15em] text-xs hover:bg-slate-50 transition-all shadow-sm">
+                Explore The Tool
               </Link>
-            </div>
-            
-            {/* Pure Typographic Trust Bar */}
-            <div className="pt-24 border-t border-white/5 mt-24">
-               <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-8">Auditing Over 250,000+ Executions Annually</p>
-               <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale">
-                  <span className="text-xl font-black tracking-tighter uppercase italic text-white">SmartMoney</span>
-                  <span className="text-xl font-black tracking-tighter uppercase text-white tracking-[0.2em]">Institutional</span>
-                  <span className="text-xl font-black tracking-tighter uppercase text-white font-serif italic">Liquidity</span>
-               </div>
             </div>
           </div>
         </section>
 
-        {/* Phase 2: The Core Problem vs Solution */}
-        <section id="features" className="py-32 bg-[#0A0A0A] border-y border-white/5 relative">
+        {/* Phase 2: Feature Breakdown */}
+        <section id="features" className="py-32 bg-slate-50">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-               <div className="space-y-10">
-                  <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight">
-                     Why Generic Retail Journals <span className="text-rose-500">Fail You.</span>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+               {/* Context Column */}
+               <div className="lg:col-span-5 space-y-8 sticky top-32">
+                  <h2 className="text-4xl md:text-5xl font-black tracking-tighter leading-tight text-slate-900">
+                     Track Structural Intent, <span className="text-indigo-600">Not Just Prices.</span>
                   </h2>
-                  <div className="space-y-6 text-white/50 text-lg font-medium leading-relaxed">
+                  <div className="space-y-6 text-slate-500 font-medium leading-relaxed">
                      <p>
-                        Most trading journals assume you trade generic indicators. They ask for entry prices and stop losses, completely ignoring the structural narrative that defines Smart Money Concepts.
+                        Most trading journals fail because they treat SMC strategies like simple indicator crosses. If you cannot track the specific killzone a setup occurred in or the HTF POI it reacted from, your data is incomplete.
                      </p>
                      <p>
-                        If you cannot track exactly how an Order Block was mitigated, or whether a Fair Value Gap was respected on multiple timeframes, you are missing the structural data that actually dictates institutional price delivery.
+                        Our platform is engineered exclusively to quantify structural variables. Find out exactly which setups provide a legitimate edge and which are emotional leaks.
                      </p>
-                  </div>
-                  <div className="pl-6 border-l-2 border-rose-500/30">
-                     <p className="font-black text-rose-500 uppercase tracking-widest text-xs mb-2">The Result?</p>
-                     <p className="text-white/60 font-medium">You repeat the same behavioral errors blindly, mistaking poor execution for a broken strategy.</p>
                   </div>
                </div>
 
-               {/* Bento Box: The SMC Solution */}
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-[#111] border border-white/5 p-8 rounded-2xl hover:border-white/20 transition-colors space-y-6 group">
-                     <div className="w-12 h-12 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center border border-[var(--accent)]/20">
-                        <Binary size={20} className="text-[var(--accent)]" />
+               {/* Bento Box Grid */}
+               <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white border border-slate-200 p-8 rounded-2xl hover:border-indigo-300 transition-all shadow-sm group">
+                     <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center border border-indigo-100 mb-6 group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-colors">
+                        <Binary size={22} className="text-indigo-600 group-hover:text-white transition-colors" />
                      </div>
-                     <h3 className="text-xl font-black tracking-tight group-hover:text-[var(--accent)] transition-colors">Narrative Logging</h3>
-                     <p className="text-xs text-white/40 font-medium leading-relaxed">Dedicated fields for BOS, CHoCH, exact liquidity sweep zones, and mitigation tracking.</p>
+                     <h3 className="text-xl font-black tracking-tight mb-3 text-slate-900">Narrative Tracking</h3>
+                     <p className="text-sm text-slate-500 font-medium leading-relaxed">Log Break of Structure, Change of Character, and exact mitigation points on every execution.</p>
                   </div>
-                  <div className="bg-[#111] border border-white/5 p-8 rounded-2xl hover:border-white/20 transition-colors space-y-6 group md:-translate-y-8">
-                     <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                        <BarChart3 size={20} className="text-emerald-500" />
+                  <div className="bg-white border border-slate-200 p-8 rounded-2xl hover:border-emerald-300 transition-all shadow-sm group md:translate-y-8">
+                     <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center border border-emerald-100 mb-6 group-hover:bg-emerald-600 group-hover:border-emerald-600 transition-colors">
+                        <BarChart3 size={22} className="text-emerald-600 group-hover:text-white transition-colors" />
                      </div>
-                     <h3 className="text-xl font-black tracking-tight group-hover:text-emerald-500 transition-colors">Edge Expectancy</h3>
-                     <p className="text-xs text-white/40 font-medium leading-relaxed">Calculates exact mathematical expectancy per setup. Know instantly which model provides your edge.</p>
+                     <h3 className="text-xl font-black tracking-tight mb-3 text-slate-900">Edge Expectancy</h3>
+                     <p className="text-sm text-slate-500 font-medium leading-relaxed">Instantly calculate the mathematical expectancy of specific chart models.</p>
                   </div>
-                  <div className="bg-[#111] border border-white/5 p-8 rounded-2xl hover:border-white/20 transition-colors space-y-6 group">
-                     <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
-                        <BrainCircuit size={20} className="text-purple-500" />
+                  <div className="bg-white border border-slate-200 p-8 rounded-2xl hover:border-rose-300 transition-all shadow-sm group">
+                     <div className="w-12 h-12 rounded-xl bg-rose-50 flex items-center justify-center border border-rose-100 mb-6 group-hover:bg-rose-500 group-hover:border-rose-500 transition-colors">
+                        <BrainCircuit size={22} className="text-rose-500 group-hover:text-white transition-colors" />
                      </div>
-                     <h3 className="text-xl font-black tracking-tight group-hover:text-purple-500 transition-colors">Neural Auditing</h3>
-                     <p className="text-xs text-white/40 font-medium leading-relaxed">Tag executions with emotional states. Isolate exactly how much "FOMO" is costing you in hard currency.</p>
+                     <h3 className="text-xl font-black tracking-tight mb-3 text-slate-900">Behavioral Audits</h3>
+                     <p className="text-sm text-slate-500 font-medium leading-relaxed">Tag executions with psychological states to isolate the exact financial cost of undisciplined trading.</p>
                   </div>
-                  <div className="bg-[#111] border border-white/5 p-8 rounded-2xl hover:border-white/20 transition-colors space-y-6 group md:-translate-y-8">
-                     <div className="w-12 h-12 rounded-lg bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
-                        <Target size={20} className="text-amber-500" />
+                  <div className="bg-white border border-slate-200 p-8 rounded-2xl hover:border-amber-300 transition-all shadow-sm group md:translate-y-8">
+                     <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center border border-amber-100 mb-6 group-hover:bg-amber-500 group-hover:border-amber-500 transition-colors">
+                        <Target size={22} className="text-amber-600 group-hover:text-white transition-colors" />
                      </div>
-                     <h3 className="text-xl font-black tracking-tight group-hover:text-amber-500 transition-colors">Session Analytics</h3>
-                     <p className="text-xs text-white/40 font-medium leading-relaxed">Correlate performance against specific killzones. Stop giving back London profits during New York.</p>
+                     <h3 className="text-xl font-black tracking-tight mb-3 text-slate-900">Session Logic</h3>
+                     <p className="text-sm text-slate-500 font-medium leading-relaxed">Correlate win rates against specific liquidity windows like Asian sweep or NY Open.</p>
                   </div>
                </div>
             </div>
           </div>
         </section>
 
-        {/* Phase 3: Abstract CSS Data Visualization (Insight Engine) */}
-        <section id="audits" className="py-40 bg-black relative overflow-hidden">
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        {/* Phase 3: Abstract CSS Visual (Insight Engine) */}
+        <section id="insight-engine" className="py-32 bg-white border-y border-slate-200">
           <div className="max-w-7xl mx-auto px-6 text-center space-y-20">
             <div className="space-y-6 max-w-3xl mx-auto">
-               <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-white">
-                 Quantify The <span className="text-[var(--accent)]">Unseen.</span>
+               <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900">
+                 Quantify Your <span className="text-indigo-600">Trading Model.</span>
                </h2>
-               <p className="text-lg text-white/40 font-medium leading-relaxed">
-                 Transform qualitative price action into rigorous quantitative data. High-fidelity analytics engineered specifically for structural traders.
+               <p className="text-lg text-slate-500 font-medium leading-relaxed">
+                 Transform raw chart execution into actionable insight. Know clearly which specific setup yields the highest risk-to-reward ratio for your personality.
                </p>
             </div>
 
-            {/* Abstract Equity/Winrate Visualization (Pure CSS) */}
+            {/* Abstract Analytics Chart Mockup */}
             <div className="relative max-w-4xl mx-auto">
-               <div className="absolute -inset-10 bg-[var(--accent)]/5 rounded-full blur-[100px] pointer-events-none" />
-               <div className="relative bg-[#080808] border border-white/5 rounded-3xl p-12 overflow-hidden shadow-2xl flex flex-col justify-end h-80 group">
-                  {/* Abstract Chart UI */}
-                  <div className="absolute top-8 left-8 flex items-center gap-3">
-                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">Live Model Expectancy</span>
+               <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-12 overflow-hidden shadow-xl flex flex-col justify-end h-80 relative">
+                  
+                  {/* Legend */}
+                  <div className="absolute top-8 left-8 flex items-center gap-3 bg-white px-4 py-2 border border-slate-200 rounded-full shadow-sm">
+                     <div className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
+                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">Model Expectancy Flow</span>
                   </div>
                   
-                  <div className="flex items-end justify-between gap-2 h-40 mt-auto border-b border-white/5 pb-0">
-                     {[30, 45, 25, 60, 50, 80, 70, 95, 85, 100].map((height, i) => (
-                        <div key={i} className="flex-1 space-y-2 flex flex-col justify-end group-hover:opacity-100 opacity-60 transition-opacity" style={{ transitionDelay: `${i * 50}ms` }}>
-                           <div className="w-full bg-gradient-to-t from-[var(--accent)]/10 to-[var(--accent)]/80 rounded-t-sm transition-all duration-1000" style={{ height: `${height}%` }} />
+                  <div className="flex items-end justify-between gap-1 md:gap-3 h-48 mt-auto border-b border-slate-200 pb-0">
+                     {[30, 45, -15, 60, 50, -25, 70, 95, 85, 100].map((height, i) => (
+                        <div key={i} className="flex-1 w-full relative group">
+                           {/* Positive Bar */}
+                           {height > 0 ? (
+                               <div 
+                                 className="absolute bottom-0 w-full bg-indigo-500 rounded-t-sm opacity-80 group-hover:bg-indigo-600 transition-colors" 
+                                 style={{ height: `${height}%` }} 
+                               />
+                           ) : (
+                               /* Negative Bar simulating drawdown */
+                               <div 
+                                 className="absolute top-0 w-full bg-rose-400 rounded-b-sm opacity-80 group-hover:bg-rose-500 transition-colors" 
+                                 style={{ height: `${Math.abs(height)}%` }} 
+                               />
+                           )}
+                           {/* Tooltip Simulation */}
+                           <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded shadow-lg transition-opacity whitespace-nowrap z-10 pointer-events-none">
+                              Trade #{i + 1}
+                           </div>
                         </div>
                      ))}
                   </div>
-                  
-                  {/* Overlay Data Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/50 to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 backdrop-blur-[2px]">
-                     <div className="text-center space-y-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
-                        <p className="text-4xl font-black text-white">4.2R</p>
-                        <p className="text-[10px] font-black uppercase tracking-widest text-[var(--accent)]">Average Edge Expectancy</p>
-                     </div>
-                  </div>
                </div>
-            </div>
-            
-            <div className="pt-10">
-               <Link href="/features" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-white hover:text-[var(--accent)] transition-colors">
-                 Explore the Analytics Engine <ArrowRight size={14} />
-               </Link>
             </div>
           </div>
         </section>
 
-        {/* Phase 4: Extreme SEO Targeting Section (Semantic Structure) */}
-        <section className="py-24 bg-[#050505] border-t border-white/5">
-           <div className="max-w-4xl mx-auto px-6 space-y-16">
-              
+        {/* Phase 4: Extreme SEO Targeting Section */}
+        <section className="py-24 bg-slate-50">
+           <div className="max-w-4xl mx-auto px-6 space-y-12">
               <div className="text-center">
-                 <h2 className="text-3xl font-black tracking-tight text-white mb-6">The Elite Smart Money Concepts Trading Journal</h2>
-                 <p className="text-white/40 leading-relaxed font-medium">
-                    SMC Journal is engineered explicitly for forex, crypto, and indices traders adopting the structural logic of smart money. Standard retail journals ask you to input prices; we require you to input structural intent. Our architecture is globally optimized to deliver zero-latency execution logging for active day traders.
+                 <h2 className="text-3xl font-black tracking-tight text-slate-900 mb-6">A Trading Journal Designed for Smart Money Concepts</h2>
+                 <p className="text-slate-500 leading-relaxed font-medium">
+                    SMC Journal provides the technical framework necessary for forex, crypto, and indices traders adopting the structural logic of smart money. Standard tracking applications focus solely on price delivery; our architecture inherently requires you to categorize structural intent, ensuring your analytical data precisely mirrors the reality of institutional market operations.
                  </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8 border-t border-white/5">
-                 <div className="space-y-4">
-                    <h3 className="text-lg font-black text-white flex items-center gap-3">
-                       <CheckCircle2 size={16} className="text-emerald-500" /> Forex Performance Tracker
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-12 border-t border-slate-200 text-left">
+                 <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 className="text-lg font-black text-slate-900 flex items-center gap-3 mb-4">
+                       <CheckCircle2 size={16} className="text-indigo-600" /> Forex Performance Tracker
                     </h3>
-                    <p className="text-sm text-white/40 leading-relaxed font-medium">Log complex setups across major sessions (London, NY) with specific instrument analytics optimized for forex price action.</p>
+                    <p className="text-sm text-slate-500 leading-relaxed font-medium">Log complex setups across critical volatility sessions, engineered with specific instrument analytics perfect for forex price action.</p>
                  </div>
-                 <div className="space-y-4">
-                    <h3 className="text-lg font-black text-white flex items-center gap-3">
-                       <CheckCircle2 size={16} className="text-emerald-500" /> Structural Bias Analytics
+                 <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 className="text-lg font-black text-slate-900 flex items-center gap-3 mb-4">
+                       <CheckCircle2 size={16} className="text-indigo-600" /> Structural Bias Analytics
                     </h3>
-                    <p className="text-sm text-white/40 leading-relaxed font-medium">Calculate exactly how often your higher timeframe structural read correctly aligns with lower timeframe execution outcomes.</p>
+                    <p className="text-sm text-slate-500 leading-relaxed font-medium">Calculate how consistently your higher timeframe narrative analysis aligns with lower timeframe execution outcomes.</p>
                  </div>
               </div>
-
            </div>
         </section>
 
-        {/* Phase 5: CTA Terminal */}
-        <section className="py-40 bg-[var(--accent)] text-white relative overflow-hidden">
-           <div className="absolute inset-0 bg-black/20" />
-           <div className="max-w-4xl mx-auto px-6 text-center space-y-12 relative z-10">
+        {/* Phase 5: CTA */}
+        <section className="py-32 bg-indigo-600 text-white relative overflow-hidden">
+           <div className="max-w-4xl mx-auto px-6 text-center space-y-10 relative z-10">
               <div className="space-y-6">
-                 <h2 className="text-5xl md:text-7xl font-black tracking-tighter">Ready to Audit <br/> Your Narrative?</h2>
-                 <p className="text-xl font-medium text-white/80">Join the apex of institutional retail traders improving their execution.</p>
+                 <h2 className="text-5xl md:text-6xl font-black tracking-tighter">Start Logging Structural Data.</h2>
+                 <p className="text-xl font-medium text-indigo-100 max-w-2xl mx-auto">Build discipline, discover your true expectancy, and treat your trading like a probability business.</p>
               </div>
-              <Link href="/signup" className="inline-block px-12 py-6 bg-black text-white rounded-xl font-black uppercase tracking-[0.2em] text-xs hover:scale-105 transition-transform shadow-2xl">
-                 Create Your Free Account
+              <Link href="/signup" className="inline-flex items-center gap-2 px-10 py-5 bg-white text-indigo-900 rounded-xl font-black uppercase tracking-[0.15em] text-xs hover:scale-105 transition-transform shadow-2xl">
+                 Create Your Account <ChevronRight size={16} />
               </Link>
            </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="bg-black py-16 border-t border-white/5 text-center md:text-left">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-3 opacity-50">
+      <footer className="bg-slate-900 py-12 text-center md:text-left">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
             <TrendingUp size={20} className="text-white" />
             <span className="font-black text-lg tracking-tighter text-white">SMC JOURNAL</span>
           </div>
-          <p className="text-[10px] font-black uppercase tracking-widest text-white/30">
-            © 2026 SMC Journal. Built for the disciplined.
+          <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+            © 2026 SMC Journal. Built for disciplined traders.
           </p>
         </div>
       </footer>
