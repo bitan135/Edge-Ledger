@@ -47,6 +47,8 @@ export async function POST(req) {
 
   const userId = order_id.split('_')[0];
 
+  console.log(`[WEBHOOK_RECEIVED] payment_id=${payment_id} status=${payment_status} user_id=${userId}`);
+
   try {
     // 2. Update payment record status
     const supabaseAdmin = getSupabaseAdmin();
@@ -113,8 +115,8 @@ export async function POST(req) {
         }, { onConflict: 'user_id' });
 
       if (subError) throw subError;
-      
-      // Upgrade logged silently — use Supabase logs or PostHog for audit trail
+
+      console.log(`[SUBSCRIPTION_ASSIGNED] user_id=${userId} plan=${planId} period_end=${periodEnd || 'perpetual'}`);
     }
 
     return NextResponse.json({ received: true });

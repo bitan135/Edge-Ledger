@@ -81,6 +81,8 @@ export async function POST(req) {
 
     if (dbError) throw dbError;
 
+    console.log(`[PAYMENT_CREATED] user_id=${user.id} email=${user.email} plan=${planId} payment_id=${payment.payment_id} amount=${finalPrice}`);
+
     return NextResponse.json(payment);
   } catch (error) {
     console.error('Payment creation error:', error);

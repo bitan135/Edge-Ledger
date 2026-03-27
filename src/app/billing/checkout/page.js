@@ -33,17 +33,17 @@ function CheckoutFormContent() {
     country: 'United States',
   });
 
-  const { profile, isLoading: authLoading } = useAuth();
+  const { user, profile, isLoading: authLoading } = useAuth();
 
   useEffect(() => {
-    if (profile) {
+    if (user || profile) {
       setFormData(prev => ({
         ...prev,
-        fullName: profile.full_name || '',
-        email: profile.email || '',
+        fullName: profile?.full_name || user?.user_metadata?.full_name || '',
+        email: user?.email || '',
       }));
     }
-  }, [profile]);
+  }, [user, profile]);
 
   const handleApplyCoupon = () => {
     setCouponError('');
@@ -127,9 +127,10 @@ function CheckoutFormContent() {
                     required
                     readOnly
                     type="email"
-                    className="w-full bg-[var(--background)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-bold text-[var(--text-secondary)]"
+                    className="w-full bg-[var(--background)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-bold text-[var(--text-secondary)] cursor-not-allowed"
                     value={formData.email}
                   />
+                  <p className="text-[9px] font-bold text-[var(--text-muted)] mt-1.5 ml-1">This is your account email. Update it in Settings.</p>
                 </div>
               </div>
 

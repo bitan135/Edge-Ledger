@@ -21,6 +21,8 @@ export default function Settings() {
   const { showConfirm } = useConfirm();
   const [profile, setProfile] = useState(null);
   const [fullName, setFullName] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [isUpdatingEmail, setIsUpdatingEmail] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
@@ -31,7 +33,7 @@ export default function Settings() {
     currency: 'USD'
   });
   const { theme, setTheme } = useTheme();
-  const { profile: authProfile, updateProfile, isLoading: authLoading, signOut } = useAuth();
+  const { user, profile: authProfile, updateProfile, isLoading: authLoading, signOut } = useAuth();
 
   useEffect(() => {
     if (authProfile) {
@@ -44,7 +46,10 @@ export default function Settings() {
       });
       setIsLoading(false);
     }
-  }, [authProfile]);
+    if (user?.email) {
+      setNewEmail(user.email);
+    }
+  }, [authProfile, user]);
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -254,10 +259,41 @@ export default function Settings() {
                             />
                         </div>
                         <div className="space-y-3">
-                            <label className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-widest ml-1">Email Index</label>
-                            <div className="w-full bg-[var(--background)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-bold text-[var(--text-muted)] opacity-60">
-                                {profile?.email || 'authenticated@user.id'}
-                            </div>
+                            <label className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-widest ml-1">Email Address</label>
+                            <input
+                                type="email"
+                                value={newEmail}
+                                onChange={(e) => setNewEmail(e.target.value)}
+                                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-4 text-sm font-bold text-[var(--foreground)] outline-none focus:border-[var(--accent)] transition-all shadow-inner"
+                            />
+                            {newEmail !== (user?.email || '') && newEmail.length > 0 && (
+                              <button
+                                type="button"
+                                disabled={isUpdatingEmail}
+                                onClick={async () => {
+                                  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                  if (!emailRegex.test(newEmail)) {
+                                    return showToast('Please enter a valid email address.', 'error');
+                                  }
+                                  setIsUpdatingEmail(true);
+                                  try {
+                                    const { supabase } = await import('@/lib/supabase');
+                                    const { error } = await supabase.auth.updateUser({ email: newEmail });
+                                    if (error) throw error;
+                                    showToast('Confirmation sent to your new email. Check your inbox.', 'success');
+                                  } catch (err) {
+                                    showToast(err.message || 'Failed to update email.', 'error');
+                                  } finally {
+                                    setIsUpdatingEmail(false);
+                                  }
+                                }}
+                                className="w-full py-3 bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[var(--accent)]/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+                              >
+                                {isUpdatingEmail ? <RefreshCcw size={14} className="animate-spin" /> : <Save size={14} />}
+                                Update Email
+                              </button>
+                            )}
+                            <p className="text-[9px] font-bold text-[var(--text-muted)] ml-1">A confirmation link will be sent to your new email address.</p>
                         </div>
                         <button
                             type="submit"
