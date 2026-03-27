@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { 
   ArrowLeft, ShieldCheck, Sparkles, CreditCard, Tag, User, MapPin, 
-  ArrowRight, Loader2, Check, AlertCircle, Zap, Crown
+  ArrowRight, Loader2, Check, AlertCircle, Zap, Crown, Copy, ExternalLink, RefreshCcw, Clock
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
@@ -18,6 +18,7 @@ function CheckoutFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planId = searchParams.get('plan') || 'pro';
+  const paymentIdParam = searchParams.get('id');
   const plan = planDetails[planId] || planDetails.pro;
   
   const [loading, setLoading] = useState(false);
@@ -33,8 +34,14 @@ function CheckoutFormContent() {
     country: 'United States',
   });
 
+  // Payment Status State
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
+  const [copiedField, setCopiedField] = useState(null);
+
   const { user, profile, isLoading: authLoading } = useAuth();
 
+  // 1. Initial Profile/Form Data Fill
   useEffect(() => {
     if (user || profile) {
       setFormData(prev => ({
@@ -44,6 +51,38 @@ function CheckoutFormContent() {
       }));
     }
   }, [user, profile]);
+
+  // 2. Handle Payment Loading (if ID is present)
+  useEffect(() => {
+    if (paymentIdParam) {
+      fetchPaymentDetails(paymentIdParam);
+      const interval = setInterval(() => {
+        fetchPaymentDetails(paymentIdParam, true);
+      }, 15000); // Poll every 15s
+      return () => clearInterval(interval);
+    }
+  }, [paymentIdParam]);
+
+  const fetchPaymentDetails = async (id, isSilent = false) => {
+    if (!isSilent) setIsCheckingStatus(true);
+    try {
+      const res = await fetch(`/api/payments/${id}`);
+      const data = await res.json();
+      if (data.payment_id) {
+        setPaymentDetails(data);
+        // If finished, redirect after a short delay
+        if (data.payment_status === 'finished') {
+          setTimeout(() => {
+            router.push('/dashboard?payment=success');
+          }, 3000);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch payment details:', err);
+    } finally {
+      if (!isSilent) setIsCheckingStatus(false);
+    }
+  };
 
   const handleApplyCoupon = () => {
     setCouponError('');
@@ -71,7 +110,6 @@ function CheckoutFormContent() {
       
       const payment = await res.json();
       if (payment.payment_id) {
-        // Correcting use of checkout vs billing/checkout based on consolidated route
         router.push(`/billing/checkout?id=${payment.payment_id}`);
       } else {
         throw new Error(payment.error || 'Initiation failed');
@@ -82,8 +120,150 @@ function CheckoutFormContent() {
     }
   };
 
+  const copyToClipboard = (text, field) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
+
   const finalPrice = Math.max(0, plan.price - discount);
 
+  // --- RENDER PAYMENT STATUS VIEW ---
+  if (paymentIdParam && (paymentDetails || isCheckingStatus)) {
+    if (isCheckingStatus && !paymentDetails) {
+      return (
+        <div className="min-h-[60vh] flex flex-col items-center justify-center p-10 animate-fade-in">
+          <Loader2 className="animate-spin text-[var(--accent)] mb-4" size={48} />
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--text-muted)]">Retrieving Settlement Protocol...</p>
+        </div>
+      );
+    }
+
+    const isFinished = paymentDetails?.payment_status === 'finished';
+    const isPending = paymentDetails?.payment_status === 'waiting' || paymentDetails?.payment_status === 'confirming';
+
+    return (
+      <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-4xl mx-auto animate-fade-in relative z-10">
+        <Link 
+          href="/billing"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-effect border-[var(--glass-border)] text-[var(--text-muted)] text-[10px] font-black uppercase tracking-[0.2em] mb-12 hover:text-[var(--foreground)] transition-all group w-fit"
+        >
+          <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Abandon Settlement
+        </Link>
+
+        <div className="glass-card rounded-[48px] border-[var(--glass-border)] overflow-hidden shadow-premium">
+          <div className="p-8 border-b border-[var(--glass-border)] bg-[var(--glass-bg)] flex items-center justify-between">
+            <h2 className="text-[11px] font-black text-[var(--foreground)] uppercase tracking-[0.4em] flex items-center gap-3">
+              <ShieldCheck className="text-[var(--accent)]" size={16} /> Settlement Verification
+            </h2>
+            <div className="flex items-center gap-3">
+              <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-2 ${
+                isFinished ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 
+                'bg-amber-500/10 text-amber-500 border border-amber-500/20 animate-pulse'
+              }`}>
+                {isFinished ? <Check size={12} /> : <Clock size={12} />}
+                {paymentDetails?.payment_status?.toUpperCase() || 'SYNCHRONIZING'}
+              </span>
+            </div>
+          </div>
+
+          <div className="p-10 space-y-12">
+            {isFinished ? (
+              <div className="text-center py-10 space-y-6 animate-fade-in-up">
+                <div className="w-24 h-24 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto border border-emerald-500/20">
+                  <Check className="text-emerald-500" size={48} />
+                </div>
+                <div>
+                  <h3 className="text-3xl font-black text-[var(--foreground)] tracking-tighter mb-2">Protocol Secured</h3>
+                  <p className="text-[var(--text-secondary)] font-medium">Payment confirmed. Your institutional access is being provisioned.</p>
+                </div>
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[var(--accent)] animate-pulse">Redirecting to Dashboard...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">USDT Deployment Amount (ARB)</label>
+                    <div className="flex gap-2">
+                       <div className="flex-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-5 text-2xl font-black text-[var(--foreground)] tracking-tight">
+                        {paymentDetails?.pay_amount} <span className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest">USDT</span>
+                      </div>
+                      <button 
+                        onClick={() => copyToClipboard(paymentDetails?.pay_amount, 'amount')}
+                        className="p-5 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--accent)] hover:bg-[var(--accent)]/10 transition-all active:scale-95"
+                        title="Copy Amount"
+                      >
+                        {copiedField === 'amount' ? <Check size={20} /> : <Copy size={20} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">Settlement Node (Address)</label>
+                    <div className="flex gap-2">
+                       <div className="flex-1 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-6 py-5 text-sm font-bold text-[var(--foreground)] break-all font-mono leading-relaxed overflow-hidden">
+                        {paymentDetails?.pay_address}
+                      </div>
+                      <button 
+                        onClick={() => copyToClipboard(paymentDetails?.pay_address, 'address')}
+                        className="p-5 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--accent)] hover:bg-[var(--accent)]/10 transition-all active:scale-95 shrink-0"
+                        title="Copy Address"
+                      >
+                        {copiedField === 'address' ? <Check size={20} /> : <Copy size={20} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="p-6 rounded-3xl bg-amber-500/5 border border-amber-500/10 space-y-3">
+                    <h4 className="text-[10px] font-black text-amber-500 uppercase tracking-widest flex items-center gap-2">
+                      <AlertCircle size={14} /> Crucial Protocol
+                    </h4>
+                    <p className="text-xs text-amber-500/80 font-medium leading-relaxed">
+                      Deploy funds ONLY via the <strong>Arbitrum (ARB)</strong> network. Initiating transfers via other protocols (ERC-20, BSC) will result in permanent loss of assets.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <div className="bg-[var(--glass-bg)] p-8 rounded-[32px] border border-[var(--glass-border)] space-y-6">
+                    <h3 className="text-[10px] font-black text-[var(--foreground)] uppercase tracking-[0.3em]">Network Verification</h3>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-[var(--text-muted)] font-black uppercase tracking-widest">Network</span>
+                        <span className="text-emerald-500 font-black tracking-widest uppercase">Arbitrum One</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-[var(--text-muted)] font-black uppercase tracking-widest">Currency</span>
+                        <span className="text-[var(--foreground)] font-bold">USDT (Tether)</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-[var(--text-muted)] font-black uppercase tracking-widest">Payment ID</span>
+                        <span className="text-[var(--foreground)] font-mono">{paymentDetails?.payment_id}</span>
+                      </div>
+                    </div>
+                    <div className="h-px bg-[var(--glass-border)]" />
+                    <div className="flex items-center gap-3 text-xs text-[var(--text-secondary)] font-medium">
+                      <RefreshCcw size={14} className="animate-spin text-[var(--accent)]" />
+                      Polling network for confirmation...
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => fetchPaymentDetails(paymentIdParam)}
+                    className="w-full py-4 bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[10px] font-black text-[var(--foreground)] uppercase tracking-widest rounded-2xl hover:border-[var(--accent)]/30 transition-all active:scale-95"
+                  >
+                    Force Manual Re-Sync
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // --- RENDER BILLING FORM (INITIAL) ---
   return (
     <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-6xl mx-auto animate-fade-in relative overflow-hidden">
       {/* Background Ambience */}
@@ -96,7 +276,7 @@ function CheckoutFormContent() {
         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Change Plan
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative z-10">
         {/* Left: Billing Form */}
         <div className="lg:col-span-7">
           <div className="glass-card rounded-[48px] border-[var(--glass-border)] overflow-hidden shadow-premium">
@@ -167,199 +347,13 @@ function CheckoutFormContent() {
                     value={formData.country}
                     onChange={e => setFormData({...formData, country: e.target.value})}
                   >
-                    <option value="Afghanistan">Afghanistan</option>
-                    <option value="Albania">Albania</option>
-                    <option value="Algeria">Algeria</option>
-                    <option value="Andorra">Andorra</option>
-                    <option value="Angola">Angola</option>
-                    <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                    <option value="Argentina">Argentina</option>
-                    <option value="Armenia">Armenia</option>
-                    <option value="Australia">Australia</option>
-                    <option value="Austria">Austria</option>
-                    <option value="Azerbaijan">Azerbaijan</option>
-                    <option value="Bahamas">Bahamas</option>
-                    <option value="Bahrain">Bahrain</option>
-                    <option value="Bangladesh">Bangladesh</option>
-                    <option value="Barbados">Barbados</option>
-                    <option value="Belarus">Belarus</option>
-                    <option value="Belgium">Belgium</option>
-                    <option value="Belize">Belize</option>
-                    <option value="Benin">Benin</option>
-                    <option value="Bhutan">Bhutan</option>
-                    <option value="Bolivia">Bolivia</option>
-                    <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-                    <option value="Botswana">Botswana</option>
-                    <option value="Brazil">Brazil</option>
-                    <option value="Brunei">Brunei</option>
-                    <option value="Bulgaria">Bulgaria</option>
-                    <option value="Burkina Faso">Burkina Faso</option>
-                    <option value="Burundi">Burundi</option>
-                    <option value="Cabo Verde">Cabo Verde</option>
-                    <option value="Cambodia">Cambodia</option>
-                    <option value="Cameroon">Cameroon</option>
-                    <option value="Canada">Canada</option>
-                    <option value="Central African Republic">Central African Republic</option>
-                    <option value="Chad">Chad</option>
-                    <option value="Chile">Chile</option>
-                    <option value="China">China</option>
-                    <option value="Colombia">Colombia</option>
-                    <option value="Comoros">Comoros</option>
-                    <option value="Congo">Congo</option>
-                    <option value="Costa Rica">Costa Rica</option>
-                    <option value="Croatia">Croatia</option>
-                    <option value="Cuba">Cuba</option>
-                    <option value="Cyprus">Cyprus</option>
-                    <option value="Czech Republic">Czech Republic</option>
-                    <option value="Denmark">Denmark</option>
-                    <option value="Djibouti">Djibouti</option>
-                    <option value="Dominica">Dominica</option>
-                    <option value="Dominican Republic">Dominican Republic</option>
-                    <option value="Ecuador">Ecuador</option>
-                    <option value="Egypt">Egypt</option>
-                    <option value="El Salvador">El Salvador</option>
-                    <option value="Equatorial Guinea">Equatorial Guinea</option>
-                    <option value="Eritrea">Eritrea</option>
-                    <option value="Estonia">Estonia</option>
-                    <option value="Eswatini">Eswatini</option>
-                    <option value="Ethiopia">Ethiopia</option>
-                    <option value="Fiji">Fiji</option>
-                    <option value="Finland">Finland</option>
-                    <option value="France">France</option>
-                    <option value="Gabon">Gabon</option>
-                    <option value="Gambia">Gambia</option>
-                    <option value="Georgia">Georgia</option>
-                    <option value="Germany">Germany</option>
-                    <option value="Ghana">Ghana</option>
-                    <option value="Greece">Greece</option>
-                    <option value="Grenada">Grenada</option>
-                    <option value="Guatemala">Guatemala</option>
-                    <option value="Guinea">Guinea</option>
-                    <option value="Guinea-Bissau">Guinea-Bissau</option>
-                    <option value="Guyana">Guyana</option>
-                    <option value="Haiti">Haiti</option>
-                    <option value="Honduras">Honduras</option>
-                    <option value="Hungary">Hungary</option>
-                    <option value="Iceland">Iceland</option>
-                    <option value="India">India</option>
-                    <option value="Indonesia">Indonesia</option>
-                    <option value="Iran">Iran</option>
-                    <option value="Iraq">Iraq</option>
-                    <option value="Ireland">Ireland</option>
-                    <option value="Israel">Israel</option>
-                    <option value="Italy">Italy</option>
-                    <option value="Jamaica">Jamaica</option>
-                    <option value="Japan">Japan</option>
-                    <option value="Jordan">Jordan</option>
-                    <option value="Kazakhstan">Kazakhstan</option>
-                    <option value="Kenya">Kenya</option>
-                    <option value="Kiribati">Kiribati</option>
-                    <option value="Kuwait">Kuwait</option>
-                    <option value="Kyrgyzstan">Kyrgyzstan</option>
-                    <option value="Laos">Laos</option>
-                    <option value="Latvia">Latvia</option>
-                    <option value="Lebanon">Lebanon</option>
-                    <option value="Lesotho">Lesotho</option>
-                    <option value="Liberia">Liberia</option>
-                    <option value="Libya">Libya</option>
-                    <option value="Liechtenstein">Liechtenstein</option>
-                    <option value="Lithuania">Lithuania</option>
-                    <option value="Luxembourg">Luxembourg</option>
-                    <option value="Madagascar">Madagascar</option>
-                    <option value="Malawi">Malawi</option>
-                    <option value="Malaysia">Malaysia</option>
-                    <option value="Maldives">Maldives</option>
-                    <option value="Mali">Mali</option>
-                    <option value="Malta">Malta</option>
-                    <option value="Marshall Islands">Marshall Islands</option>
-                    <option value="Mauritania">Mauritania</option>
-                    <option value="Mauritius">Mauritius</option>
-                    <option value="Mexico">Mexico</option>
-                    <option value="Micronesia">Micronesia</option>
-                    <option value="Moldova">Moldova</option>
-                    <option value="Monaco">Monaco</option>
-                    <option value="Mongolia">Mongolia</option>
-                    <option value="Montenegro">Montenegro</option>
-                    <option value="Morocco">Morocco</option>
-                    <option value="Mozambique">Mozambique</option>
-                    <option value="Myanmar">Myanmar</option>
-                    <option value="Namibia">Namibia</option>
-                    <option value="Nauru">Nauru</option>
-                    <option value="Nepal">Nepal</option>
-                    <option value="Netherlands">Netherlands</option>
-                    <option value="New Zealand">New Zealand</option>
-                    <option value="Nicaragua">Nicaragua</option>
-                    <option value="Niger">Niger</option>
-                    <option value="Nigeria">Nigeria</option>
-                    <option value="North Korea">North Korea</option>
-                    <option value="North Macedonia">North Macedonia</option>
-                    <option value="Norway">Norway</option>
-                    <option value="Oman">Oman</option>
-                    <option value="Pakistan">Pakistan</option>
-                    <option value="Palau">Palau</option>
-                    <option value="Panama">Panama</option>
-                    <option value="Papua New Guinea">Papua New Guinea</option>
-                    <option value="Paraguay">Paraguay</option>
-                    <option value="Peru">Peru</option>
-                    <option value="Philippines">Philippines</option>
-                    <option value="Poland">Poland</option>
-                    <option value="Portugal">Portugal</option>
-                    <option value="Qatar">Qatar</option>
-                    <option value="Romania">Romania</option>
-                    <option value="Russia">Russia</option>
-                    <option value="Rwanda">Rwanda</option>
-                    <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-                    <option value="Saint Lucia">Saint Lucia</option>
-                    <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
-                    <option value="Samoa">Samoa</option>
-                    <option value="San Marino">San Marino</option>
-                    <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-                    <option value="Saudi Arabia">Saudi Arabia</option>
-                    <option value="Senegal">Senegal</option>
-                    <option value="Serbia">Serbia</option>
-                    <option value="Seychelles">Seychelles</option>
-                    <option value="Sierra Leone">Sierra Leone</option>
-                    <option value="Singapore">Singapore</option>
-                    <option value="Slovakia">Slovakia</option>
-                    <option value="Slovenia">Slovenia</option>
-                    <option value="Solomon Islands">Solomon Islands</option>
-                    <option value="Somalia">Somalia</option>
-                    <option value="South Africa">South Africa</option>
-                    <option value="South Korea">South Korea</option>
-                    <option value="South Sudan">South Sudan</option>
-                    <option value="Spain">Spain</option>
-                    <option value="Sri Lanka">Sri Lanka</option>
-                    <option value="Sudan">Sudan</option>
-                    <option value="Suriname">Suriname</option>
-                    <option value="Sweden">Sweden</option>
-                    <option value="Switzerland">Switzerland</option>
-                    <option value="Syria">Syria</option>
-                    <option value="Taiwan">Taiwan</option>
-                    <option value="Tajikistan">Tajikistan</option>
-                    <option value="Tanzania">Tanzania</option>
-                    <option value="Thailand">Thailand</option>
-                    <option value="Timor-Leste">Timor-Leste</option>
-                    <option value="Togo">Togo</option>
-                    <option value="Tonga">Tonga</option>
-                    <option value="Trinidad and Tobago">Trinidad and Tobago</option>
-                    <option value="Tunisia">Tunisia</option>
-                    <option value="Turkey">Turkey</option>
-                    <option value="Turkmenistan">Turkmenistan</option>
-                    <option value="Tuvalu">Tuvalu</option>
-                    <option value="Uganda">Uganda</option>
-                    <option value="Ukraine">Ukraine</option>
-                    <option value="United Arab Emirates">United Arab Emirates</option>
-                    <option value="United Kingdom">United Kingdom</option>
                     <option value="United States">United States</option>
-                    <option value="Uruguay">Uruguay</option>
-                    <option value="Uzbekistan">Uzbekistan</option>
-                    <option value="Vanuatu">Vanuatu</option>
-                    <option value="Vatican City">Vatican City</option>
-                    <option value="Venezuela">Venezuela</option>
-                    <option value="Vietnam">Vietnam</option>
-                    <option value="Yemen">Yemen</option>
-                    <option value="Zambia">Zambia</option>
-                    <option value="Zimbabwe">Zimbabwe</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="India">India</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="France">France</option>
                   </select>
                 </div>
               </div>
@@ -459,7 +453,7 @@ function CheckoutFormContent() {
 
 export default function CheckoutFormPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[var(--background)]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[var(--background)] flex items-center justify-center"><Loader2 className="animate-spin text-[var(--accent)]" /></div>}>
       <CheckoutFormContent />
     </Suspense>
   );
