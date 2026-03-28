@@ -142,7 +142,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
       setupZone: formData.setupZone,
       timeframe_bias: formData.timeframeBias,
       bias_type: formData.biasType,
-      poi_type: (formData.strategy === 'Supply Zone' || formData.strategy === 'Demand Zone') ? formData.poiType : null,
+      poi_type: (formData.strategy === 'Supply Zone' || formData.strategy === 'Demand Zone' || formData.strategy === 'Supply/Demand') ? formData.poiType : null,
     };
     
     onSubmit(finalData);
@@ -449,7 +449,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
             </div>
 
             {/* POI Type (Conditional) */}
-            {(formData.strategy === 'Supply Zone' || formData.strategy === 'Demand Zone') && (
+            {(formData.strategy === 'Supply Zone' || formData.strategy === 'Demand Zone' || formData.strategy === 'Supply/Demand') && (
               <div className="space-y-3 animate-slide-up">
                 <label className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest ml-1">POI Type</label>
                 <div className="flex p-1.5 bg-[var(--glass-bg)] rounded-2xl border border-[var(--glass-border)] h-[58px]">

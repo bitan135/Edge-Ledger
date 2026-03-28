@@ -85,10 +85,30 @@ export default function AddTrade() {
         }
       } catch (saveErr) {
         // Fallback for schema mismatches — strips all optional psychology/new columns on any schema error
-        if (saveErr.code === 'PGRST204' || saveErr.code === '42703' || saveErr.message?.includes('column') || saveErr.message?.includes('schema')) {
-          console.warn('Schema mismatch — retrying with core fields only');
-          const { emotional_state, discipline_score, rule_adherence, setup_zone, liquidity_sweep, trade_date, ...fallbackTrade } = tradeToSave;
-          await saveTrade(fallbackTrade);
+        // Includes: PGRST204 (Missing column), 42703 (Undefined column), 23514 (Check constraint violation - e.g. poi_type)
+        const isSchemaError = saveErr.code === 'PGRST204' || 
+                             saveErr.code === '42703' || 
+                             saveErr.code === '23514' ||
+                             saveErr.message?.toLowerCase().includes('column') || 
+                             saveErr.message?.toLowerCase().includes('schema') ||
+                             saveErr.message?.toLowerCase().includes('constraint');
+
+        if (isSchemaError) {
+          console.warn('[TRADE_LOG] Schema/Constraint mismatch — retrying with legacy core fields only:', saveErr.message);
+          
+          // Strip ALL non-core fields to ensure a successful retry on older schemas
+          const { 
+            emotional_state, discipline_score, rule_adherence, 
+            setup_zone, liquidity_sweep, trade_date,
+            poi_type, timeframe_bias, bias_type,
+            ...fallbackTrade 
+          } = tradeToSave;
+
+          const fallbackRes = await saveTrade(fallbackTrade);
+          if (!fallbackRes.success) {
+            console.error('[TRADE_LOG] Fallback also failed:', fallbackRes.error);
+            throw new Error(fallbackRes.error);
+          }
         } else {
           throw saveErr;
         }

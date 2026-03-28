@@ -413,8 +413,15 @@ export async function saveTrade(trade) {
     invalidateCache('trades');
     return { success: true, data, error: null };
   } catch (e) {
-    console.error('[STORAGE API] Save trade failed:', e?.message || e);
-    return { success: false, data: null, error: e?.message || 'Failed to execute trade log.' };
+    console.error('[STORAGE API] Save trade failed:', e);
+    // Extract the most useful error message
+    const errorMsg = e?.details || e?.message || (typeof e === 'string' ? e : 'Failed to execute trade log.');
+    return { 
+      success: false, 
+      data: null, 
+      error: errorMsg,
+      code: e?.code 
+    };
   }
 }
 
@@ -449,8 +456,14 @@ export async function updateTrade(id, updates) {
     invalidateCache('trades');
     return { success: true, data, error: null };
   } catch (e) {
-    console.error('[STORAGE API] Update trade failed:', e?.message || e);
-    return { success: false, data: null, error: e?.message || 'Failed to modify trade sequence.' };
+    console.error('[STORAGE API] Update trade failed:', e);
+    const errorMsg = e?.details || e?.message || (typeof e === 'string' ? e : 'Failed to modify trade sequence.');
+    return { 
+      success: false, 
+      data: null, 
+      error: errorMsg,
+      code: e?.code
+    };
   }
 }
 
