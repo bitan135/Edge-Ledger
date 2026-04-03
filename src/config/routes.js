@@ -9,7 +9,9 @@ export const PUBLIC_ROUTES = [
   '/forgot-password',
   '/reset-password',
   '/insight-engine',
-  '/auth/callback'
+  '/auth/callback',
+  '/founding-member',
+  '/checkout/founding-member'
 ];
 
 export const PROTECTED_PATHS = [

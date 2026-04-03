@@ -188,36 +188,57 @@ export default function LandingPage() {
 
             {/* Abstract Analytics Chart Mockup */}
             <div className="relative max-w-4xl mx-auto">
-               <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-12 overflow-hidden shadow-xl flex flex-col justify-end h-80 relative">
+               <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-12 overflow-hidden shadow-xl relative" style={{ minHeight: '340px' }}>
                   
                   {/* Legend */}
-                  <div className="absolute top-8 left-8 flex items-center gap-3 bg-white px-4 py-2 border border-slate-200 rounded-full shadow-sm">
-                     <div className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
-                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">Model Expectancy Flow</span>
+                  <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center gap-3 bg-white px-4 py-2 border border-slate-200 rounded-full shadow-sm">
+                       <div className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
+                       <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">Model Expectancy Flow</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-sm bg-indigo-500" /><span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Profit</span></div>
+                      <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-sm bg-rose-400" /><span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Drawdown</span></div>
+                    </div>
                   </div>
                   
-                  <div className="flex items-end justify-between gap-1 md:gap-3 h-48 mt-auto border-b border-slate-200 pb-0">
-                     {[30, 45, -15, 60, 50, -25, 70, 95, 85, 100].map((height, i) => (
-                        <div key={i} className="flex-1 w-full relative group">
-                           {/* Positive Bar */}
-                           {height > 0 ? (
+                  {/* Chart Area */}
+                  <div className="relative" style={{ height: '200px' }}>
+                    {/* Zero line at 30% from bottom for negative bars */}
+                    <div className="absolute left-0 right-0 bottom-[30%] border-t border-dashed border-slate-300" />
+                    <div className="absolute left-0 right-0 bottom-[30%] flex items-end justify-between gap-2 md:gap-3 px-2" style={{ height: '70%' }}>
+                       {[30, 55, 20, 70, 45, 15, 80, 95, 75, 100].map((h, i) => (
+                          <div key={i} className="flex-1 group relative">
+                             <div 
+                               className="w-full bg-indigo-500 rounded-t-lg group-hover:bg-indigo-600 transition-all duration-300 shadow-sm"
+                               style={{ height: `${h}%`, minHeight: '8px' }}
+                             />
+                             <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2.5 py-1 rounded-lg shadow-lg transition-opacity whitespace-nowrap z-10 pointer-events-none font-bold">
+                                +{(h * 0.42).toFixed(1)}R
+                             </div>
+                          </div>
+                       ))}
+                    </div>
+                    {/* Negative bars below zero line */}
+                    <div className="absolute left-0 right-0 top-[70%] flex items-start justify-between gap-2 md:gap-3 px-2" style={{ height: '30%' }}>
+                       {[0, 0, 50, 0, 0, 80, 0, 0, 30, 0].map((h, i) => (
+                          <div key={i} className="flex-1 group relative">
+                             {h > 0 && (
                                <div 
-                                 className="absolute bottom-0 w-full bg-indigo-500 rounded-t-sm opacity-80 group-hover:bg-indigo-600 transition-colors" 
-                                 style={{ height: `${height}%` }} 
+                                 className="w-full bg-rose-400 rounded-b-lg group-hover:bg-rose-500 transition-all duration-300 shadow-sm"
+                                 style={{ height: `${h}%`, minHeight: '4px' }}
                                />
-                           ) : (
-                               /* Negative Bar simulating drawdown */
-                               <div 
-                                 className="absolute top-0 w-full bg-rose-400 rounded-b-sm opacity-80 group-hover:bg-rose-500 transition-colors" 
-                                 style={{ height: `${Math.abs(height)}%` }} 
-                               />
-                           )}
-                           {/* Tooltip Simulation */}
-                           <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-slate-900 text-white text-[10px] px-2 py-1 rounded shadow-lg transition-opacity whitespace-nowrap z-10 pointer-events-none">
-                              Trade #{i + 1}
-                           </div>
-                        </div>
-                     ))}
+                             )}
+                          </div>
+                       ))}
+                    </div>
+                  </div>
+
+                  {/* X-Axis Labels */}
+                  <div className="flex items-center justify-between px-2 mt-3 border-t border-slate-200 pt-3">
+                    {['Mon','Tue','Wed','Thu','Fri','Mon','Tue','Wed','Thu','Fri'].map((d, i) => (
+                      <span key={i} className="flex-1 text-center text-[9px] font-bold text-slate-400 uppercase tracking-wider">{d}</span>
+                    ))}
                   </div>
                </div>
             </div>
@@ -310,56 +331,128 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Founding Member Limited Offer Section */}
-        <section className="py-24 bg-white relative overflow-hidden border-b border-slate-200">
-           <div className="absolute inset-0 bg-indigo-50/50 pointer-events-none" />
-           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-64 bg-indigo-600/5 blur-[120px] rounded-full pointer-events-none" />
-           
-           <div className="max-w-6xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-12">
-             <div className="flex-1 space-y-6 text-center md:text-left">
-               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-100 text-indigo-700 text-[10px] font-black uppercase tracking-widest shadow-sm">
-                 <Target size={12} /> Only 10 Spots Available
-               </div>
-               
-               <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900 leading-tight">
-                 Become a <span className="text-indigo-600">Founding Member</span>
-               </h2>
-               
-               <p className="text-lg text-slate-600 max-w-xl leading-relaxed">
-                 Secure permanent Lifetime Access to SMC Journal Pro for a single flat fee of $79. Never pay a monthly subscription. When the 10 spots are gone, the monthly model activates permanently.
-               </p>
-               
-               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
-                 <Link href="/founding-member" className="w-full sm:w-auto px-8 py-4 bg-indigo-600 text-white rounded-xl font-black uppercase tracking-[0.1em] text-xs hover:bg-indigo-700 shadow-xl shadow-indigo-600/20 active:scale-95 transition-all text-center">
-                   Claim Your Spot
-                 </Link>
-                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 hidden md:block">
-                   No Recurring Fees
-                 </span>
-               </div>
-             </div>
-             
-             <div className="w-full md:w-[450px] shrink-0 bg-white border border-slate-200 rounded-[32px] p-8 shadow-xl relative mt-8 md:mt-0">
-               <div className="absolute -top-4 -right-4 w-20 h-20 bg-[var(--profit)]/10 rounded-full flex items-center justify-center border-4 border-white backdrop-blur-md shadow-lg rotate-12">
-                 <span className="text-xs font-black uppercase tracking-widest text-[var(--profit)] -rotate-12 px-2 text-center leading-tight">Lifetime<br/>Value</span>
-               </div>
-               
-               <h3 className="font-bold text-lg text-slate-800 mb-6 border-b border-slate-100 pb-4">What's Included</h3>
-               <ul className="space-y-4">
-                 {[
-                   "SMC Journal Pro Lifetime Account",
-                   "Advanced Streak Diagnostics",
-                   "AI Playbook Features (Upcoming)",
-                   "Priority Feature Requests"
-                 ].map((feat, i) => (
-                   <li key={i} className="flex items-start gap-3">
-                     <CheckCircle2 size={18} className="text-indigo-600 shrink-0 mt-0.5" />
-                     <span className="text-sm font-medium text-slate-600">{feat}</span>
-                   </li>
-                 ))}
-               </ul>
-             </div>
-           </div>
+        {/* 🚀 Founding Member Beta Launch Section */}
+        <section className="relative overflow-hidden border-b border-slate-200">
+          {/* Dark gradient backdrop */}
+          <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 py-24 md:py-32 relative">
+            {/* Animated glow orbs */}
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-[128px] pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none" />
+            {/* Grid overlay */}
+            <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
+
+            <div className="max-w-6xl mx-auto px-6 relative z-10">
+              {/* Top badges row */}
+              <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-black uppercase tracking-[0.2em]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" /> Beta Launch — Limited Window
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[10px] font-black uppercase tracking-[0.2em]">
+                  <Target size={10} /> Only 10 Spots Total
+                </span>
+              </div>
+
+              {/* Main headline */}
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white leading-[0.95] mb-6">
+                  Lock In <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Lifetime Pro</span> Before It's Gone.
+                </h2>
+                <p className="text-lg text-slate-400 font-medium leading-relaxed max-w-2xl mx-auto">
+                  We're launching SMC Journal with a one-time founding offer. Pay <span className="text-white font-black">$79 once</span> and never pay again — no monthly fees, no annual renewals, no price increases. Ever.
+                </p>
+              </div>
+
+              {/* Two-column layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                {/* Left: Value proposition */}
+                <div className="space-y-6">
+                  {/* Price comparison */}
+                  <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
+                    <div className="flex items-baseline gap-4 mb-6">
+                      <span className="text-5xl font-black text-white">$79</span>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-bold text-slate-500 line-through">$240/yr</span>
+                        <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Save $161+ Year 1</span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3">
+                      {[{label: 'Year 1', monthly: '$240', you: '$79'}, {label: 'Year 2', monthly: '$480', you: '$79'}, {label: 'Year 3', monthly: '$720', you: '$79'}].map((y, i) => (
+                        <div key={i} className="bg-white/5 rounded-xl p-3 text-center border border-white/5">
+                          <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">{y.label}</div>
+                          <div className="text-xs font-bold text-slate-500 line-through mb-1">{y.monthly}</div>
+                          <div className="text-lg font-black text-emerald-400">{y.you}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* What you get */}
+                  <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
+                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Everything Included Forever</h3>
+                    <ul className="space-y-4">
+                      {[
+                        { text: "Full Pro Access — All analytics, drawdown curves, monthly P&L", hot: false },
+                        { text: "Every future Pro feature — AI Playbook, advanced backtesting", hot: true },
+                        { text: "Founding Member badge on your profile", hot: false },
+                        { text: "Priority feature requests & direct developer access", hot: false },
+                        { text: "Zero recurring charges — pay once, own it forever", hot: true },
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <CheckCircle2 size={16} className={`shrink-0 mt-0.5 ${item.hot ? 'text-amber-400' : 'text-indigo-400'}`} />
+                          <span className="text-sm font-medium text-slate-300 leading-relaxed">{item.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Right: CTA card */}
+                <div className="relative">
+                  {/* Glow behind card */}
+                  <div className="absolute -inset-4 bg-gradient-to-br from-indigo-600/20 to-purple-600/20 rounded-[40px] blur-2xl pointer-events-none" />
+                  <div className="relative bg-white rounded-[28px] p-8 md:p-10 shadow-2xl">
+                    {/* Urgency badge */}
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg shadow-amber-500/30 whitespace-nowrap">
+                      🔥 Spots Closing Fast
+                    </div>
+
+                    <div className="text-center mt-4 mb-8">
+                      <h3 className="text-2xl font-black text-slate-900 tracking-tight mb-2">Founding Member Access</h3>
+                      <p className="text-sm text-slate-500 font-medium">One payment. Lifetime Pro. No strings.</p>
+                    </div>
+
+                    {/* Spot tracker visual */}
+                    <div className="mb-8">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Spots Remaining</span>
+                        <span className="text-[10px] font-black text-rose-500 uppercase tracking-widest">Limited to 10</span>
+                      </div>
+                      <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full transition-all" style={{ width: '70%' }} />
+                      </div>
+                    </div>
+
+                    {/* Social proof */}
+                    <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-100 rounded-xl px-4 py-3 mb-8">
+                      <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                        <CheckCircle2 size={16} className="text-emerald-600" />
+                      </div>
+                      <p className="text-xs font-bold text-emerald-700">Early traders are already locking in — don't miss the beta window.</p>
+                    </div>
+
+                    {/* CTA Button */}
+                    <Link href="/founding-member" className="block w-full py-5 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-2xl font-black uppercase tracking-[0.15em] text-xs text-center hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-xl shadow-indigo-600/30 hover:shadow-2xl hover:shadow-indigo-600/40 hover:scale-[1.02] active:scale-[0.98]">
+                      Claim Your Founding Spot →
+                    </Link>
+
+                    <p className="text-center text-[10px] text-slate-400 font-bold mt-4 uppercase tracking-wider">
+                      Crypto Payment • Instant Activation • No Subscription
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Phase 5: CTA */}
