@@ -16,7 +16,8 @@ import {
   X,
   Mail,
   Sparkles,
-  HelpCircle
+  HelpCircle,
+  Zap
 } from 'lucide-react';
 
 export default function LandingPage() {
