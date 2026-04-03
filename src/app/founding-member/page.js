@@ -1,25 +1,25 @@
 import FoundingMemberClient from './FoundingMemberClient';
 
 export const metadata = {
-  title: 'Founding Member Offer — SMC Journal',
-  description: 'Join the exclusive 10-person founding member group for SMC Journal and secure lifetime access.',
+  title: 'Founding Member — SMC Journal',
+  description: 'Join the exclusive group of only 10 Founding Members for SMC Journal and secure a lifetime of edge.',
   metadataBase: new URL('https://smcjournal.app'),
   openGraph: {
-    title: 'Founding Member Offer — SMC Journal',
-    description: 'Own the edge for a lifetime. Only 10 spots remaining.',
+    title: 'Founding Member Pass — SMC Journal',
+    description: 'Own the elite institutional edge for a lifetime. Only 10 spots exist.',
     images: [{ 
-      url: '/founding-member-og.png',
+      url: '/lifetime-founding-pass.png',
       width: 1200,
       height: 630,
-      alt: 'Founding Member Offer — SMC Journal'
+      alt: 'SMC Journal Founding Member Elite Pass'
     }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Founding Member Offer — SMC Journal',
-    description: 'Own the edge for a lifetime. Only 10 spots remaining.',
-    images: ['https://smcjournal.app/founding-member-og.png'],
+    title: 'Founding Member Pass — SMC Journal',
+    description: 'Own the elite institutional edge for a lifetime. Only 10 spots exist.',
+    images: ['https://smcjournal.app/lifetime-founding-pass.png'],
   },
 };
 
