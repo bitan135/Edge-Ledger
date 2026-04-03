@@ -8,7 +8,7 @@ export const metadata = {
     title: 'Founding Member Pass — SMC Journal',
     description: 'Own the elite institutional edge for a lifetime. Only 10 spots exist.',
     images: [{ 
-      url: '/lifetime-founding-pass.png',
+      url: '/exclusive-lifetime-access.png',
       width: 1200,
       height: 630,
       alt: 'SMC Journal Founding Member Elite Pass'
@@ -19,7 +19,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Founding Member Pass — SMC Journal',
     description: 'Own the elite institutional edge for a lifetime. Only 10 spots exist.',
-    images: ['https://smcjournal.app/lifetime-founding-pass.png'],
+    images: ['https://smcjournal.app/exclusive-lifetime-access.png'],
   },
 };
 
