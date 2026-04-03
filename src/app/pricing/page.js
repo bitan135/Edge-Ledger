@@ -78,7 +78,7 @@ export default function PricingPage() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch mb-40 stagger-children">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch mb-40 stagger-children">
           {/* FREE PLAN */}
           <div className="p-10 rounded-[40px] glass-card flex flex-col items-center text-center shadow-premium hover:-translate-y-1 transition-all duration-500">
             <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-4">The Gateway</h3>
@@ -168,39 +168,6 @@ export default function PricingPage() {
               Get 6-Month Access
             </Link>
           </div>
-
-          {/* LIFETIME PLAN */}
-          <div className="p-10 rounded-[40px] glass-card flex flex-col items-center text-center shadow-premium hover:-translate-y-1 transition-all duration-500 border border-amber-500/20 relative overflow-hidden">
-            <div className="absolute top-0 right-0 px-4 py-1.5 rounded-bl-[20px] bg-amber-500/10 text-amber-500 text-[9px] font-black uppercase tracking-widest border-b border-l border-amber-500/20">
-              LIMITED
-            </div>
-            <h3 className="text-xs font-black uppercase tracking-widest text-amber-500 mb-4">Founding Member</h3>
-            <div className="text-4xl lg:text-5xl font-black mb-2 text-text-primary">LIFETIME</div>
-            <div className="flex items-baseline gap-1 mb-8">
-              <span className="text-lg font-bold text-text-muted">$79</span>
-              <span className="text-text-muted/50 font-black uppercase text-[10px] tracking-widest">once</span>
-            </div>
-            <div className="w-full h-[1px] bg-border-custom my-4" />
-            <ul className="space-y-4 mb-12 text-left w-full flex-grow pt-6">
-              <li className="flex items-center gap-3 text-sm font-black text-amber-500">
-                <div className="w-5 h-5 rounded-lg bg-amber-500/10 flex items-center justify-center shrink-0">
-                  <Sparkles size={12} />
-                </div>
-                Perpetual Pro Access
-              </li>
-              {["Pay once, use forever", "All existing Pro features", "All future Pro features", "Founding Member badge", "Priority support"].map((f, i) => (
-                <li key={i} className="flex items-center gap-3 text-sm font-bold text-text-secondary">
-                  <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                    <Check size={12} className="text-emerald-500" />
-                  </div>
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link href="/signup" className="w-full py-5 bg-[var(--background)] border border-amber-500/30 text-amber-500 hover:bg-amber-500/10 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all">
-              Claim Lifetime
-            </Link>
-          </div>
         </div>
 
         {/* Comparison Table Redesign */}
@@ -216,7 +183,6 @@ export default function PricingPage() {
                   <th className="py-6 px-4 md:px-8 text-center font-black text-[9px] md:text-[10px] uppercase tracking-widest text-text-muted">Free</th>
                   <th className="py-6 px-4 md:px-8 text-center font-black text-[9px] md:text-[10px] uppercase tracking-widest text-accent">Pro</th>
                   <th className="py-6 px-4 md:px-8 text-center font-black text-[9px] md:text-[10px] uppercase tracking-widest text-text-muted">6-Month</th>
-                  <th className="py-6 px-4 md:px-8 text-center font-black text-[9px] md:text-[10px] uppercase tracking-widest text-amber-500">Lifetime</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border-custom">
@@ -226,7 +192,6 @@ export default function PricingPage() {
                     <td className="py-6 px-4 md:px-8 text-center">{f.free ? <Check size={18} className="mx-auto text-emerald-500" /> : <span className="text-text-muted/20">—</span>}</td>
                     <td className="py-6 px-4 md:px-8 text-center">{f.pro ? <Check size={18} className="mx-auto text-accent" /> : <span className="text-text-muted/20">—</span>}</td>
                     <td className="py-6 px-4 md:px-8 text-center">{f.sixMonth ? <Check size={18} className="mx-auto text-purple-500" /> : <span className="text-text-muted/20">—</span>}</td>
-                    <td className="py-6 px-4 md:px-8 text-center">{f.lifetime ? <Check size={18} className="mx-auto text-amber-500" /> : <span className="text-text-muted/20">—</span>}</td>
                   </tr>
                 ))}
               </tbody>

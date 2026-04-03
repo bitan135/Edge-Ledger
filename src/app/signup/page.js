@@ -5,6 +5,12 @@ export const metadata = {
   description: 'Join the elite network of disciplined traders.',
 };
 
+import { Suspense } from 'react';
+
 export default function SignupPage() {
-  return <SignupClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignupClient />
+    </Suspense>
+  );
 }

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { TrendingUp, Mail, Lock, Eye, EyeOff, User, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { posthog } from '@/lib/posthog';
 
 export default function Signup() {
@@ -16,6 +16,8 @@ export default function Signup() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get('next') || '/dashboard';
 
   const getErrorMessage = (err) => {
     if (!err) return null;
@@ -38,8 +40,8 @@ export default function Signup() {
 
     const isProd = !window.location.host.includes('localhost');
     const redirectTo = isProd 
-      ? 'https://smcjournal.app/auth/callback'
-      : `${window.location.origin}/auth/callback`;
+      ? `https://smcjournal.app/auth/callback?next=${encodeURIComponent(next)}`
+      : `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
 
     const { error: signupError } = await supabase.auth.signUp({
       email,
@@ -75,8 +77,8 @@ export default function Signup() {
     try {
       const isProd = !window.location.host.includes('localhost');
       const redirectTo = isProd 
-        ? 'https://smcjournal.app/auth/callback'
-        : `${window.location.origin}/auth/callback`;
+        ? `https://smcjournal.app/auth/callback?next=${encodeURIComponent(next)}`
+        : `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
 
       const { error: googleError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -104,7 +106,7 @@ export default function Signup() {
             We&apos;ve sent a verification link to <span className="text-[var(--text-primary)] font-bold">{email}</span>. Click it to activate your cockpit.
           </p>
           <Link 
-            href="/login" 
+            href={`/login?next=${encodeURIComponent(next)}`} 
             className="block w-full py-4 rounded-2xl bg-[var(--accent)] text-white font-bold text-sm hover:bg-[var(--accent-hover)] transition-all"
           >
             Go to Login
@@ -223,7 +225,7 @@ export default function Signup() {
         </button>
 
         <p className="mt-8 text-center text-xs text-[var(--text-muted)]">
-          Already have an account? <Link href="/login" className="text-[var(--accent)] font-bold hover:underline">Log in here</Link>
+          Already have an account? <Link href={`/login?next=${encodeURIComponent(next)}`} className="text-[var(--accent)] font-bold hover:underline">Log in here</Link>
         </p>
       </div>
     </div>

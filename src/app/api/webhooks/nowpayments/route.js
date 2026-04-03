@@ -40,12 +40,13 @@ export async function POST(req) {
     return NextResponse.json({ error: 'Incomplete payload' }, { status: 400 });
   }
 
-  // Validate order_id format (expected: userId_uuid)
-  if (!order_id.includes('_')) {
+  // Validate order_id format (expected: userId_uuid OR founding-member-userId-uuid)
+  if (!order_id.includes('_') && !order_id.startsWith('founding-member-')) {
     return NextResponse.json({ error: 'Malformed order identifier' }, { status: 400 });
   }
 
-  const userId = order_id.split('_')[0];
+  const isFoundingMember = order_id.startsWith('founding-member-');
+  const userId = isFoundingMember ? order_id.split('-')[2] : order_id.split('_')[0];
 
   console.log(`[WEBHOOK_RECEIVED] payment_id=${payment_id} status=${payment_status} user_id=${userId}`);
 
@@ -115,6 +116,43 @@ export async function POST(req) {
         }, { onConflict: 'user_id' });
 
       if (subError) throw subError;
+
+      // Handle specific upgrades for Founding Member Tier
+      if (isFoundingMember || planId === 'lifetime') {
+        const { error: profileError } = await supabaseAdmin
+          .from('profiles')
+          .update({
+            is_pro: true,
+            plan_type: 'pro_lifetime',
+            is_founding_member: true,
+            subscription_start_date: new Date().toISOString(),
+            subscription_end_date: null,
+            founding_member_claimed_at: new Date().toISOString()
+          })
+          .eq('id', userId);
+
+        if (profileError) console.error('[Webhook] Failed to update profile', profileError);
+
+        if (isFoundingMember) {
+           // Increment slots table using SQL increment procedure usually, but since ServiceRole has bypass, 
+           // let's fetch current and increment securely.
+           const { data: spotsData } = await supabaseAdmin
+             .from('founding_member_spots')
+             .select('claimed_spots, total_spots')
+             .single();
+             
+           if (spotsData) {
+              const newClaimed = spotsData.claimed_spots + 1;
+              await supabaseAdmin
+                .from('founding_member_spots')
+                .update({ 
+                  claimed_spots: newClaimed,
+                  is_active: newClaimed < spotsData.total_spots
+                })
+                .neq('claimed_spots', null); // Update the single row globally
+           }
+        }
+      }
 
       console.log(`[SUBSCRIPTION_ASSIGNED] user_id=${userId} plan=${planId} period_end=${periodEnd || 'perpetual'}`);
     }

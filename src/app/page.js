@@ -22,10 +22,18 @@ import {
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-indigo-500 selection:text-white font-sans antialiased overflow-x-hidden pt-12">
       
+      {/* Founding Member Top Banner */}
+      <Link href="/founding-member" className="fixed top-0 w-full z-[60] bg-indigo-600 hover:bg-indigo-700 transition-colors text-white text-center py-3 px-4 flex items-center justify-center gap-2 group cursor-pointer border-b border-indigo-500 shadow-md">
+        <Sparkles size={16} className="text-indigo-200" />
+        <span className="text-[11px] font-black uppercase tracking-widest leading-none">Founding Member Offer Is Live</span>
+        <span className="text-[12px] font-medium opacity-80 hidden sm:inline ml-2">• Secure Lifetime Pro Access For $79</span>
+        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform opacity-70 ml-2" />
+      </Link>
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200 shadow-sm">
+      <nav className="fixed top-12 w-full z-50 backdrop-blur-xl bg-white/80 border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 group cursor-pointer">
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-indigo-800 flex items-center justify-center shadow-lg shadow-indigo-600/20 group-hover:scale-105 transition-transform duration-500">
@@ -300,6 +308,58 @@ export default function LandingPage() {
                </a>
             </div>
           </div>
+        </section>
+
+        {/* Founding Member Limited Offer Section */}
+        <section className="py-24 bg-white relative overflow-hidden border-b border-slate-200">
+           <div className="absolute inset-0 bg-indigo-50/50 pointer-events-none" />
+           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-64 bg-indigo-600/5 blur-[120px] rounded-full pointer-events-none" />
+           
+           <div className="max-w-6xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-12">
+             <div className="flex-1 space-y-6 text-center md:text-left">
+               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-100 text-indigo-700 text-[10px] font-black uppercase tracking-widest shadow-sm">
+                 <Target size={12} /> Only 10 Spots Available
+               </div>
+               
+               <h2 className="text-3xl md:text-5xl font-black tracking-tighter text-slate-900 leading-tight">
+                 Become a <span className="text-indigo-600">Founding Member</span>
+               </h2>
+               
+               <p className="text-lg text-slate-600 max-w-xl leading-relaxed">
+                 Secure permanent Lifetime Access to SMC Journal Pro for a single flat fee of $79. Never pay a monthly subscription. When the 10 spots are gone, the monthly model activates permanently.
+               </p>
+               
+               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+                 <Link href="/founding-member" className="w-full sm:w-auto px-8 py-4 bg-indigo-600 text-white rounded-xl font-black uppercase tracking-[0.1em] text-xs hover:bg-indigo-700 shadow-xl shadow-indigo-600/20 active:scale-95 transition-all text-center">
+                   Claim Your Spot
+                 </Link>
+                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 hidden md:block">
+                   No Recurring Fees
+                 </span>
+               </div>
+             </div>
+             
+             <div className="w-full md:w-[450px] shrink-0 bg-white border border-slate-200 rounded-[32px] p-8 shadow-xl relative mt-8 md:mt-0">
+               <div className="absolute -top-4 -right-4 w-20 h-20 bg-[var(--profit)]/10 rounded-full flex items-center justify-center border-4 border-white backdrop-blur-md shadow-lg rotate-12">
+                 <span className="text-xs font-black uppercase tracking-widest text-[var(--profit)] -rotate-12 px-2 text-center leading-tight">Lifetime<br/>Value</span>
+               </div>
+               
+               <h3 className="font-bold text-lg text-slate-800 mb-6 border-b border-slate-100 pb-4">What's Included</h3>
+               <ul className="space-y-4">
+                 {[
+                   "SMC Journal Pro Lifetime Account",
+                   "Advanced Streak Diagnostics",
+                   "AI Playbook Features (Upcoming)",
+                   "Priority Feature Requests"
+                 ].map((feat, i) => (
+                   <li key={i} className="flex items-start gap-3">
+                     <CheckCircle2 size={18} className="text-indigo-600 shrink-0 mt-0.5" />
+                     <span className="text-sm font-medium text-slate-600">{feat}</span>
+                   </li>
+                 ))}
+               </ul>
+             </div>
+           </div>
         </section>
 
         {/* Phase 5: CTA */}

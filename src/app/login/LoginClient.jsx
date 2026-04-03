@@ -43,7 +43,7 @@ export default function Login() {
       setError(getErrorMessage(loginError.message));
       setIsLoading(false);
     } else {
-      window.location.href = '/dashboard';
+      window.location.href = next;
     }
   };
 
@@ -58,8 +58,8 @@ export default function Login() {
     try {
       const isProd = !window.location.host.includes('localhost');
       const redirectTo = isProd 
-        ? 'https://smcjournal.app/auth/callback'
-        : `${window.location.origin}/auth/callback`;
+        ? `https://smcjournal.app/auth/callback?next=${encodeURIComponent(next)}`
+        : `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
 
       const { error: googleError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -174,7 +174,7 @@ export default function Login() {
         </button>
 
         <p className="mt-8 text-center text-xs text-[var(--text-muted)]">
-          Don&apos;t have an account? <Link href="/signup" className="text-[var(--accent)] font-bold hover:underline">Create for free</Link>
+          Don&apos;t have an account? <Link href={`/signup?next=${encodeURIComponent(next)}`} className="text-[var(--accent)] font-bold hover:underline">Create for free</Link>
         </p>
       </div>
     </div>
