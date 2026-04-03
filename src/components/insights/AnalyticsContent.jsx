@@ -12,7 +12,8 @@ import EmptyState from '@/components/ui/EmptyState';
 import { ChartSkeleton } from '@/components/ui/SkeletonLoader';
 import {
   getTrades, getEquityCurve, getWinRateByGroup, getStrategyInsights, getRRDistribution,
-  getExpectancy, getDrawdownCurve, getMaxDrawdown, getMonthlyPerformance
+  getExpectancy, getDrawdownCurve, getMaxDrawdown, getMonthlyPerformance,
+  getTotalPNL, getAverageWin, getAverageLoss, getLargestWin, getLargestLoss, getCurrentStreak, getPNLByDayOfWeek, getWinRate
 } from '@/lib/storage';
 
 const COLORS = ['#6366F1', '#22C55E', '#EF4444', '#F59E0B', '#8B5CF6', '#EC4899'];
@@ -123,6 +124,15 @@ export default function AnalyticsContent() {
   const instrumentData = getWinRateByGroup(trades, 'instrument');
   const rrData = getRRDistribution(trades);
 
+  const totalPNL = getTotalPNL(trades);
+  const avgWin = getAverageWin(trades);
+  const avgLoss = getAverageLoss(trades);
+  const maxWin = getLargestWin(trades);
+  const maxLoss = getLargestLoss(trades);
+  const currentWinStreak = getCurrentStreak(trades, 'Win');
+  const currentLossStreak = getCurrentStreak(trades, 'Loss');
+  const winRate = getWinRate(trades);
+
   const isLocked = checkIsLocked(subscription);
 
   return (
@@ -154,6 +164,28 @@ export default function AnalyticsContent() {
                     <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mb-1">Max Drawdown</span>
                     <span className="text-xl font-black text-rose-500">{maxDD}R</span>
                 </div>
+            </div>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="glass-card p-6 rounded-2xl border-[var(--glass-border)] shadow-premium">
+                <p className="text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2">Total Net R</p>
+                <p className={`text-2xl font-black ${totalPNL >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>{totalPNL > 0 ? '+' : ''}{totalPNL}R</p>
+            </div>
+            <div className="glass-card p-6 rounded-2xl border-[var(--glass-border)] shadow-premium">
+                <p className="text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2">Win Rate</p>
+                <p className="text-2xl font-black text-[var(--foreground)]">{winRate}%</p>
+            </div>
+            <div className="glass-card p-6 rounded-2xl border-[var(--glass-border)] shadow-premium">
+                <p className="text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2">Active Streak</p>
+                <p className="text-2xl font-black text-[var(--foreground)]">
+                   {currentWinStreak > 0 ? <span className="text-emerald-500">{currentWinStreak}W</span> : 
+                    currentLossStreak > 0 ? <span className="text-rose-500">{currentLossStreak}L</span> : '0'}
+                </p>
+            </div>
+            <div className="glass-card p-6 rounded-2xl border-[var(--glass-border)] shadow-premium">
+                <p className="text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2">Best / Worst Trade</p>
+                <p className="text-2xl font-black text-[var(--foreground)]">+{maxWin}R <span className="text-[var(--text-muted)] text-lg">/ {maxLoss}R</span></p>
             </div>
         </div>
 

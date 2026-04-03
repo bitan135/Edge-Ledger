@@ -55,3 +55,11 @@ console.error('Context:', err?.message || err?.details || err?.code || err);
 - **Build**: `npm run build`
 - **Lint**: `npm run lint`
 - **Dev**: `npm run dev`
+
+### Required Environment Variables
+Ensure `.env.local` contains the following for the app to function properly:
+- `NOWPAYMENTS_API_KEY`: For initiating crypto payment checkouts.
+- `NOWPAYMENTS_IPN_SECRET`: For validating crypto payment webhooks securely.
+- `NEXT_PUBLIC_SUPABASE_URL`: DB Client URL.
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: DB Client Key.
+- `SUPABASE_SERVICE_ROLE_KEY`: For overriding RLS during backend webhook subscription upgrades.

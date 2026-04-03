@@ -27,7 +27,8 @@ export async function POST(req) {
     // Define prices
     const prices = {
       'pro': 20,
-      '6_month': 50
+      '6_month': 50,
+      'lifetime': 79
     };
 
     if (!prices[planId]) {

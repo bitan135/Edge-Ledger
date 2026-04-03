@@ -99,7 +99,7 @@ export async function POST(req) {
 
         baseDate.setDate(baseDate.getDate() + 180);
         periodEnd = baseDate.toISOString();
-      } else if (planId === 'lifetime_legacy') {
+      } else if (planId === 'lifetime' || planId === 'lifetime_legacy') {
         periodEnd = null; // Perpetual access
       }
 
@@ -108,7 +108,7 @@ export async function POST(req) {
         .from('subscriptions')
         .upsert({
           user_id: userId,
-          plan_id: planId === 'lifetime_legacy' ? 'lifetime_legacy' : planId,
+          plan_id: (planId === 'lifetime' || planId === 'lifetime_legacy') ? 'lifetime' : planId,
           status: 'active',
           current_period_end: periodEnd,
           updated_at: new Date().toISOString()

@@ -168,6 +168,80 @@ export function getExpectancy(trades = []) {
   return isNaN(result) ? 0 : result;
 }
 
+export function getTotalPNL(trades = []) {
+  if (!Array.isArray(trades) || trades.length === 0) return 0;
+  const pnl = trades.reduce((sum, t) => {
+    if (t.result === 'Win') return sum + (parseFloat(t.rr) || 0);
+    if (t.result === 'Loss') return sum - 1;
+    return sum;
+  }, 0);
+  return parseFloat(pnl.toFixed(2));
+}
+
+export function getAverageWin(trades = []) {
+  if (!Array.isArray(trades) || trades.length === 0) return 0;
+  const wins = trades.filter(t => t.result === 'Win');
+  if (wins.length === 0) return 0;
+  const avg = wins.reduce((sum, t) => sum + (parseFloat(t.rr) || 0), 0) / wins.length;
+  return parseFloat(avg.toFixed(2));
+}
+
+export function getAverageLoss(trades = []) {
+  if (!Array.isArray(trades) || trades.length === 0) return 0;
+  const losses = trades.filter(t => t.result === 'Loss');
+  if (losses.length === 0) return 0;
+  return -1.0; 
+}
+
+export function getLargestWin(trades = []) {
+  if (!Array.isArray(trades) || trades.length === 0) return 0;
+  const wins = trades.filter(t => t.result === 'Win');
+  if (wins.length === 0) return 0;
+  const max = Math.max(...wins.map(t => parseFloat(t.rr) || 0));
+  return parseFloat(max.toFixed(2));
+}
+
+export function getLargestLoss(trades = []) {
+  if (!Array.isArray(trades) || trades.length === 0) return 0;
+  const losses = trades.filter(t => t.result === 'Loss');
+  if (losses.length === 0) return 0;
+  return -1.0; 
+}
+
+export function getCurrentStreak(trades = [], type = 'Win') {
+  if (!Array.isArray(trades) || trades.length === 0) return 0;
+  const sorted = [...trades].sort((a, b) => new Date(a.trade_date || a.tradeDate || a.created_at || a.createdAt || new Date()) - new Date(b.trade_date || b.tradeDate || b.created_at || b.createdAt || new Date()));
+  
+  let streak = 0;
+  for (let i = sorted.length - 1; i >= 0; i--) {
+    if (sorted[i].result === type) {
+      streak++;
+    } else if (sorted[i].result !== 'Break Even') {
+      break;
+    }
+  }
+  return streak;
+}
+
+export function getPNLByDayOfWeek(trades) {
+  if (!Array.isArray(trades) || trades.length === 0) return [];
+  const days = {};
+  trades.forEach(t => {
+    const d = new Date(t.trade_date || t.tradeDate || t.created_at || t.createdAt || new Date());
+    if (!isNaN(d.getTime())) {
+       const dayStr = d.toLocaleDateString('en-US', { weekday: 'long' });
+       const r = t.result === 'Win' ? (parseFloat(t.rr) || 0) : t.result === 'Loss' ? -1 : 0;
+       days[dayStr] = (days[dayStr] || 0) + r;
+    }
+  });
+  
+  const order = { 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6, 'Sunday': 7 };
+  return Object.entries(days).map(([name, pnl]) => ({
+    name,
+    pnl: parseFloat(pnl.toFixed(2))
+  })).sort((a, b) => (order[a.name] || 99) - (order[b.name] || 99));
+}
+
 export function getTrend(trades = [], key, samples = 10) {
   if (!trades || trades.length < samples * 2) return 0;
   const recent = trades.slice(0, samples);

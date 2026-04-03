@@ -176,7 +176,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                   name="instrument"
                   value={formData.instrument}
                   onChange={handleChange}
-                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] px-4 py-3 md:px-6 md:py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
+                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] px-4 py-3 md:px-6 md:py-4 text-base md:text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
                 >
                   {INSTRUMENTS.map(i => <option key={i} value={i} className="bg-[var(--background)]">{i}</option>)}
                 </select>
@@ -224,7 +224,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                   value={formData[field.name]}
                   onChange={handleChange}
                   placeholder={field.placeholder}
-                  className={`w-full bg-[var(--glass-bg)] border ${errors[field.name] ? 'border-rose-500/50' : 'border-[var(--glass-border)]'} rounded-[24px] px-4 py-3 md:px-6 md:py-4 text-sm font-bold text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all`}
+                  className={`w-full bg-[var(--glass-bg)] border ${errors[field.name] ? 'border-rose-500/50' : 'border-[var(--glass-border)]'} rounded-[24px] px-4 py-3 md:px-6 md:py-4 text-base md:text-sm font-bold text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all`}
                 />
               </div>
             ))}
@@ -348,7 +348,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 value={formData.notes}
                 onChange={handleChange}
                 placeholder="Log your technical confluences and psychological state..."
-                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] px-5 py-4 md:px-8 md:py-6 text-sm font-medium text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all min-h-[160px] resize-none leading-relaxed"
+                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] px-5 py-4 md:px-8 md:py-6 text-base md:text-sm font-medium text-[var(--foreground)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all min-h-[160px] resize-none leading-relaxed"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -391,7 +391,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 name="result"
                 value={formData.result}
                 onChange={handleChange}
-                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
+                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-base md:text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
               >
                 <option value="Win" className="bg-[var(--background)]">PROFITABLE (WIN)</option>
                 <option value="Loss" className="bg-[var(--background)]">LIQUIDATED (LOSS)</option>
@@ -404,7 +404,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 name="strategy"
                 value={formData.strategy}
                 onChange={handleChange}
-                className={`w-full bg-[var(--glass-bg)] border ${errors.strategy ? 'border-rose-500/50' : 'border-[var(--glass-border)]'} rounded-2xl px-4 py-3 md:px-6 md:py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer`}
+                className={`w-full bg-[var(--glass-bg)] border ${errors.strategy ? 'border-rose-500/50' : 'border-[var(--glass-border)]'} rounded-2xl px-4 py-3 md:px-6 md:py-4 text-base md:text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer`}
               >
                 {!formData.strategy && <option value="" disabled>INSTITUTIONAL STRATEGY</option>}
                 {strategies.map(s => <option key={s} value={s} className="bg-[var(--background)]">{s.toUpperCase()}</option>)}
@@ -417,7 +417,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 name="session"
                 value={formData.session}
                 onChange={handleChange}
-                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
+                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-base md:text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
               >
                 {SESSIONS.map(s => <option key={s} value={s} className="bg-[var(--background)]">{s.toUpperCase()} SESSION</option>)}
               </select>
@@ -430,7 +430,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                   name="timeframeBias"
                   value={formData.timeframeBias}
                   onChange={handleChange}
-                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
+                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-base md:text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
                 >
                   {TIMEFRAME_BIAS.map(t => <option key={t} value={t} className="bg-[var(--background)]">{t}</option>)}
                 </select>
@@ -441,7 +441,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                   name="biasType"
                   value={formData.biasType}
                   onChange={handleChange}
-                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
+                  className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-base md:text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all appearance-none cursor-pointer"
                 >
                   {BIAS_TYPES.map(b => <option key={b} value={b} className="bg-[var(--background)]">{b.toUpperCase()}</option>)}
                 </select>
@@ -479,7 +479,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                 name="lotSize"
                 value={formData.lotSize}
                 onChange={handleChange}
-                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all"
+                className="w-full bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl px-4 py-3 md:px-6 md:py-4 text-base md:text-sm font-black text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:bg-[var(--card-hover)] transition-all"
               />
             </div>
 
