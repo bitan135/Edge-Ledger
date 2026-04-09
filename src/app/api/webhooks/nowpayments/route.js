@@ -51,30 +51,35 @@ export async function POST(req) {
   console.log(`[WEBHOOK_RECEIVED] payment_id=${payment_id} invoice_id=${invoice_id || 'N/A'} status=${payment_status} order_id=${order_id}`);
 
   try {
-    // 2. Update payment record status
+    // 2. Fetch current payment status to ensure idempotency
     const supabaseAdmin = getSupabaseAdmin();
     
-    // We look up by order_id because it's our most reliable anchor for both direct and invoice payments
+    const { data: currentPayment } = await supabaseAdmin
+      .from('crypto_payments')
+      .select('payment_status, plan_id')
+      .eq('payment_id', String(payment_id))
+      .single();
+
+    // If payment is already marked as finished, don't re-process logic
+    if (currentPayment?.payment_status === 'finished') {
+       console.log(`[WEBHOOK_IDEMPOTENCY] payment_id=${payment_id} already finished. Skipping.`);
+       return NextResponse.json({ received: true, message: 'Already processed' });
+    }
+
+    // 3. Update payment record status
     await supabaseAdmin
       .from('crypto_payments')
       .update({ 
-        payment_id: String(payment_id), // Always keep the latest real payment_id
+        payment_id: String(payment_id), 
         payment_status,
         updated_at: new Date().toISOString()
       })
       .or(`payment_id.eq.${payment_id}${invoice_id ? `,payment_id.eq.${invoice_id}` : ''},order_id.eq.${order_id}`);
 
-    // 3. Handle finished payment (Subscription Update)
+    // 4. Handle finished payment (Subscription Update)
     if (payment_status === 'finished' || payment_status === 'partially_paid') {
-      const { data: payment } = await supabaseAdmin
-        .from('crypto_payments')
-        .select('plan_id')
-        .eq('payment_id', String(payment_id))
-        .single();
-
-      if (!payment) throw new Error('Payment record not found');
-
-      const planId = payment.plan_id;
+      // Re-fetch or use currentPayment if it was missing before insertion
+      const planId = currentPayment?.plan_id || payload.price_amount > 70 ? 'lifetime' : (payload.price_amount > 40 ? '6_month' : 'pro');
       let periodEnd = null;
 
       // Calculate period end based on plan

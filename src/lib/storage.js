@@ -84,31 +84,75 @@ export function calculatePips(entry, stopLoss, instrument) {
   
   const instr = instrument?.toUpperCase() || '';
   
-  if (instr.includes('JPY')) return parseFloat((diff * 100).toFixed(1));
-  if (instr.includes('XAU') || instr.includes('GOLD')) return parseFloat((diff * 10).toFixed(1));
-  if (instr.includes('XAG') || instr.includes('SILVER')) return parseFloat((diff * 10).toFixed(1));
+  // JPY Pairs (2 decimal pips)
+  if (instr.includes('JPY')) return parseFloat((diff * 100).toFixed(2));
   
-  // Indices & Crypto
-  if (instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX') || instr.includes('NDX') || instr.includes('GER') || instr.includes('DAX') || instr.includes('UK100') || instr.includes('DOW')) {
-    return parseFloat(diff.toFixed(1));
+  // Metals (Gold/Silver - usually 0.1 constitutes a pip in most journals, 1.0 is 10 pips)
+  if (instr.includes('XAU') || instr.includes('GOLD') || instr.includes('XAG') || instr.includes('SILVER')) {
+    return parseFloat((diff * 10).toFixed(1));
   }
-  if (instr.includes('BTC') || instr.includes('ETH') || instr.includes('SOL') || instr.includes('BNB')) return parseFloat(diff.toFixed(0));
   
-  // Standard 4/5 decimal pairs
+  // Indices (Major Indices: US30, NAS100, SPX500, DAX40/GER40)
+  // Logic: 1.0 point = 1.0 "pip" for simplicity in index journaling
+  if (
+    instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX') || 
+    instr.includes('GER') || instr.includes('DAX') || instr.includes('UK100') || 
+    instr.includes('FRA') || instr.includes('HK50') || instr.includes('GR30') ||
+    instr.includes('NDX') || instr.includes('DOW')
+  ) {
+    return parseFloat(diff.toFixed(2));
+  }
+
+  // Crypto
+  if (instr.includes('BTC') || instr.includes('ETH') || instr.includes('SOL') || instr.includes('BNB')) {
+    return parseFloat(diff.toFixed(2));
+  }
+  
+  // Standard Forex (4/5 decimal pairs)
+  // 0.0001 = 1 Pip
   return parseFloat((diff * 10000).toFixed(1));
 }
 
+/**
+ * Institutional-grade Risk Calculator
+ * Ensures dollar-value accuracy across different asset classes.
+ */
 export function calculateRiskAmount(lotSize, pips, instrument) {
   if (!lotSize || !pips) return 0;
   const lot = parseFloat(lotSize);
   const instr = instrument?.toUpperCase() || '';
   
-  if (instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX') || instr.includes('DOW')) return parseFloat((lot * pips).toFixed(2));
-  if (instr.includes('XAU') || instr.includes('GOLD') || instr.includes('XAG') || instr.includes('SILVER')) return parseFloat((lot * 100 * pips / 10).toFixed(2));
-  if (instr.includes('JPY')) return parseFloat((lot * 100000 * pips / 100).toFixed(2));
+  // 1. Indices (Usually 1 Lot = $1 per point OR $10 depending on broker)
+  // We default to the $1/pt standard used by most prop firms for 1 Lot.
+  if (
+    instr.includes('NAS') || instr.includes('US30') || instr.includes('SPX') || 
+    instr.includes('GER') || instr.includes('DAX') || instr.includes('UK100')
+  ) {
+    return parseFloat((lot * pips).toFixed(2));
+  }
+
+  // 2. Metals (Gold/Silver)
+  // 1 Lot of Gold = 100 oz. $1 move = $100.
+  // We calculated 1.0 move as 10 pips. So 1 lot * 10 pips * 10 = $100. Correct.
+  if (instr.includes('XAU') || instr.includes('GOLD') || instr.includes('XAG') || instr.includes('SILVER')) {
+    return parseFloat((lot * 100 * (pips / 10)).toFixed(2));
+  }
+
+  // 3. JPY Pairs
+  // 1 Lot = 100,000 units. $1 pip = $10 approx.
+  if (instr.includes('JPY')) {
+    return parseFloat((lot * 100000 * (pips / 100)).toFixed(2));
+  }
+
+  // 4. Crypto
+  // 1 Lot BTC/USD = 1 BTC. $1 move = $1.
+  if (instr.includes('BTC') || instr.includes('ETH') || instr.includes('SOL') || instr.includes('BNB')) {
+    return parseFloat((lot * pips).toFixed(2));
+  }
   
-  // Standard Forex (100k units)
-  return parseFloat((lot * 100000 * pips / 10000).toFixed(2));
+  // 5. Standard Forex (100,000 unit contract)
+  // 1 Lot, 10 pips = $100.
+  return parseFloat((lot * 100000 * (pips / 10000)).toFixed(2));
 }
 
 export function getSessionFromTime(date) {
@@ -457,9 +501,24 @@ export async function saveTrade(trade) {
       rr: parseFloat(trade.rr) || 0,
       pips: parseFloat(trade.pips) || 0,
       trade_date: parseTradeDate(trade).toISOString(),
+      instrument: trade.instrument?.toUpperCase() || 'EURUSD',
+      result: trade.result || 'Break Even',
+      type: trade.type || 'Buy',
+      setup_images: Array.isArray(trade.setup_images) ? trade.setup_images : [],
       smc_tags: Array.isArray(trade.smcTags || trade.smc_tags) ? (trade.smcTags || trade.smc_tags) : [],
       liquidity_sweep: Array.isArray(trade.liquiditySweep || trade.liquidity_sweep) ? (trade.liquiditySweep || trade.liquidity_sweep) : [],
     };
+
+    // Strict validation
+    if (tradeData.entry_price <= 0) {
+      return { success: false, data: null, error: 'Institutional Error: Entry price must be a positive numerical value.' };
+    }
+    if (tradeData.stop_loss && tradeData.type === 'Buy' && tradeData.stop_loss >= tradeData.entry_price) {
+      return { success: false, data: null, error: 'Risk Validation: Stop Loss must be below Entry for Buy positions.' };
+    }
+    if (tradeData.stop_loss && tradeData.type === 'Sell' && tradeData.stop_loss <= tradeData.entry_price) {
+      return { success: false, data: null, error: 'Risk Validation: Stop Loss must be above Entry for Sell positions.' };
+    }
 
     // Remove legacy/UI/calculated keys to keep DB clean
     const KEYS_TO_REMOVE = [

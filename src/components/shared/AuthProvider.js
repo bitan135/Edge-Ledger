@@ -107,15 +107,27 @@ export function AuthProvider({ children }) {
     // Client-side session sync guard
     // If the client hydrates and sees a user, but we are on a public route (like / or /login),
     // we should immediately push them to their destination.
-    if (!isLoading && user && isPublicRoute(pathname) && pathname !== '/founding-member') {
-      // Improved Redirect logic: check for 'next' parameter to support checkout funnel
-      const searchParams = new URLSearchParams(window.location.search);
-      const next = searchParams.get('next');
+    if (!isLoading && user) {
+      // 1. Subscription Expiry Protection
+      const isExpired = subscription?.current_period_end && 
+                        new Date(subscription.current_period_end) < new Date() &&
+                        subscription.status === 'active';
       
-      const targetPath = (next && next.startsWith('/')) ? next : '/dashboard';
-      
-      console.log(`[AuthProvider] User session detected on public route. Redirecting to: ${targetPath}`);
-      window.location.href = targetPath;
+      if (isExpired && isProtectedRoute(pathname)) {
+        console.warn('[AuthProvider] Pro Subscription detected as EXPIRED. Redirecting to billing.');
+        router.push('/billing?reason=expired');
+        return;
+      }
+
+      // 2. Client-side session sync guard
+      if (isPublicRoute(pathname) && pathname !== '/founding-member') {
+        const searchParams = new URLSearchParams(window.location.search);
+        const next = searchParams.get('next');
+        const targetPath = (next && next.startsWith('/')) ? next : '/dashboard';
+        
+        console.log(`[AuthProvider] Active user session on public route. Bridging to: ${targetPath}`);
+        window.location.href = targetPath;
+      }
     }
   }, [user, isLoading, pathname]);
 

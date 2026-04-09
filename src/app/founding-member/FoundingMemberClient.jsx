@@ -6,12 +6,16 @@ import { Crown, Zap, ShieldCheck, Target, Lock, TrendingUp, ChevronRight, CheckC
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/shared/AuthProvider';
+import { usePostHog } from 'posthog-js/react';
 
 export default function FoundingMemberClient() {
   const [spotsData, setSpotsData] = useState({ total_spots: 10, claimed_spots: 0, is_active: true });
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+  const posthog = usePostHog();
+
+  const isAlreadyLifetime = profile?.plan_type === 'pro_lifetime' || profile?.plan_type === 'lifetime' || profile?.plan_type === 'lifetime_legacy';
 
   useEffect(() => {
     const fetchSpots = async () => {
@@ -32,6 +36,27 @@ export default function FoundingMemberClient() {
     };
     
     fetchSpots();
+
+    // Realtime subscription for live scarcity
+    const channel = supabase
+      .channel('founding-spots-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'founding_member_spots'
+        },
+        (payload) => {
+          console.log('[REALTIME] Spots updated:', payload.new);
+          setSpotsData(payload.new);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const spotsRemaining = Math.max(0, spotsData.total_spots - spotsData.claimed_spots);
@@ -39,7 +64,21 @@ export default function FoundingMemberClient() {
 
   const handleClaim = () => {
     const nextUrl = '/checkout/founding-member';
+    
+    // Funnel Tracking
+    if (posthog) {
+      posthog.capture('Founding Member — Claim Clicked', {
+        userId: user?.id,
+        isLoggedIn: !!user,
+        spotsRemaining
+      });
+    }
+
     if (user) {
+      if (isAlreadyLifetime) {
+        alert("You are already an SMC Journal Founding Member! Your account has perpetual access.");
+        return;
+      }
       router.push(nextUrl);
     } else {
       // Direct pass to login with next param
