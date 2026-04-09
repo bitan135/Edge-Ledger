@@ -14,7 +14,7 @@ export default function DonationPage() {
     };
 
     return (
-        <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-10 max-w-[1280px] mx-auto animate-fade-in pb-32 relative overflow-hidden">
+        <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1280px] mx-auto animate-fade-in pb-32 lg:pb-10 relative overflow-hidden">
             {/* Background Ambience */}
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[var(--accent)]/5 to-transparent pointer-events-none" />
             

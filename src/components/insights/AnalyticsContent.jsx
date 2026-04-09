@@ -81,13 +81,13 @@ export default function AnalyticsContent() {
       <div className="px-4 sm:px-6 lg:px-10 py-6 md:py-10 animate-fade-in">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 px-2">
             <div className="flex-1">
-                <div className="h-4 w-32 bg-slate-100 rounded-full mb-4 animate-shimmer" />
-                <div className="h-12 w-64 bg-slate-100 rounded-2xl mb-4 animate-shimmer" />
-                <div className="h-4 w-48 bg-slate-100 rounded-full animate-shimmer" />
+                <div className="h-4 w-32 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full mb-4 animate-shimmer" />
+                <div className="h-12 w-64 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl mb-4 animate-shimmer" />
+                <div className="h-4 w-48 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-full animate-shimmer" />
             </div>
             <div className="flex items-center gap-4">
-                <div className="h-[76px] w-[140px] bg-slate-100 rounded-[24px] animate-shimmer" />
-                <div className="h-[76px] w-[140px] bg-slate-100 rounded-[24px] animate-shimmer" />
+                <div className="h-[76px] w-[140px] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] animate-shimmer" />
+                <div className="h-[76px] w-[140px] bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[24px] animate-shimmer" />
             </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -136,7 +136,7 @@ export default function AnalyticsContent() {
   const isLocked = checkIsLocked(subscription);
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1440px] mx-auto animate-fade-in pb-24 md:pb-32 relative overflow-hidden">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 lg:pb-10 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] bg-[var(--accent)]/5 blur-[150px] rounded-full animate-float pointer-events-none"></div>
       <div className="absolute bottom-[10%] left-[-5%] w-[40%] h-[40%] bg-purple-500/5 blur-[120px] rounded-full delay-1000 animate-float pointer-events-none"></div>

@@ -89,10 +89,10 @@ export default function Strategies() {
     return (
       <div className="px-4 sm:px-6 lg:px-10 py-6 md:py-10 animate-fade-in">
         <div className="flex items-center justify-between mb-8 md:mb-12">
-          <div className="h-10 w-48 bg-white/5 rounded-2xl animate-shimmer" />
+          <div className="h-10 w-48 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-2xl animate-shimmer" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[1,2,3].map(i => <div key={i} className="h-64 glass-card border-white/5 rounded-[32px] animate-shimmer" />)}
+          {[1,2,3].map(i => <div key={i} className="h-64 glass-card border-[var(--glass-border)] rounded-[32px] animate-shimmer" />)}
         </div>
       </div>
     );
@@ -100,7 +100,7 @@ export default function Strategies() {
 
   return (
     <PlanGuard requiredPlan="pro" featureName="Execution Vault">
-    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1440px] mx-auto animate-fade-in pb-24 md:pb-32 relative overflow-hidden">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 lg:pb-10 relative overflow-hidden">
         {/* Background Ambience */}
         <div className="absolute top-[25%] left-[-10%] w-[50%] h-[50%] bg-[var(--accent)]/5 blur-[150px] rounded-full animate-float pointer-events-none"></div>
         

@@ -107,7 +107,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1440px] mx-auto animate-fade-in pb-28 md:pb-32 relative overflow-hidden">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 lg:pb-10 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] bg-[var(--accent)]/5 blur-[120px] rounded-full animate-float"></div>
       <div className="absolute bottom-[5%] left-[-10%] w-[35%] h-[35%] bg-indigo-500/5 blur-[100px] rounded-full delay-700 animate-float"></div>
@@ -125,7 +125,7 @@ export default function Dashboard() {
                         <Sparkles size={12} /> Live Engine
                     </span>
                 </div>
-                <h1 className="text-2xl md:text-6xl font-black text-[var(--foreground)] tracking-tighter leading-tight mb-4 text-gradient">
+                <h1 className="text-2xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-tight mb-4 text-gradient">
                     {greeting}, {profile?.full_name?.split(' ')[0] || profile?.username || 'Trader'}
                 </h1>
                 <p className="text-[var(--text-secondary)] font-medium max-w-lg">
@@ -145,7 +145,7 @@ export default function Dashboard() {
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 mb-12 stagger-children">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-12 stagger-children">
             <MetricCard
                 label="Win Rate"
                 value={`${winRate}%`}

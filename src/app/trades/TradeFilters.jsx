@@ -13,7 +13,7 @@ export default function TradeFilters({ searchTerm, setSearchTerm, filters, setFi
               Execution Archives
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-tight text-gradient">
+          <h1 className="text-2xl md:text-5xl font-black text-[var(--foreground)] tracking-tighter leading-tight text-gradient">
             The Vault
           </h1>
           <p className="text-[var(--text-secondary)] font-medium mt-3">Comprehensive records of your technical evolution on the charts.</p>

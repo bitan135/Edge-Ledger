@@ -185,7 +185,7 @@ export default function TradeLibrary() {
   }
 
   return (
-    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1440px] mx-auto animate-fade-in pb-24 md:pb-32 relative overflow-hidden">
+    <div className="min-h-screen px-4 sm:px-6 lg:px-10 py-6 md:py-10 max-w-[1440px] mx-auto animate-fade-in pb-32 lg:pb-10 relative overflow-hidden">
       <div className="absolute top-[30%] left-[-10%] w-[50%] h-[50%] bg-[var(--accent)]/5 blur-[150px] rounded-full animate-float pointer-events-none"></div>
 
       <div className="relative z-10 w-full">
