@@ -25,7 +25,7 @@ function CustomTooltip({ active, payload, label, suffix = '' }) {
         <p className="text-[10px] text-[var(--text-muted)] font-black uppercase tracking-[0.2em] mb-2">{label}</p>
         <div className="flex items-center gap-3">
           <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)] animate-pulse" />
-          <p className="text-lg font-black text-[var(--foreground)] tracking-tighter">
+          <p className="text-lg font-black text-[var(--foreground)] tracking-tighter whitespace-nowrap">
             {payload[0].value}{suffix}
           </p>
         </div>
@@ -167,25 +167,25 @@ export default function AnalyticsContent() {
             </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="glass-card p-6 rounded-2xl border-[var(--glass-border)] shadow-premium">
-                <p className="text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2">Total Net R</p>
-                <p className={`text-2xl font-black ${totalPNL >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>{totalPNL > 0 ? '+' : ''}{totalPNL}R</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="glass-card p-5 md:p-6 rounded-2xl border-[var(--glass-border)] shadow-premium flex flex-col justify-center">
+                <p className="text-[9px] md:text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2 whitespace-nowrap truncate">Total Net R</p>
+                <p className={`text-xl md:text-2xl font-black whitespace-nowrap truncate ${totalPNL >= 0 ? 'text-emerald-500' : 'text-rose-500'}`}>{totalPNL > 0 ? '+' : ''}{totalPNL}R</p>
             </div>
-            <div className="glass-card p-6 rounded-2xl border-[var(--glass-border)] shadow-premium">
-                <p className="text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2">Win Rate</p>
-                <p className="text-2xl font-black text-[var(--foreground)]">{winRate}%</p>
+            <div className="glass-card p-5 md:p-6 rounded-2xl border-[var(--glass-border)] shadow-premium flex flex-col justify-center">
+                <p className="text-[9px] md:text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2 whitespace-nowrap truncate">Win Rate</p>
+                <p className="text-xl md:text-2xl font-black text-[var(--foreground)] whitespace-nowrap truncate">{winRate}%</p>
             </div>
-            <div className="glass-card p-6 rounded-2xl border-[var(--glass-border)] shadow-premium">
-                <p className="text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2">Active Streak</p>
-                <p className="text-2xl font-black text-[var(--foreground)]">
+            <div className="glass-card p-5 md:p-6 rounded-2xl border-[var(--glass-border)] shadow-premium flex flex-col justify-center">
+                <p className="text-[9px] md:text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2 whitespace-nowrap truncate">Active Streak</p>
+                <p className="text-xl md:text-2xl font-black text-[var(--foreground)] whitespace-nowrap truncate">
                    {currentWinStreak > 0 ? <span className="text-emerald-500">{currentWinStreak}W</span> : 
                     currentLossStreak > 0 ? <span className="text-rose-500">{currentLossStreak}L</span> : '0'}
                 </p>
             </div>
-            <div className="glass-card p-6 rounded-2xl border-[var(--glass-border)] shadow-premium">
-                <p className="text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2">Best / Worst Trade</p>
-                <p className="text-2xl font-black text-[var(--foreground)]">+{maxWin}R <span className="text-[var(--text-muted)] text-lg">/ {maxLoss}R</span></p>
+            <div className="glass-card p-5 md:p-6 rounded-2xl border-[var(--glass-border)] shadow-premium flex flex-col justify-center">
+                <p className="text-[9px] md:text-[10px] uppercase font-black text-[var(--text-muted)] tracking-widest mb-2 whitespace-nowrap truncate">Best / Worst Trade</p>
+                <p className="text-xl md:text-2xl font-black text-[var(--foreground)] whitespace-nowrap truncate">+{maxWin}R <span className="text-[var(--text-muted)] text-base md:text-lg">/ {maxLoss}R</span></p>
             </div>
         </div>
 

@@ -206,8 +206,10 @@ export function getExpectancy(trades = []) {
   if (!Array.isArray(trades) || trades.length === 0) return 0;
   const wr = getWinRate(trades) / 100;
   const avgRR = getAverageRR(trades);
+  const losses = trades.filter(t => t.result === 'Loss').length;
+  const lossRate = losses / trades.length;
   // Expectancy = (WR * AvgRR) - (LossRate * 1)
-  const expectancy = (wr * avgRR) - (1 - wr);
+  const expectancy = (wr * avgRR) - lossRate;
   const result = parseFloat(expectancy.toFixed(2));
   return isNaN(result) ? 0 : result;
 }
@@ -254,7 +256,7 @@ export function getLargestLoss(trades = []) {
 
 export function getCurrentStreak(trades = [], type = 'Win') {
   if (!Array.isArray(trades) || trades.length === 0) return 0;
-  const sorted = [...trades].sort((a, b) => new Date(a.trade_date || a.tradeDate || a.created_at || a.createdAt || new Date()) - new Date(b.trade_date || b.tradeDate || b.created_at || b.createdAt || new Date()));
+  const sorted = [...trades].sort((a, b) => parseTradeDate(a) - parseTradeDate(b));
   
   let streak = 0;
   for (let i = sorted.length - 1; i >= 0; i--) {
@@ -271,12 +273,10 @@ export function getPNLByDayOfWeek(trades) {
   if (!Array.isArray(trades) || trades.length === 0) return [];
   const days = {};
   trades.forEach(t => {
-    const d = new Date(t.trade_date || t.tradeDate || t.created_at || t.createdAt || new Date());
-    if (!isNaN(d.getTime())) {
-       const dayStr = d.toLocaleDateString('en-US', { weekday: 'long' });
-       const r = t.result === 'Win' ? (parseFloat(t.rr) || 0) : t.result === 'Loss' ? -1 : 0;
-       days[dayStr] = (days[dayStr] || 0) + r;
-    }
+    const d = parseTradeDate(t);
+    const dayStr = d.toLocaleDateString('en-US', { weekday: 'long' });
+    const r = t.result === 'Win' ? (parseFloat(t.rr) || 0) : t.result === 'Loss' ? -1 : 0;
+    days[dayStr] = (days[dayStr] || 0) + r;
   });
   
   const order = { 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6, 'Sunday': 7 };
@@ -308,7 +308,7 @@ export function getTrend(trades = [], key, samples = 10) {
 
 export function getDrawdownCurve(trades = []) {
   if (!trades || !trades.length) return [];
-  const sorted = [...trades].sort((a, b) => new Date(a.trade_date || a.tradeDate || a.created_at || a.createdAt) - new Date(b.trade_date || b.tradeDate || b.created_at || b.createdAt));
+  const sorted = [...trades].sort((a, b) => parseTradeDate(a) - parseTradeDate(b));
   
   let balance = 0;
   let peak = 0;
@@ -316,11 +316,10 @@ export function getDrawdownCurve(trades = []) {
     const r = t.result === 'Win' ? (t.rr || 0) : t.result === 'Break Even' ? 0 : -1;
     balance += r;
     if (balance > peak) peak = balance;
-    const dd = peak === 0 ? 0 : ((balance - peak) / peak) * 100;
     const ddR = balance - peak;
     return {
       index: i + 1,
-      date: new Date(t.trade_date || t.tradeDate || t.created_at || t.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      date: parseTradeDate(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       drawdown: parseFloat(ddR.toFixed(2)),
       balance: parseFloat(balance.toFixed(2))
     };
@@ -337,7 +336,7 @@ export function getMaxDrawdown(trades = []) {
 export function getMonthlyPerformance(trades = []) {
   const months = {};
   trades.forEach(t => {
-    const date = new Date(t.trade_date || t.tradeDate || t.created_at || t.createdAt);
+    const date = parseTradeDate(t);
     const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
     if (!months[key]) months[key] = 0;
     const r = t.result === 'Win' ? (t.rr || 0) : t.result === 'Break Even' ? 0 : -1;
@@ -354,7 +353,7 @@ export function getMonthlyPerformance(trades = []) {
 
 export function getEquityCurve(trades) {
   if (!trades || !trades.length) return [];
-  const sorted = [...trades].sort((a, b) => new Date(a.trade_date || a.tradeDate || a.created_at || a.createdAt) - new Date(b.trade_date || b.tradeDate || b.created_at || b.createdAt));
+  const sorted = [...trades].sort((a, b) => parseTradeDate(a) - parseTradeDate(b));
   let balance = 0;
   
   // Add an initial zero point if no trades exist to help charting
@@ -368,7 +367,7 @@ export function getEquityCurve(trades) {
     curve.push({
       trade: i + 1,
       balance: parseFloat(balance.toFixed(2)),
-      date: new Date(trade.created_at || trade.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      date: parseTradeDate(trade).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       result: trade.result,
     });
   });
@@ -382,9 +381,10 @@ export function getWinRateByGroup(trades, groupKey) {
   trades.forEach(t => {
     if (!t) return;
     const key = t[groupKey] || 'Unknown';
-    if (!groups[key]) groups[key] = { wins: 0, total: 0 };
+    if (!groups[key]) groups[key] = { wins: 0, losses: 0, total: 0 };
     groups[key].total++;
     if (t.result === 'Win') groups[key].wins++;
+    else if (t.result === 'Loss') groups[key].losses++;
   });
   
   return Object.entries(groups).map(([name, data]) => ({
@@ -392,7 +392,7 @@ export function getWinRateByGroup(trades, groupKey) {
     winRate: parseFloat(data.total > 0 ? ((data.wins / data.total) * 100).toFixed(1) : 0),
     trades: data.total,
     wins: data.wins,
-    losses: data.total - data.wins,
+    losses: data.losses,
   })).sort((a, b) => b.trades - a.trades);
 }
 
@@ -401,19 +401,21 @@ export function getStrategyInsights(trades) {
   const groups = {};
   trades.forEach(t => {
     const key = t.strategy || 'Unknown';
-    if (!groups[key]) groups[key] = { wins: 0, total: 0, totalRR: 0 };
+    if (!groups[key]) groups[key] = { wins: 0, losses: 0, total: 0, totalRR: 0 };
     groups[key].total++;
     if (t.result === 'Win') {
       groups[key].wins++;
       groups[key].totalRR += (t.rr || 0);
+    } else if (t.result === 'Loss') {
+      groups[key].losses++;
     }
   });
   
   return Object.entries(groups).map(([name, data]) => {
     const winRate = (data.wins / data.total);
     const avgRR = data.wins > 0 ? (data.totalRR / data.wins) : 0;
-    // Expectancy = (WR * AvgRR) - (LossRate * 1)
-    const expectancy = (winRate * avgRR) - (1 - winRate);
+    const lossRate = (data.losses / data.total);
+    const expectancy = (winRate * avgRR) - lossRate;
     
     return {
       name,
@@ -422,7 +424,7 @@ export function getStrategyInsights(trades) {
       avgRR: parseFloat(avgRR.toFixed(2)),
       expectancy: parseFloat(expectancy.toFixed(2)),
       wins: data.wins,
-      losses: data.total - data.wins,
+      losses: data.losses,
     };
   }).sort((a, b) => b.trades - a.trades);
 }
