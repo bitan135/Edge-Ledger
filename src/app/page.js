@@ -212,92 +212,81 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* High-Fidelity Dashboard Mockup */}
-              <div className="relative group">
+              {/* High-Fidelity Dashboard Mockup (Matching Live Prod App) */}
+              <div className="relative group perspective-1000">
                 <div className="absolute -inset-4 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-[40px] blur-2xl group-hover:blur-3xl transition-all duration-700" />
-                <div className="relative bg-slate-950 rounded-[32px] border border-slate-800 shadow-2xl p-6 md:p-8 overflow-hidden aspect-[4/3] flex flex-col gap-6">
-                   
-                   {/* Top Bar Actions */}
-                   <div className="flex items-center justify-between border-b border-slate-800 pb-6">
-                      <div className="flex items-center gap-3">
-                         <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-                            <Binary size={16} className="text-white" />
-                         </div>
-                         <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-white uppercase tracking-widest">Diagnostic v2.4</span>
-                            <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">HTF/LTF SYNC ACTIVE</span>
-                         </div>
+                <div className="relative bg-white/60 backdrop-blur-xl rounded-[32px] border border-slate-200/60 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] p-6 md:p-8 overflow-hidden flex flex-col gap-5 h-full group-hover:bg-white/80 transition-colors duration-700">
+
+                   {/* Header matching App */}
+                   <div className="flex flex-col gap-2 pb-2">
+                      <div className="flex items-center gap-2 mb-1">
+                          <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50/50 border border-indigo-100 text-indigo-600 text-[9px] font-black uppercase tracking-[0.2em] shadow-sm">
+                              <Sparkles size={10} /> Institutional Intelligence
+                          </span>
                       </div>
-                      <div className="flex gap-2">
-                         <div className="w-2 h-2 rounded-full bg-slate-800" />
-                         <div className="w-2 h-2 rounded-full bg-slate-800" />
-                         <div className="w-2 h-2 rounded-full bg-indigo-500" />
-                      </div>
+                      <h3 className="text-3xl font-black text-slate-900 tracking-tighter title-gradient">Execution Analytics</h3>
                    </div>
 
-                   {/* Main Metrics */}
-                   <div className="grid grid-cols-3 gap-4">
+                   {/* Top Level KPIs */}
+                   <div className="grid grid-cols-2 gap-3">
+                       <div className="bg-white rounded-2xl p-4 border border-slate-100 flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+                           <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Vault Expectancy</span>
+                           <span className="text-lg md:text-xl font-black text-slate-900">1.8R</span>
+                       </div>
+                       <div className="bg-white rounded-2xl p-4 border border-slate-100 flex flex-col items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+                           <span className="text-[8px] md:text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Max Drawdown</span>
+                           <span className="text-lg md:text-xl font-black text-rose-500">-3R</span>
+                       </div>
+                   </div>
+
+                   {/* Secondary Metrics Grid */}
+                   <div className="grid grid-cols-2 gap-3">
                       {[
-                        { l: "EXPECTANCY", v: "+0.84R", c: "text-emerald-400" },
-                        { l: "WIN RATE", v: "64.2%", c: "text-white" },
-                        { l: "PROFIT FACTOR", v: "2.41", c: "text-indigo-400" }
+                        { l: "TOTAL NET R", v: "+12.4R", c: "text-emerald-500" },
+                        { l: "WIN RATE", v: "68%", c: "text-slate-900" },
+                        { l: "ACTIVE STREAK", v: "4W", c: "text-emerald-500" },
+                        { l: "BEST/WORST", v: "+4R / -1R", c: "text-slate-900" }
                       ].map((m, i) => (
-                        <div key={i} className="bg-white/5 rounded-2xl p-4 border border-white/5">
-                           <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest block mb-1">{m.l}</span>
-                           <span className={`text-sm md:text-lg font-black ${m.c}`}>{m.v}</span>
+                        <div key={i} className="bg-white rounded-2xl p-4 border border-slate-100 flex flex-col justify-center shadow-sm hover:shadow-md transition-shadow">
+                           <span className="text-[7.5px] md:text-[8px] font-black text-slate-400 uppercase tracking-widest mb-2 whitespace-nowrap truncate">{m.l}</span>
+                           <span className={`text-base md:text-lg font-black whitespace-nowrap truncate ${m.c}`}>{m.v}</span>
                         </div>
                       ))}
                    </div>
 
-                   {/* Visual Graph Bar (Simplified for Premium Feel) */}
-                   <div className="flex-grow bg-white/[0.02] border border-white/5 rounded-2xl p-6 flex flex-col justify-between">
-                      <div className="flex justify-between items-center mb-4">
-                         <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Model Probability Distribution</span>
-                         <span className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">Institutional Mode</span>
+                   {/* Chart Area */}
+                   <div className="flex-grow bg-white border border-slate-100 rounded-2xl p-5 flex flex-col justify-between shadow-sm relative overflow-hidden min-h-[140px]">
+                      <div className="relative z-10 flex justify-between items-center mb-4">
+                         <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Equity Trajectory</span>
+                         <span className="text-[8px] font-black text-indigo-500 uppercase tracking-widest bg-indigo-50 px-2 py-1 rounded">Live DB Sync</span>
                       </div>
-                      <div className="h-32 flex items-end justify-between gap-2">
-                         {[40, 70, 45, 90, 60, 30, 85, 55, 100, 75].map((h, i) => (
-                           <div key={i} className="flex-1 group/bar relative">
-                              <div 
-                                className="w-full bg-gradient-to-t from-indigo-600/50 to-indigo-500 rounded-t-md transition-all duration-1000 origin-bottom scale-y-0 animate-[grow_1s_ease-out_forwards]"
-                                style={{ height: `${h}%`, animationDelay: `${i * 0.1}s` }}
-                              />
-                              <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-opacity">
-                                 <span className="text-[8px] font-black text-white bg-slate-900 px-2 py-1 rounded border border-white/10">+{(h/12).toFixed(1)}%</span>
-                              </div>
-                           </div>
-                         ))}
-                      </div>
-                      <div className="flex justify-between mt-4">
-                         {['EU','GU','AU','GOLD','USD','JPY','GBP','NZD','CAD','CHF'].map((sym, i) => (
-                           <span key={i} className="flex-1 text-center text-[7px] font-black text-slate-600 uppercase tracking-widest">{sym}</span>
-                         ))}
+                      
+                      {/* Smooth Area Curve Chart */}
+                      <div className="h-full w-full relative z-10 flex items-end translate-y-1">
+                         <svg width="100%" height="100%" viewBox="0 0 100 40" preserveAspectRatio="none" className="overflow-visible">
+                            <defs>
+                                <linearGradient id="mockCurve" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.25}/>
+                                    <stop offset="95%" stopColor="#4f46e5" stopOpacity={0.01}/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M0,35 C10,35 15,25 20,25 C30,25 35,32 40,30 C50,25 55,10 60,15 C65,20 70,12 80,8 C90,5 95,2 100,0" fill="none" stroke="#4f46e5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-sm" />
+                            <path d="M0,35 C10,35 15,25 20,25 C30,25 35,32 40,30 C50,25 55,10 60,15 C65,20 70,12 80,8 C90,5 95,2 100,0 L100,40 L0,40 Z" fill="url(#mockCurve)" />
+                            <circle cx="100" cy="0" r="2.5" fill="#4f46e5" className="animate-pulse shadow-[0_0_8px_#4f46e5]" />
+                         </svg>
                       </div>
                    </div>
 
-                   {/* Dynamic Status Bar */}
-                   <div className="pt-2 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                         <div className="flex h-2 w-2 relative">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-                         </div>
-                         <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">Live Analytical Sync Stream</span>
-                      </div>
-                      <div className="px-3 py-1 bg-white/5 rounded-full border border-white/5 text-[8px] font-black text-indigo-300 uppercase tracking-widest">
-                         SMC Logic Enabled
-                      </div>
-                   </div>
                 </div>
 
                 {/* Floating Aesthetic Labels */}
-                <div className="absolute -top-6 -right-6 bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-xl flex items-center gap-2 animate-bounce-slow">
-                   <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                   <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Model Confirmed</span>
+                <div className="absolute -top-5 -right-5 bg-white border border-slate-200 px-4 py-2.5 rounded-[14px] shadow-xl flex items-center gap-2 animate-bounce-slow z-20">
+                   <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                   <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest whitespace-nowrap">Model Confirmed</span>
                 </div>
-                <div className="absolute -bottom-4 -left-4 bg-indigo-600 text-white px-4 py-2 rounded-xl shadow-xl flex items-center gap-2">
-                   <Zap size={12} />
-                   <span className="text-[10px] font-black uppercase tracking-widest">Auto-Audited</span>
+                <div className="absolute -bottom-5 -left-5 bg-indigo-600 text-white px-4 py-2.5 rounded-[14px] shadow-xl flex items-center gap-2 z-20 group-hover:scale-105 transition-transform">
+                   <Zap size={14} className="fill-white/20" />
+                   <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Auto-Audited</span>
                 </div>
               </div>
             </div>
