@@ -158,14 +158,13 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
             <h3 className="text-[10px] font-black text-[var(--accent)] uppercase tracking-[0.3em] flex items-center gap-2">
               <Target size={14} /> Configuration
             </h3>
-            <div className="flex items-center gap-2 px-4 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[20px]">
-              <Calendar size={12} className="text-[var(--text-muted)]" />
+            <div className="flex items-center px-4 py-2 bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[20px] hover:border-[var(--accent)]/30 transition-all">
               <input
                 type="datetime-local"
                 name="tradeDate"
                 value={formData.tradeDate}
                 onChange={handleChange}
-                className="bg-transparent text-[10px] font-black text-[var(--foreground)] uppercase tracking-wider outline-none cursor-pointer"
+                className="bg-transparent text-[10px] font-black text-[var(--foreground)] uppercase tracking-wider outline-none cursor-pointer w-full"
               />
             </div>
           </div>
@@ -491,7 +490,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                     key={zone}
                     type="button"
                     onClick={() => handleSweepToggle(zone)}
-                    className={`px-3 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
+                    className={`px-3 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all whitespace-nowrap shrink-0 ${
                       (formData.liquiditySweep || []).includes(zone) 
                         ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/20 border border-amber-500/50' 
                         : 'bg-[var(--glass-bg)] text-[var(--text-muted)] border border-[var(--glass-border)] hover:border-amber-500/30'
@@ -511,7 +510,7 @@ export default function TradeForm({ initialData = null, onSubmit, isSubmitting, 
                     key={tag}
                     type="button"
                     onClick={() => handleTagToggle(tag)}
-                    className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                    className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap shrink-0 ${
                       formData.smcTags.includes(tag) 
                         ? 'bg-[var(--accent)] text-white shadow-lg shadow-[var(--accent)]/20 border border-[var(--accent)]/50' 
                         : 'bg-[var(--glass-bg)] text-[var(--text-muted)] border border-[var(--glass-border)] hover:border-[var(--accent)]/30'
