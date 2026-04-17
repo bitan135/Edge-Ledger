@@ -84,12 +84,28 @@ function CheckoutFormContent() {
     }
   };
 
-  const handleApplyCoupon = () => {
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+
+  const handleApplyCoupon = async () => {
     setCouponError('');
-    if (coupon.toUpperCase() === 'SMC2026') {
-      setDiscount(plan.price * 0.2); // 20% discount
-    } else {
-      setCouponError('Invalid or expired coupon code.');
+    if (!coupon.trim()) return;
+    
+    setIsApplyingCoupon(true);
+    try {
+      const res = await fetch(`/api/payments/coupon?code=${encodeURIComponent(coupon)}`);
+      const data = await res.json();
+      
+      if (data.valid) {
+        setDiscount(plan.price * data.discountRate);
+      } else {
+        setCouponError(data.error || 'Invalid or expired coupon code.');
+        setDiscount(0);
+      }
+    } catch (err) {
+      setCouponError('Failed to validate coupon. Try again.');
+      setDiscount(0);
+    } finally {
+      setIsApplyingCoupon(false);
     }
   };
 
@@ -302,9 +318,10 @@ function CheckoutFormContent() {
                     <button 
                         type="button"
                         onClick={handleApplyCoupon}
-                        className="px-6 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[10px] font-black uppercase tracking-widest text-[var(--accent)] hover:bg-[var(--accent)]/10 hover:border-[var(--accent)]/30 transition-all active:scale-95"
+                        disabled={isApplyingCoupon || !coupon.trim()}
+                        className="px-6 rounded-2xl bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[10px] font-black uppercase tracking-widest text-[var(--accent)] hover:bg-[var(--accent)]/10 hover:border-[var(--accent)]/30 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center"
                     >
-                        Apply
+                        {isApplyingCoupon ? <Loader2 size={14} className="animate-spin" /> : 'Apply'}
                     </button>
                 </div>
                 {couponError && (

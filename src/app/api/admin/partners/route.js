@@ -69,9 +69,11 @@ export async function POST(req) {
 
     const { name, email, couponCode, commissionRate, discountRate, channelName, channelUrl } = await req.json();
 
-    if (!name || !email || !couponCode) {
-      return NextResponse.json({ error: 'Name, email, and coupon code are required' }, { status: 400 });
+    if (!name || !email || !couponCode || typeof couponCode !== 'string') {
+      return NextResponse.json({ error: 'Name, email, and a valid coupon code are required' }, { status: 400 });
     }
+
+    const normalizedCoupon = couponCode.toUpperCase().trim().replace(/[^A-Z0-9_-]/g, '').slice(0, 32);
 
     // Generate a secure random password
     const rawPassword = Array.from(crypto.getRandomValues(new Uint8Array(12)))
@@ -89,7 +91,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Email already registered' }, { status: 409 });
     }
 
-    const { data: existingCode } = await sb.from('affiliates').select('id').eq('coupon_code', couponCode.toUpperCase().trim()).limit(1);
+    const { data: existingCode } = await sb.from('affiliates').select('id').eq('coupon_code', normalizedCoupon).limit(1);
     if (existingCode && existingCode.length > 0) {
       return NextResponse.json({ error: 'Coupon code already in use' }, { status: 409 });
     }
@@ -100,9 +102,9 @@ export async function POST(req) {
         name: name.trim(),
         email: email.toLowerCase().trim(),
         password_hash: passwordHash,
-        coupon_code: couponCode.toUpperCase().trim(),
-        commission_rate: commissionRate || 0.10,
-        discount_rate: discountRate || 0.10,
+        coupon_code: normalizedCoupon,
+        commission_rate: (commissionRate !== undefined && commissionRate !== '') ? parseFloat(commissionRate) : 0.10,
+        discount_rate: (discountRate !== undefined && discountRate !== '') ? parseFloat(discountRate) : 0.10,
         status: 'active',
         channel_name: channelName || null,
         channel_url: channelUrl || null,
