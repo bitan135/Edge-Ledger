@@ -177,7 +177,7 @@ export async function POST(req) {
           // Get the affiliate's commission rate
           const { data: affiliate } = await supabaseAdmin
             .from('affiliates')
-            .select('id, commission_rate, total_earnings_usd')
+            .select('id, commission_rate')
             .eq('id', payerProfile.referred_by)
             .eq('status', 'active')
             .single();
@@ -212,14 +212,7 @@ export async function POST(req) {
                 });
             }
 
-            // Increment affiliate total earnings
-            await supabaseAdmin
-              .from('affiliates')
-              .update({
-                total_earnings_usd: parseFloat(((affiliate.total_earnings_usd || 0) + commissionEarned).toFixed(2))
-              })
-              .eq('id', affiliate.id);
-
+            // Earnings are computed dynamically from affiliate_referrals
             console.log(`[COMMISSION_ATTRIBUTED] affiliate_id=${affiliate.id} user_id=${userId} amount=$${commissionEarned} plan=${planId}`);
           }
         }

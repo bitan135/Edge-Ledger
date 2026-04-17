@@ -18,7 +18,7 @@ export async function GET() {
     const sb = getSb();
     const { data: partners, error } = await sb
       .from('affiliates')
-      .select('id, name, email, coupon_code, commission_rate, discount_rate, status, channel_name, channel_url, total_referrals, total_earnings_usd, created_at')
+      .select('id, name, email, coupon_code, commission_rate, discount_rate, status, channel_name, channel_url, created_at')
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -106,8 +106,6 @@ export async function POST(req) {
         status: 'active',
         channel_name: channelName || null,
         channel_url: channelUrl || null,
-        total_referrals: 0,
-        total_earnings_usd: 0,
       })
       .select('id, name, email, coupon_code')
       .single();

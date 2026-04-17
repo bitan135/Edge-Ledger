@@ -29,7 +29,7 @@ export async function GET(request) {
               // 1. Find the affiliate by coupon_code (unified field name)
               const { data: affiliate } = await supabase
                 .from('affiliates')
-                .select('id, commission_rate, total_referrals, total_earnings_usd')
+                .select('id, commission_rate')
                 .eq('coupon_code', sanitizedRef)
                 .eq('status', 'active')
                 .single();
@@ -70,13 +70,7 @@ export async function GET(request) {
                         commission_paid: false,
                       });
 
-                    // 6. Increment affiliate referral counter
-                    await supabase
-                      .from('affiliates')
-                      .update({ 
-                        total_referrals: (affiliate.total_referrals || 0) + 1
-                      })
-                      .eq('id', affiliate.id);
+                    // 6. Referral count is computed dynamically from affiliate_referrals
                   }
                 }
               }
