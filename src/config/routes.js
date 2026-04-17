@@ -28,6 +28,7 @@ export const PROTECTED_PATHS = [
 export function isPublicRoute(pathname) {
   if (pathname === '/') return true;
   if (pathname.startsWith('/affiliate')) return true;
+  if (pathname.startsWith('/admin')) return true;
   return PUBLIC_ROUTES.includes(pathname);
 }
 
