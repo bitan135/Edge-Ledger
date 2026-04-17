@@ -36,7 +36,21 @@ export async function PATCH(req, { params }) {
     const updates = {};
     if (body.plan) updates.plan_type = body.plan;
     if (body.isPro !== undefined) updates.is_pro = body.isPro;
-    if (body.status) updates.status = body.status; // 'active' or 'inactive'
+    if (body.status) updates.status = body.status;
+
+    if (body.extendMonths) {
+      const { data: profile } = await sb.from('profiles').select('subscription_end_date').eq('id', id).single();
+      const currentEnd = profile?.subscription_end_date ? new Date(profile.subscription_end_date) : null;
+      let newEnd = new Date();
+      if (currentEnd && currentEnd > new Date()) {
+        newEnd = currentEnd;
+      }
+      newEnd.setMonth(newEnd.getMonth() + Number(body.extendMonths));
+      
+      updates.subscription_end_date = newEnd.toISOString();
+      updates.plan_type = 'pro'; // or pro_monthly
+      updates.is_pro = true;
+    }
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json({ error: 'No valid fields provided' }, { status: 400 });

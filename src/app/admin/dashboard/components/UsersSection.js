@@ -21,6 +21,8 @@ export default function UsersSection() {
   
   const [expandedUser, setExpandedUser] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
+  const [extendUserId, setExtendUserId] = useState(null);
+  const [extendMonths, setExtendMonths] = useState(1);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -53,6 +55,24 @@ export default function UsersSection() {
     });
     setActionLoading(false);
     fetchUsers();
+  };
+
+  const handleExtendPro = async (id) => {
+    if (!extendMonths || isNaN(extendMonths) || extendMonths < 1) return;
+    setActionLoading(true);
+    const res = await fetch(`/api/admin/users/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ extendMonths: Number(extendMonths) }),
+    });
+    setActionLoading(false);
+    if (res.ok) {
+      alert(`Successfully extended Pro plan by ${extendMonths} months.`);
+      setExtendUserId(null);
+      fetchUsers();
+    } else {
+      alert('Failed to extend Pro plan.');
+    }
   };
 
   const handleDeleteUser = async (id) => {
@@ -188,10 +208,28 @@ export default function UsersSection() {
                         </button>
                       )}
                       
-                      {(!u.isPro || u.plan === 'free') && (
-                        <button disabled={actionLoading} onClick={() => handleUpdateUser(u.id, { plan: 'pro_monthly', isPro: true })} className="px-3 py-2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[9px] font-black uppercase tracking-widest hover:bg-amber-500/20 transition-all">
-                          Upgrade Pro
-                        </button>
+                      {u.plan !== 'lifetime' && extendUserId === u.id ? (
+                        <div className="flex items-center gap-2">
+                          <input 
+                            type="number" min="1" max="120"
+                            value={extendMonths}
+                            onChange={e => setExtendMonths(e.target.value)}
+                            className="w-16 px-2 py-1.5 rounded bg-white/5 border border-white/10 text-white text-xs font-bold outline-none focus:border-amber-500/50"
+                          />
+                          <span className="text-[9px] font-black uppercase tracking-widest text-white/30 mr-1">Months</span>
+                          <button disabled={actionLoading} onClick={() => handleExtendPro(u.id)} className="px-3 py-2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[9px] font-black uppercase tracking-widest hover:bg-amber-500/20 transition-all">
+                            Confirm
+                          </button>
+                          <button onClick={() => setExtendUserId(null)} className="px-2 py-2 rounded bg-white/5 text-white/30 text-[9px] font-black uppercase tracking-widest hover:bg-white/10">
+                            ✕
+                          </button>
+                        </div>
+                      ) : (
+                        u.plan !== 'lifetime' && (
+                          <button onClick={() => { setExtendUserId(u.id); setExtendMonths(1); }} className="px-3 py-2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[9px] font-black uppercase tracking-widest hover:bg-amber-500/20 transition-all">
+                            Extend Pro Plan
+                          </button>
+                        )
                       )}
 
                       {u.plan !== 'free' && (
