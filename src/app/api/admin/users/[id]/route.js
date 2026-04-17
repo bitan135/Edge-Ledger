@@ -1,0 +1,81 @@
+import { createClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { getAdminSession } from '@/lib/admin-auth';
+
+function getSbAdmin() {
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false }
+  });
+}
+
+// Helper to log admin actions
+async function logAction(sb, adminEmail, action, targetUserId, details = {}) {
+  try {
+    await sb.from('admin_action_logs').insert({
+      admin_email: adminEmail,
+      action,
+      target_user_id: targetUserId,
+      details
+    });
+  } catch (err) {
+    console.error('Failed to log admin action:', err);
+  }
+}
+
+export async function PATCH(req, { params }) {
+  try {
+    const store = await cookies();
+    const session = await getAdminSession(store);
+    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { id } = await params;
+    const body = await req.json();
+    const sb = getSbAdmin();
+
+    const updates = {};
+    if (body.plan) updates.plan_type = body.plan;
+    if (body.isPro !== undefined) updates.is_pro = body.isPro;
+    if (body.status) updates.status = body.status; // 'active' or 'inactive'
+
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json({ error: 'No valid fields provided' }, { status: 400 });
+    }
+
+    // Update the profile
+    const { error: profileError } = await sb.from('profiles').update(updates).eq('id', id);
+    if (profileError) throw profileError;
+
+    // Log the action
+    await logAction(sb, session.email, 'UPDATE_USER', id, updates);
+
+    return NextResponse.json({ success: true, updates });
+
+  } catch (err) {
+    console.error('Admin Update User Error:', err);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req, { params }) {
+  try {
+    const store = await cookies();
+    const session = await getAdminSession(store);
+    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { id } = await params;
+    const sb = getSbAdmin();
+
+    // Delete user from auth (this cascades to profiles and subscriptions depending on FK rules, 
+    // but auth.admin.deleteUser is the definitive way to wipe a user)
+    const { error } = await sb.auth.admin.deleteUser(id);
+    if (error) throw error;
+
+    await logAction(sb, session.email, 'DELETE_USER', id, { note: 'User completely deleted from system' });
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error('Admin Delete User Error:', err);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+}
