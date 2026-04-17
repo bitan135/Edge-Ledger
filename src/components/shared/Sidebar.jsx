@@ -41,10 +41,10 @@ export default function Sidebar() {
   if (isPublicRoute(pathname) || pathname === '/auth/callback') return null;
 
   const getPlanBadge = () => {
-    const plan = subscription?.plan_id || 'free';
-    if (plan === 'lifetime_legacy') return 'Legacy Elite';
+    const plan = subscription?.plan_id || profile?.plan_type || 'free';
+    if (plan === 'lifetime' || plan === 'pro_lifetime' || plan === 'lifetime_legacy') return 'Lifetime Elite';
     if (plan === '6_month') return '6-Month Pro';
-    if (plan === 'pro') return 'Pro Trader';
+    if (plan === 'pro' || plan === 'pro_monthly') return 'Pro Trader';
     return 'Free Plan';
   };
 
