@@ -81,11 +81,17 @@ export const tradeService = {
     const cleanName = originalName.replace(/[^a-zA-Z0-9.-]/g, '_');
     const fileName = `${user.id}/${Date.now()}-${cleanName}`;
     
+    // explicitly extract byte-array to prevent fetch streaming deadlocks in Next.js
+    let fileBody = file;
+    if (file instanceof Blob || file instanceof File) {
+      fileBody = await file.arrayBuffer();
+    }
+
     // Explicitly providing contentType prevents Supabase JS fetch from hanging
     // on dynamically constructed File objects inside Next.js client environments.
     const { data, error } = await supabase.storage
       .from('trade-screenshots')
-      .upload(fileName, file, {
+      .upload(fileName, fileBody, {
         cacheControl: '3600',
         upsert: false,
         contentType: file.type || 'image/jpeg'
