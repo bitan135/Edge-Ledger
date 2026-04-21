@@ -505,7 +505,6 @@ export async function saveTrade(trade) {
       trade_date: parseTradeDate(trade).toISOString(),
       instrument: trade.instrument?.toUpperCase() || 'EURUSD',
       result: trade.result || 'Break Even',
-      type: trade.type || trade.direction || 'Buy',
       smc_tags: Array.isArray(trade.smcTags || trade.smc_tags) ? (trade.smcTags || trade.smc_tags) : [],
       liquidity_sweep: Array.isArray(trade.liquiditySweep || trade.liquidity_sweep) ? (trade.liquiditySweep || trade.liquidity_sweep) : [],
     };
@@ -514,16 +513,16 @@ export async function saveTrade(trade) {
     if (tradeData.entry_price <= 0) {
       return { success: false, data: null, error: 'Institutional Error: Entry price must be a positive numerical value.' };
     }
-    if (tradeData.stop_loss !== null && tradeData.type === 'Buy' && tradeData.stop_loss >= tradeData.entry_price) {
+    if (tradeData.stop_loss !== null && tradeData.direction === 'Buy' && tradeData.stop_loss >= tradeData.entry_price) {
       return { success: false, data: null, error: 'Risk Validation: Stop Loss must be below Entry for Buy positions.' };
     }
-    if (tradeData.stop_loss !== null && tradeData.type === 'Sell' && tradeData.stop_loss <= tradeData.entry_price) {
+    if (tradeData.stop_loss !== null && tradeData.direction === 'Sell' && tradeData.stop_loss <= tradeData.entry_price) {
       return { success: false, data: null, error: 'Risk Validation: Stop Loss must be above Entry for Sell positions.' };
     }
-    if (tradeData.take_profit !== null && tradeData.type === 'Buy' && tradeData.take_profit <= tradeData.entry_price) {
+    if (tradeData.take_profit !== null && tradeData.direction === 'Buy' && tradeData.take_profit <= tradeData.entry_price) {
       return { success: false, data: null, error: 'Risk Validation: Take Profit must be above Entry for Buy positions.' };
     }
-    if (tradeData.take_profit !== null && tradeData.type === 'Sell' && tradeData.take_profit >= tradeData.entry_price) {
+    if (tradeData.take_profit !== null && tradeData.direction === 'Sell' && tradeData.take_profit >= tradeData.entry_price) {
       return { success: false, data: null, error: 'Risk Validation: Take Profit must be below Entry for Sell positions.' };
     }
 
@@ -531,7 +530,7 @@ export async function saveTrade(trade) {
     const KEYS_TO_REMOVE = [
       'entryPrice', 'stopLoss', 'takeProfit', 'lotSize', 'tradeDate', 
       'smcTags', 'liquiditySweep', 'riskAmount', 'risk_amount',
-      'timeframeBias', 'biasType', 'poiType', 'setup_images'
+      'timeframeBias', 'biasType', 'poiType', 'setup_images', 'type'
     ];
     KEYS_TO_REMOVE.forEach(key => delete tradeData[key]);
 
@@ -588,7 +587,7 @@ export async function updateTrade(id, updates) {
     const KEYS_TO_REMOVE = [
       'entryPrice', 'stopLoss', 'takeProfit', 'lotSize', 'tradeDate', 
       'smcTags', 'liquiditySweep', 'riskAmount', 'risk_amount',
-      'timeframeBias', 'biasType', 'poiType', 'setup_images'
+      'timeframeBias', 'biasType', 'poiType', 'setup_images', 'type'
     ];
     KEYS_TO_REMOVE.forEach(key => delete hardenedUpdates[key]);
 
